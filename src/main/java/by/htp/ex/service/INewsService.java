@@ -3,6 +3,7 @@ package by.htp.ex.service;
 import java.util.List;
 
 import by.htp.ex.bean.News;
+import by.htp.ex.service.exception.ServiceException;
 
 public interface INewsService {
   void save();

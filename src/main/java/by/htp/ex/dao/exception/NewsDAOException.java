@@ -1,4 +1,4 @@
-package by.htp.ex.dao;
+package by.htp.ex.dao.exception;
 
 
 public class NewsDAOException extends Exception{

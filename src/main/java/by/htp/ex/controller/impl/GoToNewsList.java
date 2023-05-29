@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import by.htp.ex.bean.News;
-import by.htp.ex.controller.Command;
+import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.INewsService;
-import by.htp.ex.service.ServiceException;
+import by.htp.ex.service.exception.ServiceException;
 import by.htp.ex.service.ServiceProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -11,16 +11,36 @@ public class News implements Serializable {
 	private String briefNews="";
 	private String content="";
 	private String newsDate="";
+	private String photo ="";
 	
 	public News(){}
 
-	public News(int idNews, String title, String briefNews, String content, String newsDate) {
+	public News(int idNews, String title, String briefNews, String content, String newsDate, String photo) {
 		super();
+		this.photo = photo;
 		this.idNews = idNews;
 		this.title = title;
 		this.briefNews = briefNews;
 		this.content = content;
 		this.newsDate = newsDate;
+	}
+
+	public News(int idNews, String title, String briefNews, String content, String newsDate) {
+		super();
+		this.photo = null;
+		this.idNews = idNews;
+		this.title = title;
+		this.briefNews = briefNews;
+		this.content = content;
+		this.newsDate = newsDate;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
 	public Integer getIdNews() {
@@ -63,5 +83,4 @@ public class News implements Serializable {
 	public void setNewsDate(String newsDate) {
 		this.newsDate = newsDate;
 	}	
-	
 }

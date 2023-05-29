@@ -5,9 +5,9 @@ import java.util.List;
 import by.htp.ex.bean.News;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.INewsDAO;
-import by.htp.ex.dao.NewsDAOException;
+import by.htp.ex.dao.exception.NewsDAOException;
 import by.htp.ex.service.INewsService;
-import by.htp.ex.service.ServiceException;
+import by.htp.ex.service.exception.ServiceException;
 
 public class NewsServiceImpl implements INewsService{
 

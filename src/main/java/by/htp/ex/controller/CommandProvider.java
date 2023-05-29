@@ -3,6 +3,8 @@ package by.htp.ex.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import by.htp.ex.controller.command.Command;
+import by.htp.ex.controller.command.CommandName;
 import by.htp.ex.controller.impl.DoSIgnIn;
 import by.htp.ex.controller.impl.DoSignOut;
 import by.htp.ex.controller.impl.GoToBasePage;

@@ -1,10 +1,10 @@
 package by.htp.ex.service.impl;
 
 import by.htp.ex.bean.NewUserInfo;
-import by.htp.ex.dao.DaoException;
+import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.IUserDAO;
-import by.htp.ex.service.ServiceException;
+import by.htp.ex.service.exception.ServiceException;
 import by.htp.ex.service.IUserService;
 
 public class UserServiceImpl implements IUserService{

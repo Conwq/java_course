@@ -1,4 +1,4 @@
-package by.htp.ex.controller;
+package by.htp.ex.controller.command;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package by.htp.ex.service;
+package by.htp.ex.service.exception;
 
 public class ServiceException extends Exception{
 

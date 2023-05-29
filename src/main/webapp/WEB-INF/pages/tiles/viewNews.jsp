@@ -33,23 +33,24 @@
 				</div></td>
 		</tr>
 	</table>
+	<img src="${requestScope.news.photo}" alt="Not photo"/>
 </div>
 
 
 <c:if test="${sessionScope.role eq 'admin'}">
 <div class="first-view-button">
 	<form action="controller" method="post">
-		<input type="hidden" name="command" value="edit" /> <input
-			type="hidden" name="id" value="${news.idNews}" /> <input
-			type="submit" value="Edit" />
+		<input type="hidden" name="command" value="edit"/>
+		<input type="hidden" name="id" value="${news.idNews}"/>
+		<input type="submit" value="Edit"/>
 	</form>
 </div>
 
 <div class="second-view-button">
 	<form action="controller" method="post">
-		<input type="hidden" name="command" value="delete" /> <input
-			type="hidden" name="id" value="${news.idNews}" /> <input
-			type="submit" value="Delete" />
+		<input type="hidden" name="command" value="delete" />
+		<input type="hidden" name="id" value="${news.idNews}" />
+		<input type="submit" value="Delete" />
 	</form>
 </div>
 </c:if>

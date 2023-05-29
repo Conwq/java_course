@@ -1,4 +1,4 @@
-package by.htp.ex.controller;
+package by.htp.ex.controller.command;
 
 public enum CommandName {
 	GO_TO_BASE_PAGE,

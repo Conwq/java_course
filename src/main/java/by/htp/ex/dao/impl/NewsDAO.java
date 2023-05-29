@@ -5,57 +5,114 @@ import java.util.List;
 
 import by.htp.ex.bean.News;
 import by.htp.ex.dao.INewsDAO;
-import by.htp.ex.dao.NewsDAOException;
+import by.htp.ex.dao.exception.NewsDAOException;
 
 public class NewsDAO implements INewsDAO {
 
+	private static int ID = 0;
+	private final List<News> result = new ArrayList<>();
+
+	{
+		result.add(new News(++ID, "Мыл голову бруском и сортировал мусор.",
+				"Наш журналист неделю жил по экоправилам и теперь делится опытом.",
+				"Этой весной совместно с Breezy мы выпустили текст о белорусах, которые сортируют мусор, " +
+						"отказываются от полиэтиленовых пакетов, компостируют органику и в целом стараются жить в гармонии с природой. " +
+						"Но одно дело — пересказывать чью-то историю, другое — попробовать все самому. " +
+						"Наш журналист Тарас Щирый открыл для себя принципы zero waste (ноль отходов) и полторы недели разделял дома мусор, " +
+						"пил кофе из силиконового стакана в заведениях, ходил за овощами исключительно с авоськой и затестил соленую зубную пасту.",
+				"26.05.2023",
+				"images/Head.png"));
+
+		result.add(new News(++ID,
+				"Эксперимент",
+				"Что случится, если остаться на Минском море с палаткой на ночь?",
+				"Через этот спор точно проходит любая компания друзей. " +
+						"Одна часть каждые теплые выходные предлагает отправиться в поход с палатками, " +
+						"другая — упорно из года в год от этого отказывается. Потому что зачем спать на земле, " +
+						"если придумали дома? А как мыться? А комары? А холод? А вдруг дикие звери? Если вы во второй категории, " +
+						"то точно придумаете еще с десяток причин, почему это четкое нет. Но если ты журналист, эти доводы перестают действовать. " +
+						"Мы решили поставить эксперимент и отправить в поход того, кто до этого видел палатку только на рынке.",
+				"28.05.2023",
+				"images/Palatka.png"));
+
+		result.add(new News(++ID,
+				"Как в сериале",
+				"Пары вернулись в отношения спустя много лет — и вот к чему это привело",
+				"Встретились, повстречались, разошлись. " +
+						"Снова встретились, повстречались, разошлись. " +
+						"Такие истории нам хорошо знакомы по сериалам. " +
+						"Но реальная жизнь придумывает сюжеты и покруче. " +
+						"Вместе с мы собрали истории пар, которым понадобилась не одна попытка, чтобы понять: они должны быть вместе. " +
+						"Сценаристам бы точно понравилось! " +
+						"Будьте осторожны: после прочтения может возникнуть желание искать по соцсетям свою первую любовь.",
+				"29.05.2023",
+				"images/Serial.png"));
+
+		result.add(new News(++ID,
+				"Экстремальные развлечения в Беларуси",
+				"Как пощекотать себе нервы и сколько это будет стоить?",
+				"Острота ощущений в глазах смотрящего: самым суровым экстремалам уровень драйва может показаться умеренным, " +
+						"а вот на всех остальных любое развлечение из списка может произвести впечатление на всю жизнь. " +
+						"Тем более выбрать есть из чего: стандартные занятия из будней супергероев — и прыгать, и летать, " +
+						"и гонять на необычном транспорте.",
+				"24.05.2023",
+				"images/Playing.png"));
+
+		result.add(new News(++ID,
+				"Есть ли движ в Дроздах и на Минском море?",
+				"Посмотрели, что происходит на популярных пляжах",
+				"Жара не за горами, и минчане все чаще массово — с шашлыками или без " +
+						"— выбираются отдохнуть к популярным водоемам. Мы тоже не устояли перед теплой погодой " +
+						"и в пятницу вырвались в Дрозды и на Минское море посмотреть, работает ли общепит и кто уже открыл купальный сезон. " +
+						"А заодно бесплатно послушали концерт на природе, увидели русалку (но это не точно) и, кажется, " +
+						"нашли любопытную альтернативу шашлычному беспределу.",
+				"21.05.2023",
+				"images/Drozd.png"));
+
+		result.add(new News(++ID,
+				"6",
+				"6",
+				"6",
+				"26.05.2023"));
+
+		result.add(new News(++ID,
+				"7",
+				"7",
+				"7",
+				"26.05.2023"));
+
+		result.add(new News(++ID,
+				"8",
+				"8",
+				"8",
+				"26.05.2023"));
+	}
+
 	@Override
 	public List<News> getLatestsList(int count) throws NewsDAOException {
-		List<News> result = new ArrayList<News>();
-
-		result.add(new News(1, "title1", "brief1brief1brief1brief1brief1brief1brief1", "contect1", "11/11/22"));
-		result.add(new News(2, "title2", "brief2brief2brief2brief2brief2brief2brief2", "contect2", "11/11/22"));
-		result.add(new News(3, "title3", "brief3brief3brief3brief3brief3brief3brief3", "contect3", "11/11/22"));
-		result.add(new News(4, "title4", "brief4brief4brief4brief4brief4brief4brief4", "contect4", "11/11/22"));
-		result.add(new News(5, "title5", "brief5brief5brief5brief5brief5brief5brief5", "contect5", "11/11/22"));
-
-		return result;
+		return result.stream().filter(news -> news.getIdNews() > result.size() - count).toList();
 	}
 
 	@Override
 	public List<News> getList() throws NewsDAOException {
-		List<News> result = new ArrayList<News>();
-
-		result.add(new News(1, "title1", "brief1brief1brief1brief1brief1brief1brief1", "contect1", "11/11/22"));
-		result.add(new News(2, "title2", "brief2brief2brief2brief2brief2brief2brief2", "contect2", "11/11/22"));
-		result.add(new News(3, "title3", "brief3brief3brief3brief3brief3brief3brief3", "contect3", "11/11/22"));
-		result.add(new News(4, "title4", "brief4brief4brief4brief4brief4brief4brief4", "contect4", "11/11/22"));
-		result.add(new News(5, "title5", "brief5brief5brief5brief5brief5brief5brief5", "contect5", "11/11/22"));
-
 		return result;
 	}
 
 	@Override
 	public News fetchById(int id) throws NewsDAOException {
-		return new News(1, "title1", "brief1brief1brief1brief1brief1brief1brief1", "contect1", "11/11/22");
+		return result.stream().filter(news -> news.getIdNews() == id).findAny().orElse(null);
 	}
 
 	@Override
 	public int addNews(News news) throws NewsDAOException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void updateNews(News news) throws NewsDAOException {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void deleteNewses(String[] idNewses) throws NewsDAOException {
-		// TODO Auto-generated method stub
-
 	}
-
 }

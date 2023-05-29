@@ -1,12 +1,11 @@
 package by.htp.ex.controller.impl;
 
 import java.io.IOException;
-import java.util.List;
 
 import by.htp.ex.bean.News;
-import by.htp.ex.controller.Command;
+import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.INewsService;
-import by.htp.ex.service.ServiceException;
+import by.htp.ex.service.exception.ServiceException;
 import by.htp.ex.service.ServiceProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +17,8 @@ public class GoToViewNews implements Command {
 
 	/*
 		В данынй конкрид контроллер мы переходим, когда авторизованный пользователь в baseLayout -> body -> newsList нажимает на кнопку View News.
-		Эта кнопка является реферальной ссылкой на FrontController с командой go_to_view_news и при помащи паттерна Command она переходит в данный конкрид контроллер
+		Эта кнопка является реферальной ссылкой на FrontController с командой go_to_view_news и при помощи паттерна Command она переходит в данный
+		конкрид контроллер
 
 	 */
 
