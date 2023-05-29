@@ -1,33 +1,49 @@
 package by.htp.ex.dao.impl;
 
 import by.htp.ex.bean.NewUserInfo;
-import by.htp.ex.dao.exception.DaoException;
+import by.htp.ex.bean.Role;
 import by.htp.ex.dao.IUserDAO;
+import by.htp.ex.dao.exception.DaoException;
 
-public class UserDAO implements IUserDAO{
+import javax.swing.text.html.Option;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class UserDAO implements IUserDAO {
+
+	private final List<NewUserInfo> users;
+
+	{
+		users = new ArrayList<>();
+		NewUserInfo userOne = new NewUserInfo("Admin", "a@mail.com", "a");
+		NewUserInfo userTwo = new NewUserInfo("User", "u@mail.com", "u");
+		userOne.setRole(Role.ADMIN);
+		userTwo.setRole(Role.USER);
+		users.add(userOne);
+		users.add(userTwo);
+	}
 
 	@Override
-	public boolean logination(String login, String password) throws DaoException {
-		
-		/*
-		 * Random rand = new Random(); int value = rand.nextInt(1000);
-		 * 
-		 * if(value % 3 == 0) { try { throw new SQLException("stub exception");
-		 * }catch(SQLException e) { throw new DaoException(e); } }else if (value % 2 ==
-		 * 0) { return true; }else { return false; }
-		 */
-		
+	public boolean isExistUser(NewUserInfo user) {
+		Optional<NewUserInfo> userInfo = users.stream().filter(u -> u.getEmail().equals(user.getEmail())).findAny();
+		return userInfo.isPresent();
+	}
+
+	@Override
+	public List<NewUserInfo> getUsers(){
+		return users;
+	}
+
+	@Override
+	public NewUserInfo authorization(String login) {
+		return users.stream().filter(u -> u.getLogin().equals(login)).findAny().orElse(null);
+	}
+
+
+	@Override
+	public boolean registration(NewUserInfo user) throws DaoException {
+		users.add(user);
 		return true;
-		
 	}
-	
-	public String getRole(String login, String password) {
-		return "user";
-	}
-
-	@Override
-	public boolean registration(NewUserInfo user) throws DaoException  {
-		return false;
-	}
-
 }

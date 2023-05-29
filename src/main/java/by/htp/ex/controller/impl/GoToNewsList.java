@@ -36,7 +36,8 @@ public class GoToNewsList implements Command {
 			//	request.setAttribute("news", null);
 
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
-		} catch (ServiceException e) {
+		}
+		catch (ServiceException e) {
 			//	Auto-generated catch block
 			e.printStackTrace();
 		}

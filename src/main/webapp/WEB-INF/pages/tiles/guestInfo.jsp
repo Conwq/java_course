@@ -10,13 +10,11 @@ guest info
 	Эта вся информация, которую будет получать неавторизованный пользователь.
  	Здесь будет отображаться список последних 5 новостей, полученные из нашей БД, которые мы положили в качестве параметров в наш запрос
  	при помощи метода request.setAttribute("news", news) в конкрид контроллере GoToBasePage.
- 	Здесь мы при помощи итератора отображаем список из 5 новостей, а при условии, если список новостей пустой печатаем надпись "No news."
+ 	Здесь мы при помощи итератора отображаем список из 5 новостей, а при условии, если список новостей пустой, печатаем надпись "No news."
 --%>
-
-<form action="command.do?method=delete" method="post">
+	<br><hr>
 
 	<c:forEach var="news" items="${requestScope.news}">
-
 		<div class="single-news-wrapper">
 
 			<div class="single-news-header-wrapper">
@@ -34,6 +32,7 @@ guest info
 				</div>
 
 			</div>
+			<br><hr>
 		</div>
 	</c:forEach>
 
@@ -42,5 +41,3 @@ guest info
         	No news.
 		</c:if>
 	</div>
-
-</form>

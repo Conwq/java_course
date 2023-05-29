@@ -1,16 +1,16 @@
 package by.htp.ex.controller.impl;
 
-import java.io.IOException;
-
 import by.htp.ex.controller.command.Command;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class GoToRegistrationPageCommand implements Command {
+import java.io.IOException;
 
+public class ChangeLocale implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("WEB-INF/jsp/registration.jsp").forward(request, response);
+		request.getSession(true).setAttribute("locale", request.getParameter("locale"));
+		response.sendRedirect("index.jsp");
 	}
 }

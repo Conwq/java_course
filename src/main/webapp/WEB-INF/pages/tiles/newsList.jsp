@@ -12,13 +12,14 @@
 				<div class="news-title">
 					<c:out value="${news.title}" />
 				</div>
-				<div class="news-date">
+				<div class="news-date" style="display: inline-block">
 					<c:out value="${news.newsDate}" />
 				</div>
 
-				<div class="news-content">
+				<div class="news-content" style="display: inline-block">
 					<c:out value="${news.briefNews}" />
 				</div>
+
 				<div class="news-link-to-wrapper">
 					<div class="link-position">
 						<c:if test="${sessionScope.role eq 'admin'}">
@@ -32,23 +33,22 @@
    					    </c:if>
 					</div>
 				</div>
-
 			</div>
 		</div>
+		<br><hr>
 
 	</c:forEach>
-
-	<!-- 	<logic:notEmpty name="newsForm" property="newsList">
-		<div class="delete-button-position">
-			<html:submit>
-				<bean:message key="locale.newslink.deletebutton" />
-			</html:submit>
-		</div>
-	</logic:notEmpty> -->
+<%--	<!-- 	<logic:notEmpty name="newsForm" property="newsList">--%>
+<%--		<div class="delete-button-position">--%>
+<%--				<html:submit>--%>
+<%--					<bean:message key="locale.newslink.deletebutton" />--%>
+<%--				</html:submit>--%>
+<%--		</div>--%>
+<%--			</logic:notEmpty> -->--%>
 
 	<div class="no-news">
 		<c:if test="${requestScope.news eq null}">
-        No news.
-	</c:if>
+        	No news.
+		</c:if>
 	</div>
 </form>

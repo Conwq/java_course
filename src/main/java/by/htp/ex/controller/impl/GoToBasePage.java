@@ -27,7 +27,6 @@ public class GoToBasePage implements Command{
 
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		} catch (ServiceException e) {
-			// loggin - error
 			e.printStackTrace();
 		}
 	}

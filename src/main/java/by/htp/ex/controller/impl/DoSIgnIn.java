@@ -12,9 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class DoSIgnIn implements Command {
 
-	private final IUserService service = ServiceProvider.getInstance().getUserService();
-	private static final String JSP_LOGIN_PARAM = "login";
-	private static final String JSP_PASSWORD_PARAM = "password";
+
 
 	/*
 		Данный метод сработает, когда пользователь нажмет клавишу Sign in. Она отправит пользователя на FrontController с командой do_sign_in, которую обработает Command
@@ -36,6 +34,10 @@ public class DoSIgnIn implements Command {
 						сы динамически отобразим данную ошибку.
 	*/
 
+	private final IUserService service = ServiceProvider.getInstance().getUserService();
+	private static final String JSP_LOGIN_PARAM = "login";
+	private static final String JSP_PASSWORD_PARAM = "password";
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String login;
@@ -44,29 +46,25 @@ public class DoSIgnIn implements Command {
 		login = request.getParameter(JSP_LOGIN_PARAM);
 		password = request.getParameter(JSP_PASSWORD_PARAM);
 
-		// small validation
 
 		try {
-
 			String role = service.signIn(login, password);
-
 			if (!role.equals("guest")) {
 				request.getSession(true).setAttribute("user", "active");
-				request.getSession(true).setAttribute("role", role);
+				request.getSession().setAttribute("role", role);
 				response.sendRedirect("controller?command=go_to_news_list");
-			} else {
-				// user   admin
+			}
 
+			else {
 				request.getSession(true).setAttribute("user", "not active");
 				request.setAttribute("AuthenticationError", "wrong login or password");
-				request.getRequestDispatcher("/WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
+				request.getRequestDispatcher("controller?command=go_to_base_page").forward(request, response);
 			}
 			
-		} catch (ServiceException e) {
-			// logging e
-			// go-to error page
 		}
-		// response.getWriter().print("do logination");
+		catch (ServiceException e) {
+
+		}
 	}
 
 }

@@ -28,7 +28,8 @@
 		</tr>
 		<tr>
 			<td class="space_around_title_text">Content</td>
-			<td class="space_around_view_text"><div class="word-breaker">
+			<td class="space_around_view_text">
+				<div class="word-breaker">
 					<c:out value="${requestScope.news.content }" />
 				</div></td>
 		</tr>

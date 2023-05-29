@@ -12,7 +12,8 @@ public class News implements Serializable {
 	private String content="";
 	private String newsDate="";
 	private String photo ="";
-	
+
+
 	public News(){}
 
 	public News(int idNews, String title, String briefNews, String content, String newsDate, String photo) {
