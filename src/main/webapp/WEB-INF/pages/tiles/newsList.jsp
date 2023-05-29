@@ -10,14 +10,14 @@
 		<div class="single-news-wrapper">
 			<div class="single-news-header-wrapper">
 				<div class="news-title">
-					<c:out value="${news.title}" />
+					<u><c:out value="${news.title}" /></u>
 				</div>
 				<div class="news-date">
 					<c:out value="${news.newsDate}" />
 				</div>
 
 				<div class="news-content">
-					<c:out value="${news.briefNews}" />
+					 <b> <c:out value="${news.briefNews}" /> </b>
 				</div>
 				<div class="news-link-to-wrapper">
 					<div class="link-position">

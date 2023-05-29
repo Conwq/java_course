@@ -13,8 +13,6 @@ guest info
  	Здесь мы при помощи итератора отображаем список из 5 новостей, а при условии, если список новостей пустой печатаем надпись "No news."
 --%>
 
-<form action="command.do?method=delete" method="post">
-
 	<c:forEach var="news" items="${requestScope.news}">
 
 		<div class="single-news-wrapper">
@@ -22,7 +20,7 @@ guest info
 			<div class="single-news-header-wrapper">
 
 				<div class="news-title">
-					<c:out value="${news.title}" />
+					<u><c:out value="${news.title}" /></u>
 				</div>
 
 				<div class="news-date">
@@ -30,9 +28,8 @@ guest info
 				</div>
 
 				<div class="news-content">
-					<c:out value="${news.briefNews}" />
+					<b><c:out value="${news.briefNews}" /></b>
 				</div>
-
 			</div>
 		</div>
 	</c:forEach>
@@ -42,5 +39,3 @@ guest info
         	No news.
 		</c:if>
 	</div>
-
-</form>

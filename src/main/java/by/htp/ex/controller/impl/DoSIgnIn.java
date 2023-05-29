@@ -50,12 +50,13 @@ public class DoSIgnIn implements Command {
 
 			String role = service.signIn(login, password);
 
-			if (!role.equals("guest")) {
+			if (!role.equals("guest")) { // user, admin
 				request.getSession(true).setAttribute("user", "active");
-				request.getSession(true).setAttribute("role", role);
+				request.getSession().setAttribute("role", role);
 				response.sendRedirect("controller?command=go_to_news_list");
-			} else {
-				// user   admin
+			}
+
+			else {
 
 				request.getSession(true).setAttribute("user", "not active");
 				request.setAttribute("AuthenticationError", "wrong login or password");
