@@ -18,7 +18,8 @@ public class GoToViewNews implements Command {
 
 	/*
 		В данынй конкрид контроллер мы переходим, когда авторизованный пользователь в baseLayout -> body -> newsList нажимает на кнопку View News.
-		Эта кнопка является реферальной ссылкой на FrontController с командой go_to_view_news и при помащи паттерна Command она переходит в данный конкрид контроллер
+		Эта кнопка является реферальной ссылкой на FrontController с командой go_to_view_news и при помощи паттерна Command она переходит в данный
+		конкрид контроллер
 
 	 */
 

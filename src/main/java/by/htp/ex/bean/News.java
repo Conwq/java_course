@@ -63,5 +63,4 @@ public class News implements Serializable {
 	public void setNewsDate(String newsDate) {
 		this.newsDate = newsDate;
 	}	
-	
 }
