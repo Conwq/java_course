@@ -12,6 +12,9 @@ public class ChangeLocale implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession(true).setAttribute("locale", request.getParameter("locale"));
 		System.out.println(request.getSession().getAttribute("user"));
+
+		//TODO ИЗМЕНИТЬ IF ELSE ДОБАВИВ УТИЛИТНЫЙ МЕТОД ДЛЯ ПРОВЕРКИ АВТОРИЗИРОВАННОГО ИЛИ НАОБОРОТ ПОЛЬЗОВАТЕЛЯ
+
 		if (request.getSession().getAttribute("user") == null || !(request.getSession().getAttribute("user").equals("active")))
 			response.sendRedirect("index.jsp");
 		else

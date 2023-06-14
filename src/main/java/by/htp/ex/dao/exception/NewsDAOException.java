@@ -1,6 +1,5 @@
 package by.htp.ex.dao.exception;
 
-
 public class NewsDAOException extends Exception{
 
 	private static final long serialVersionUID = 1L;

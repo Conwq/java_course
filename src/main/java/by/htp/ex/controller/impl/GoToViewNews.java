@@ -15,29 +15,21 @@ public class GoToViewNews implements Command {
 	
 	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
 
-	/*
-		В данынй конкрид контроллер мы переходим, когда авторизованный пользователь в baseLayout -> body -> newsList нажимает на кнопку View News.
-		Эта кнопка является реферальной ссылкой на FrontController с командой go_to_view_news и при помощи паттерна Command она переходит в данный
-		конкрид контроллер
-
-	 */
-
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		News news;
-		
-		String id;
-
-		id = request.getParameter("id");
+		String id = request.getParameter("id");
 		
 		try {
+
+			//TODO ДОБАВИТЬ ПРОВЕРКУ ИБО СДЕСЬ МОЖЕТ НЕ РАСПАРСИТЬ
 			news  = newsService.findById(Integer.parseInt(id));
+
 			request.setAttribute("news", news);
 			request.setAttribute("presentation", "viewNews");
-
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (ServiceException e) {
 			e.printStackTrace();
 		}
 	}

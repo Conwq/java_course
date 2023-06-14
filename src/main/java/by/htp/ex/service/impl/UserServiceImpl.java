@@ -12,7 +12,6 @@ public class UserServiceImpl implements IUserService {
 
 	private final IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
 
-
 	@Override
 	public String signIn(String login, String password) throws ServiceException {
 

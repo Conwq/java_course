@@ -20,6 +20,9 @@ public class DoRegistration implements Command {
 	private final IUserService userService = ServiceProvider.getInstance().getUserService();
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		//TODO ЭТО ИЗМЕНИТЬ НА ПАТТЕРН BUILDER
+
 		NewUserInfo user = new NewUserInfo(
 				request.getParameter(LOGIN),
 				request.getParameter(EMAIL),
