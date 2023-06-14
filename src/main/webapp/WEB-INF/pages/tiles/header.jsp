@@ -31,12 +31,14 @@
 
 	<div class="local-link">
 		<div align="right">
-			<form action="controller?command=change_locale" method="post" style="display: inline-block">
+			<form action="controller" method="post" style="display: inline-block">
+				<input type="hidden" name="command" value="change_locale">
 				<input type="hidden" name="locale" value="ru"/>
 				<input type="submit" value="${ru_button}"/>
 			</form>
 
-			<form action="controller?command=change_locale" method="post" style="display: inline-block">
+			<form action="controller" method="post" style="display: inline-block">
+				<input type="hidden" name="command" value="change_locale">
 				<input type="hidden" name="locale" value="en"/>
 				<input type="submit" value="${en_button}"/> <br>
 			</form>
