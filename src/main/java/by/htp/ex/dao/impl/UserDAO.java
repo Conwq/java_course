@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDAO implements IUserDAO {
-
+public final class UserDAO implements IUserDAO {
 	private final List<NewUserInfo> users;
 
 	{

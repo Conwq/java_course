@@ -7,8 +7,7 @@ import by.htp.ex.dao.exception.NewsDAOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsDAO implements INewsDAO {
-
+public final class NewsDAO implements INewsDAO {
 	private static int ID = 0;
 	private final List<News> result = new ArrayList<>();
 

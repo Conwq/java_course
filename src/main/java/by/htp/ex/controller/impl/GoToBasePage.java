@@ -12,21 +12,20 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class GoToBasePage implements Command{
-	
+public final class GoToBasePage implements Command{
 	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private final String JSP_NEWS_PARAM = "news";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		List<News> latestNews;
+
 		try {
 			latestNews = newsService.latestList(5);
-			request.setAttribute("news", latestNews);
-			// request.setAttribute("news", null);
-
+			request.setAttribute(JSP_NEWS_PARAM, latestNews);
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
-		} catch (ServiceException e) {
+		}
+		catch (ServiceException e) {
 			e.printStackTrace();
 		}
 	}

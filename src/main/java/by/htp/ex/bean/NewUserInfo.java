@@ -1,6 +1,8 @@
 package by.htp.ex.bean;
 
-public class NewUserInfo {
+import java.io.Serializable;
+
+public final class NewUserInfo implements Serializable {
 	private String login;
 	private String email;
 	private String password;
@@ -53,7 +55,7 @@ public class NewUserInfo {
 
 	@Override
 	public String toString() {
-		return "NewUserInfo{" +
+		return  getClass().getName() +
 				"login='" + login + '\'' +
 				", email='" + email + '\'' +
 				", password='" + password + '\'' +

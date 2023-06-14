@@ -51,7 +51,7 @@
 			</form>
 		</div>
 	</c:if>
-	<img src="${requestScope.news.photo}" alt="Not photo"/>
+	<img src="${requestScope.news.photoPath}" alt="Not photo"/>
 </div>
 
 

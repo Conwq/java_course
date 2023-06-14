@@ -11,33 +11,29 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class GoToViewNews implements Command {
-	
+public final class GoToViewNews implements Command {
 	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
-
-	/*
-		В данынй конкрид контроллер мы переходим, когда авторизованный пользователь в baseLayout -> body -> newsList нажимает на кнопку View News.
-		Эта кнопка является реферальной ссылкой на FrontController с командой go_to_view_news и при помощи паттерна Command она переходит в данный
-		конкрид контроллер
-
-	 */
+	private final String JSP_NEWS_PARAM = "news";
+	private final String JSP_PRESENTATION_PARAM = "presentation";
+	private final String JSP_VIEW_NEWS_PARAM = "newsList";
+	private final String ID = "id";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		News news;
-		
-		String id;
-
-		id = request.getParameter("id");
+		String id = request.getParameter(ID);
 		
 		try {
-			news  = newsService.findById(Integer.parseInt(id));
-			request.setAttribute("news", news);
-			request.setAttribute("presentation", "viewNews");
 
+			//TODO ДОБАВИТЬ ПРОВЕРКУ ИБО СДЕСЬ МОЖЕТ НЕ РАСПАРСИТЬ
+
+			news  = newsService.findById(Integer.parseInt(id));
+
+			request.setAttribute(JSP_NEWS_PARAM, news);
+			request.setAttribute(JSP_PRESENTATION_PARAM, JSP_VIEW_NEWS_PARAM);
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (ServiceException e) {
 			e.printStackTrace();
 		}
 	}

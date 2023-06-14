@@ -7,10 +7,11 @@ import by.htp.ex.controller.impl.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandProvider {
+public final class CommandProvider {
 	private final Map<CommandName, Command> commands = new HashMap<>();
+	private final static CommandProvider instance = new CommandProvider();
 
-	public CommandProvider() {
+	private CommandProvider (){
 		commands.put(CommandName.GO_TO_BASE_PAGE, new GoToBasePage());
 		commands.put(CommandName.GO_TO_REGISTRATION_PAGE, new GoToRegistrationPageCommand());
 		commands.put(CommandName.DO_SIGN_IN, new DoSIgnIn());
@@ -24,5 +25,9 @@ public class CommandProvider {
 	public Command getCommand(String command) {
 		CommandName commandName = CommandName.valueOf(command.toUpperCase());
 		return commands.get(commandName);
+	}
+
+	public static CommandProvider getInstance() {
+		return instance;
 	}
 }

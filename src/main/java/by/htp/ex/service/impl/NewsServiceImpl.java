@@ -9,34 +9,27 @@ import by.htp.ex.dao.exception.NewsDAOException;
 import by.htp.ex.service.INewsService;
 import by.htp.ex.service.exception.ServiceException;
 
-public class NewsServiceImpl implements INewsService{
-
+public final class NewsServiceImpl implements INewsService{
 	private final INewsDAO newsDAO = DaoProvider.getInstance().getNewsDAO();
 	
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void find() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public List<News> latestList(int count) throws ServiceException {
-		
 		try {
 			return newsDAO.getLatestsList(5);
-		} catch (NewsDAOException e) {
+		}
+		catch (NewsDAOException e) {
 			throw new ServiceException(e);
 		}
 	}
@@ -45,7 +38,8 @@ public class NewsServiceImpl implements INewsService{
 	public List<News> list() throws ServiceException {
 		try {
 			return newsDAO.getList();
-		} catch (NewsDAOException e) {
+		}
+		catch (NewsDAOException e) {
 			throw new ServiceException(e);
 		}
 	}
@@ -54,9 +48,9 @@ public class NewsServiceImpl implements INewsService{
 	public News findById(int id) throws ServiceException {
 		try {
 			return newsDAO.fetchById(id);
-		} catch (NewsDAOException e) {
+		}
+		catch (NewsDAOException e) {
 			throw new ServiceException(e);
 		}
 	}
-
 }

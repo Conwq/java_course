@@ -1,7 +1,10 @@
 package by.htp.ex.controller.impl;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import by.htp.ex.bean.Role;
 import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.exception.ServiceException;
 import by.htp.ex.service.ServiceProvider;
@@ -10,60 +13,42 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class DoSIgnIn implements Command {
-
-
-
-	/*
-		Данный метод сработает, когда пользователь нажмет клавишу Sign in. Она отправит пользователя на FrontController с командой do_sign_in, которую обработает Command
-		и отправит на текущий Конкрид контроллер.
-		В данном метода происходит следующая логика:
-
-				- HTTP request "вынимает из формы" параметры, которые пользователь отправил на сервер.
-
-				- Данные проходят небольшую валидацию логина и пароля
-
-				- Данные отправляются в БД для того, чтобы определить, под какой ролью находится указанный юзер:
-
-						Если роль не эквивалентна "guest", то мы открываем сессию (getSession(true)), в нашу сессию помещаем текущего пользователя со значение "active" , что означает, что
-						данный пользователь в системе есть и мы его активировали. Так же в качестве атрибута в сессию вкладываем его роль и совершаем redirect
-						на контроллер с командой = go_to_news_list.
-
-						Иначе вкладываем в сессию юзера со значением "not active" , а так же вкладываем ошибку под ключом "AuthenticationError"
-						и значением "wrong login or password". После чего делаем форвард на главную страницу. Если авторизация не пройдет, то на главной странице
-						сы динамически отобразим данную ошибку.
-	*/
-
+public final class DoSIgnIn implements Command {
 	private final IUserService service = ServiceProvider.getInstance().getUserService();
 	private static final String JSP_LOGIN_PARAM = "login";
 	private static final String JSP_PASSWORD_PARAM = "password";
+	private static final String JSP_USER_PARAM = "user";
+	private static final String JSP_USER_ACTIVE = "active";
+	private static final String JSP_USER_NOT_ACTIVE = "not active";
+	private static final String JSP_USER_ROLE = "role";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String login;
-		String password;
+		String login = request.getParameter(JSP_LOGIN_PARAM);
+		String password = request.getParameter(JSP_PASSWORD_PARAM);
 
-		login = request.getParameter(JSP_LOGIN_PARAM);
-		password = request.getParameter(JSP_PASSWORD_PARAM);
-
+		//TODO ТУТ ПРОВЕСТИ ЛЕГКУЮ ВАЛИДАЦИЮ ДАННЫХ
 
 		try {
 			String role = service.signIn(login, password);
 
 
-			if (!role.equals("guest")) { // user, admin
-				request.getSession(true).setAttribute("user", "active");
-				request.getSession().setAttribute("role", role);
+
+			//TODO ПОДУМАТЬ КАК ЗАМЕНИТЬ IF ELSE
+
+			if (!role.equals("guest")) {
+				request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_ACTIVE);
+				request.getSession().setAttribute(JSP_USER_ROLE, role);
 				response.sendRedirect("controller?command=go_to_news_list");
 			}
 
 			else {
-				request.getSession(true).setAttribute("user", "not active");
+				request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE);
 				request.setAttribute("AuthenticationError", "wrong login or password");
 				request.getRequestDispatcher("controller?command=go_to_base_page").forward(request, response);
 			}
-			
 		}
+
 		catch (ServiceException e) {
 
 		}

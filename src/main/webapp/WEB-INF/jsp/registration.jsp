@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -21,6 +22,10 @@
 
     <label for="password">Enter password:</label><br>
     <input type="text" name="password" id="password"><br>
+
+    <c:if test="${not (sessionScope.RegistrationError == null)}">
+        <div style="color:red"><c:out value="${sessionScope.RegistrationError}"/></div>
+    </c:if>
 
     <input type="submit" value="Submit">
 </form>

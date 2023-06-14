@@ -2,24 +2,21 @@ package by.htp.ex.bean;
 
 import java.io.Serializable;
 
-public class News implements Serializable {
-
+public final class News implements Serializable {
 	private static final long serialVersionUID = 1L;
-
 	private Integer idNews = 0;
 	private String title = "";
 	private String briefNews = "";
 	private String content = "";
 	private String newsDate = "";
-	private String photo = "";
-
+	private String photoPath = "";
 
 	public News() {
 	}
 
-	public News(int idNews, String title, String briefNews, String content, String newsDate, String photo) {
+	public News(int idNews, String title, String briefNews, String content, String newsDate, String photoPath) {
 		super();
-		this.photo = photo;
+		this.photoPath = photoPath;
 		this.idNews = idNews;
 		this.title = title;
 		this.briefNews = briefNews;
@@ -29,7 +26,7 @@ public class News implements Serializable {
 
 	public News(int idNews, String title, String briefNews, String content, String newsDate) {
 		super();
-		this.photo = null;
+		this.photoPath = null;
 		this.idNews = idNews;
 		this.title = title;
 		this.briefNews = briefNews;
@@ -37,12 +34,12 @@ public class News implements Serializable {
 		this.newsDate = newsDate;
 	}
 
-	public String getPhoto() {
-		return photo;
+	public String getPhotoPath() {
+		return photoPath;
 	}
 
-	public void setPhoto(String photo) {
-		this.photo = photo;
+	public void setPhotoPath(String photoPath) {
+		this.photoPath = photoPath;
 	}
 
 	public Integer getIdNews() {
@@ -75,7 +72,6 @@ public class News implements Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
-
 	}
 
 	public String getNewsDate() {

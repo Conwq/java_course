@@ -8,10 +8,8 @@ import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.exception.ServiceException;
 
-public class UserServiceImpl implements IUserService {
-
+public final class UserServiceImpl implements IUserService {
 	private final IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
-
 
 	@Override
 	public String signIn(String login, String password) throws ServiceException {
