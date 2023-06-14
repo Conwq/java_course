@@ -1,11 +1,11 @@
 package by.htp.ex.dao.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import by.htp.ex.bean.News;
 import by.htp.ex.dao.INewsDAO;
 import by.htp.ex.dao.exception.NewsDAOException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewsDAO implements INewsDAO {
 

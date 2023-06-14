@@ -12,6 +12,7 @@ guest info
  	при помощи метода request.setAttribute("news", news) в конкрид контроллере GoToBasePage.
  	Здесь мы при помощи итератора отображаем список из 5 новостей, а при условии, если список новостей пустой, печатаем надпись "No news."
 --%>
+
 	<br><hr>
 
 	<c:forEach var="news" items="${requestScope.news}">
@@ -20,7 +21,7 @@ guest info
 			<div class="single-news-header-wrapper">
 
 				<div class="news-title">
-					<c:out value="${news.title}" />
+					<u><c:out value="${news.title}" /></u>
 				</div>
 
 				<div class="news-date">
@@ -28,9 +29,8 @@ guest info
 				</div>
 
 				<div class="news-content">
-					<c:out value="${news.briefNews}" />
+					<b><c:out value="${news.briefNews}" /></b>
 				</div>
-
 			</div>
 			<br><hr>
 		</div>
@@ -41,3 +41,4 @@ guest info
         	No news.
 		</c:if>
 	</div>
+

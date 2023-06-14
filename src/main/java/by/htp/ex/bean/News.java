@@ -5,16 +5,17 @@ import java.io.Serializable;
 public class News implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer idNews = 0;
 	private String title = "";
-	private String briefNews="";
-	private String content="";
-	private String newsDate="";
-	private String photo ="";
+	private String briefNews = "";
+	private String content = "";
+	private String newsDate = "";
+	private String photo = "";
 
 
-	public News(){}
+	public News() {
+	}
 
 	public News(int idNews, String title, String briefNews, String content, String newsDate, String photo) {
 		super();
@@ -74,7 +75,7 @@ public class News implements Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
-		
+
 	}
 
 	public String getNewsDate() {
@@ -83,5 +84,5 @@ public class News implements Serializable {
 
 	public void setNewsDate(String newsDate) {
 		this.newsDate = newsDate;
-	}	
+	}
 }

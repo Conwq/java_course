@@ -30,13 +30,15 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public boolean registration(NewUserInfo user) throws ServiceException {
+
 		try {
 			if (userDAO.isExistUser(user)) {
 				throw new DaoException("User with this email exists");
 			}
-			userDAO.registration(user);
-			return true;
-		} catch (DaoException e) {
+			return (userDAO.registration(user));
+		}
+
+		catch (DaoException e) {
 			throw new ServiceException(e);
 		}
 	}

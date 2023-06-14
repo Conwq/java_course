@@ -5,7 +5,6 @@ import by.htp.ex.bean.Role;
 import by.htp.ex.dao.IUserDAO;
 import by.htp.ex.dao.exception.DaoException;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,19 +30,12 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
-	public List<NewUserInfo> getUsers(){
-		return users;
-	}
-
-	@Override
 	public NewUserInfo authorization(String login) {
 		return users.stream().filter(u -> u.getLogin().equals(login)).findAny().orElse(null);
 	}
 
-
 	@Override
 	public boolean registration(NewUserInfo user) throws DaoException {
-		users.add(user);
-		return true;
+		return users.add(user);
 	}
 }

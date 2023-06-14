@@ -9,9 +9,6 @@ public interface IUserDAO {
 	
 	boolean registration(NewUserInfo user) throws DaoException;
 	NewUserInfo authorization(String login) throws DaoException;
-
-	List<NewUserInfo> getUsers();
-
 	boolean isExistUser(NewUserInfo user);
 
 }

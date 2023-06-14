@@ -6,7 +6,7 @@ public class NewUserInfo {
 	private String password;
 	private Role role;
 
-	public NewUserInfo(String login, String email, String password){
+	public NewUserInfo(String login, String email, String password) {
 		this.login = login;
 		this.email = email;
 		this.password = password;

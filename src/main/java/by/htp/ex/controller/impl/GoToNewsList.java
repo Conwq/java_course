@@ -41,7 +41,5 @@ public class GoToNewsList implements Command {
 			//	Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
-
 }
