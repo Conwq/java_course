@@ -1,17 +1,14 @@
 package by.htp.ex.controller.impl;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import by.htp.ex.bean.Role;
 import by.htp.ex.controller.command.Command;
-import by.htp.ex.service.exception.ServiceException;
-import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.IUserService;
+import by.htp.ex.service.ServiceProvider;
+import by.htp.ex.service.exception.ServiceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 public final class DoSIgnIn implements Command {
 	private final IUserService service = ServiceProvider.getInstance().getUserService();
@@ -32,8 +29,6 @@ public final class DoSIgnIn implements Command {
 		try {
 			String role = service.signIn(login, password);
 
-
-
 			//TODO ПОДУМАТЬ КАК ЗАМЕНИТЬ IF ELSE
 
 			if (!role.equals("guest")) {
@@ -53,5 +48,4 @@ public final class DoSIgnIn implements Command {
 
 		}
 	}
-
 }

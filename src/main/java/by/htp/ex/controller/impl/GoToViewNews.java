@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public final class GoToViewNews implements Command {
 	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
+<<<<<<< HEAD
 	private final String JSP_NEWS_PARAM = "news";
 	private final String JSP_PRESENTATION_PARAM = "presentation";
 	private final String JSP_VIEW_NEWS_PARAM = "newsList";

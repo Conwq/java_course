@@ -13,9 +13,7 @@ public final class FrontController extends HttpServlet {
 	private final CommandProvider provider = CommandProvider.getInstance();
 	private final String COMMAND = "command";
 
-
 	//TODO ТУТ СОЗДАТЬ ТРЕТИЙ МЕТОД КОТОРЫЙ БУДЕТ ВЫПОЛНЯТЬ ДАННЫЕ ЗАПРОСЫ?
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String commandName = request.getParameter(COMMAND);
