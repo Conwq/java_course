@@ -10,11 +10,12 @@
 		<div class="single-news-wrapper">
 			<div class="single-news-header-wrapper">
 				<div class="news-title">
-					<c:out value="${news.title}" />
+					<u><c:out value="${news.title}" /></u>
 				</div>
 				<div class="news-date" style="display: inline-block">
 					<c:out value="${news.newsDate}" />
 				</div>
+
 
 				<div class="news-content" style="display: inline-block">
 					<c:out value="${news.briefNews}" />
