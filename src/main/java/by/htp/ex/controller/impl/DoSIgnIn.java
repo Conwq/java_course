@@ -18,13 +18,19 @@ public final class DoSIgnIn implements Command {
 	private static final String JSP_USER_ACTIVE = "active";
 	private static final String JSP_USER_NOT_ACTIVE = "not active";
 	private static final String JSP_USER_ROLE = "role";
+	private static final String JSP_AUTHENTICATION_ERROR_PARAM = "AuthenticationError";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String login = request.getParameter(JSP_LOGIN_PARAM);
-		String password = request.getParameter(JSP_PASSWORD_PARAM);
+ 		String password = request.getParameter(JSP_PASSWORD_PARAM);
 
-		//TODO ТУТ ПРОВЕСТИ ЛЕГКУЮ ВАЛИДАЦИЮ ДАННЫХ
+		//TODO ЗАМЕНИТЬ ФОРВАРД НА РЕДИРЕКТ (ИСПОЛЬЗОВАТЬ СЕССИЮ?)
+		if (!isValidData(login, password)) {
+			 request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE);
+			 request.getSession().setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, "Login/Password should not be empty");
+			 request.getRequestDispatcher("controller?command=go_to_base_page").forward(request, response);
+		 }
 
 		try {
 			String role = service.signIn(login, password);
@@ -39,7 +45,7 @@ public final class DoSIgnIn implements Command {
 
 			else {
 				request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE);
-				request.setAttribute("AuthenticationError", "wrong login or password");
+				request.setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, "wrong login or password");
 				request.getRequestDispatcher("controller?command=go_to_base_page").forward(request, response);
 			}
 		}
@@ -47,5 +53,12 @@ public final class DoSIgnIn implements Command {
 		catch (ServiceException e) {
 
 		}
+	}
+
+
+	public boolean isValidData(String login, String password){
+		if (login.length() < 1 || password.length() < 1)
+			return false;
+		return true;
 	}
 }

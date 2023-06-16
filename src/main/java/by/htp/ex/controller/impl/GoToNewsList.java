@@ -20,9 +20,9 @@ public final class GoToNewsList implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<News> newsList;
+
 		try {
-			newsList = newsService.list();
+			List<News> newsList = newsService.list();
 			request.setAttribute(JSP_NEWS_PARAM, newsList);
 			request.setAttribute(JSP_PRESENTATION_PARAM, JSP_NEWS_LIST_PARAM);
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
