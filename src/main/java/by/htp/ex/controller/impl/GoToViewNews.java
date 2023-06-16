@@ -13,22 +13,17 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public final class GoToViewNews implements Command {
 	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
-<<<<<<< HEAD
-	private final String JSP_NEWS_PARAM = "news";
-	private final String JSP_PRESENTATION_PARAM = "presentation";
-	private final String JSP_VIEW_NEWS_PARAM = "newsList";
-	private final String ID = "id";
+	private static final String JSP_NEWS_PARAM = "news";
+	private static final String JSP_PRESENTATION_PARAM = "presentation";
+	private static final String JSP_VIEW_NEWS_PARAM = "newsList";
+	private static final String ID = "id";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		News news;
 		String id = request.getParameter(ID);
-		
 		try {
-
 			//TODO ДОБАВИТЬ ПРОВЕРКУ ИБО СДЕСЬ МОЖЕТ НЕ РАСПАРСИТЬ
-
-			news  = newsService.findById(Integer.parseInt(id));
+			News news  = newsService.findById(Integer.parseInt(id));
 
 			request.setAttribute(JSP_NEWS_PARAM, news);
 			request.setAttribute(JSP_PRESENTATION_PARAM, JSP_VIEW_NEWS_PARAM);

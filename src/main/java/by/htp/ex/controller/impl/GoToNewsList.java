@@ -14,19 +14,20 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public final class GoToNewsList implements Command {
 	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
-	private final String JSP_NEWS_PARAM = "news";
-	private final String JSP_PRESENTATION_PARAM = "presentation";
-	private final String JSP_NEWS_LIST_PARAM = "newsList";
+	private static final String JSP_NEWS_PARAM = "news";
+	private static final String JSP_PRESENTATION_PARAM = "presentation";
+	private static final String JSP_NEWS_LIST_PARAM = "newsList";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<News> newsList;
+
 		try {
-			newsList = newsService.list();
+			List<News> newsList = newsService.list();
 			request.setAttribute(JSP_NEWS_PARAM, newsList);
 			request.setAttribute(JSP_PRESENTATION_PARAM, JSP_NEWS_LIST_PARAM);
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		}
+
 		catch (ServiceException e) {
 			e.printStackTrace();
 		}

@@ -14,17 +14,17 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public final class GoToBasePage implements Command{
 	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
-	private final String JSP_NEWS_PARAM = "news";
+	private static final String JSP_NEWS_PARAM = "news";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<News> latestNews;
 
 		try {
-			latestNews = newsService.latestList(5);
+			List<News> latestNews = newsService.latestList(5);
 			request.setAttribute(JSP_NEWS_PARAM, latestNews);
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		}
+
 		catch (ServiceException e) {
 			e.printStackTrace();
 		}

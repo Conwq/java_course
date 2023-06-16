@@ -10,8 +10,8 @@ import java.io.IOException;
 
 public final class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final CommandProvider provider = CommandProvider.getInstance();
-	private final String COMMAND = "command";
+	private static final CommandProvider provider = CommandProvider.getInstance();
+	private static final String COMMAND = "command";
 
 	//TODO ТУТ СОЗДАТЬ ТРЕТИЙ МЕТОД КОТОРЫЙ БУДЕТ ВЫПОЛНЯТЬ ДАННЫЕ ЗАПРОСЫ?
 

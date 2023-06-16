@@ -13,31 +13,35 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public final class DoRegistration implements Command {
-	private final String LOGIN = "login";
-	private final String EMAIL = "email";
-	private final String PASSWORD = "password";
-	private final IUserService userService = ServiceProvider.getInstance().getUserService();
+	private static final String JSP_LOGIN_PARAM = "login";
+	private static final String JSP_EMAIL_PARAM = "email";
+	private static final String JSP_PASSWORD_PARAM = "password";
+	private static final String JSP_REGISTRATION_ERROR_PARAM = "RegistrationError";
+	private static final IUserService userService = ServiceProvider.getInstance().getUserService();
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String login = request.getParameter(LOGIN);
-		String email = request.getParameter(EMAIL);
-		String password = request.getParameter(PASSWORD);
+		String login = request.getParameter(JSP_LOGIN_PARAM);
+		String email = request.getParameter(JSP_EMAIL_PARAM);
+		String password = request.getParameter(JSP_PASSWORD_PARAM);
 
-		request.getSession().removeAttribute("RegistrationError");
+		request.getSession().removeAttribute(JSP_REGISTRATION_ERROR_PARAM);
 
-		if (dataValidator(login, email, password)){
-			request.getSession(true).setAttribute("RegistrationError", "Login/Email/Password error. The number of characters must not be less than 2");
+		if (!isValidData(login, email, password)){
+			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM,
+					"Login/Email/Password error. The number of characters must not be less than 2");
 			response.sendRedirect("controller?command=go_to_registration_page");
 		}
 
 		else {
+
 			//TODO ЭТО ИЗМЕНИТЬ НА ПАТТЕРН BUILDER
+
 			NewUserInfo user = new NewUserInfo(
-					request.getParameter(LOGIN),
-					request.getParameter(EMAIL),
-					request.getParameter(PASSWORD),
+					request.getParameter(JSP_LOGIN_PARAM),
+					request.getParameter(JSP_EMAIL_PARAM),
+					request.getParameter(JSP_PASSWORD_PARAM),
 					Role.USER);
 			try {
 				userService.registration(user);
@@ -49,7 +53,9 @@ public final class DoRegistration implements Command {
 		}
 	}
 
-	public boolean dataValidator(String login, String email, String password){
-		return (login.length() < 2 || email.length() < 2 || password.length() < 2);
+	public boolean isValidData(String login, String email, String password){
+		if (login.length() < 2 || email.length() < 2 || password.length() < 2)
+			return false;
+		return true;
 	}
 }
