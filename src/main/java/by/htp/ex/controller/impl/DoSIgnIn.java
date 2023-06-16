@@ -51,7 +51,7 @@ public final class DoSIgnIn implements Command {
 		}
 
 		catch (ServiceException e) {
-
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 

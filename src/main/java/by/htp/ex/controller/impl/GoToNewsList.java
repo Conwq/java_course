@@ -29,7 +29,7 @@ public final class GoToNewsList implements Command {
 		}
 
 		catch (ServiceException e) {
-			e.printStackTrace();
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 }

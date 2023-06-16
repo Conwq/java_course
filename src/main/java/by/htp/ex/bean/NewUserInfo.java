@@ -21,6 +21,15 @@ public final class NewUserInfo implements Serializable {
 		this.role = role;
 	}
 
+	public static class Builder{
+		private String login;
+		private String email;
+		private String password;
+		private Role role;
+
+
+	}
+
 	public String getLogin() {
 		return login;
 	}

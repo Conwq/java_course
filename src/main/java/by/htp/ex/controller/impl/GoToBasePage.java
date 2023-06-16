@@ -26,7 +26,7 @@ public final class GoToBasePage implements Command{
 		}
 
 		catch (ServiceException e) {
-			e.printStackTrace();
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 }

@@ -11,7 +11,7 @@ public final class CommandProvider {
 	private final Map<CommandName, Command> commands = new HashMap<>();
 	private final static CommandProvider instance = new CommandProvider();
 
-	private CommandProvider (){
+	private CommandProvider() {
 		commands.put(CommandName.GO_TO_BASE_PAGE, new GoToBasePage());
 		commands.put(CommandName.GO_TO_REGISTRATION_PAGE, new GoToRegistrationPageCommand());
 		commands.put(CommandName.DO_SIGN_IN, new DoSIgnIn());
