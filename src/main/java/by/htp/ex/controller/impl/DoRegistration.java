@@ -31,7 +31,6 @@ public final class DoRegistration implements Command {
 		if (!isValidData(login, email, password)){
 			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM,
 					"Login/Email/Password error. The number of characters must not be less than 2");
-			response.sendRedirect("controller?command=go_to_registration_page");
 		}
 
 		else {
