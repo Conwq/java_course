@@ -1,5 +1,7 @@
 package by.htp.ex.bean;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.Serializable;
 
 public final class NewUserInfo implements Serializable {
@@ -8,26 +10,11 @@ public final class NewUserInfo implements Serializable {
 	private String password;
 	private Role role;
 
-	public NewUserInfo(String login, String email, String password) {
-		this.login = login;
-		this.email = email;
-		this.password = password;
-	}
-
 	public NewUserInfo(String login, String email, String password, Role role) {
 		this.login = login;
 		this.email = email;
 		this.password = password;
 		this.role = role;
-	}
-
-	public static class Builder{
-		private String login;
-		private String email;
-		private String password;
-		private Role role;
-
-
 	}
 
 	public String getLogin() {

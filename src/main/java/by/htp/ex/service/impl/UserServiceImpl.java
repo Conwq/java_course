@@ -20,7 +20,6 @@ public final class UserServiceImpl implements IUserService {
 				return userDao.getRole().toString().toLowerCase();
 			return Role.GUEST.toString().toLowerCase();
 		}
-
 		catch (DaoException e) {
 			throw new ServiceException(e);
 		}
@@ -31,11 +30,10 @@ public final class UserServiceImpl implements IUserService {
 
 		try {
 			if (userDAO.isExistUser(user)) {
-				throw new DaoException("User with this email exists");
+				throw new ServiceException("User with this email exists");
 			}
 			return (userDAO.registration(user));
 		}
-
 		catch (DaoException e) {
 			throw new ServiceException(e);
 		}

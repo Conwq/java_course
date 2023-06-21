@@ -6,6 +6,6 @@ import by.htp.ex.dao.exception.DaoException;
 public interface IUserDAO {
 	boolean registration(NewUserInfo user) throws DaoException;
 	NewUserInfo authorization(String login) throws DaoException;
-	boolean isExistUser(NewUserInfo user);
+	boolean isExistUser(NewUserInfo user) throws DaoException;
 
 }

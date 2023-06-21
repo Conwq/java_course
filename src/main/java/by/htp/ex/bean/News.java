@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 public final class News implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private Integer idNews = 0;
-	private String title = "";
-	private String briefNews = "";
-	private String content = "";
-	private String newsDate = "";
-	private String photoPath = "";
+	private Integer idNews;
+	private String title;
+	private String briefNews;
+	private String content;
+	private String newsDate;
+	private String photoPath;
 
 	public News() {
 	}
