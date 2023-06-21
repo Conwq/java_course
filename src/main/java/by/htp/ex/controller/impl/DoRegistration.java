@@ -3,7 +3,6 @@ package by.htp.ex.controller.impl;
 import java.io.IOException;
 
 import by.htp.ex.bean.NewUserInfo;
-import by.htp.ex.bean.Role;
 import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
@@ -37,23 +36,23 @@ public final class DoRegistration implements Command {
 
 			//TODO ЭТО ИЗМЕНИТЬ НА ПАТТЕРН BUILDER
 
-			NewUserInfo user = new NewUserInfo(
-					request.getParameter(JSP_LOGIN_PARAM),
-					request.getParameter(JSP_EMAIL_PARAM),
-					request.getParameter(JSP_PASSWORD_PARAM),
-					Role.USER);
+			NewUserInfo user = new NewUserInfo(login, email, password);
+
 			try {
 				userService.registration(user);
 				response.sendRedirect("controller?command=go_to_base_page");
 			}
 			catch (ServiceException e) {
+				request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, e);
 				request.getRequestDispatcher("/WEB-INF/pages/tiles/error.jsp").forward(request, response);
 			}
 		}
 	}
 
+
+	//Первоначальная валидация
 	public boolean isValidData(String login, String email, String password){
-		if (login.length() < 2 || email.length() < 2 || password.length() < 2)
+		if (login.length() < 1 || email.length() < 1 || password.length() < 1)
 			return false;
 		return true;
 	}
