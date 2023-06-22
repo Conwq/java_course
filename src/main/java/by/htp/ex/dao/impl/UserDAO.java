@@ -20,7 +20,6 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-
 	//Если пользователь есть, то возвращает true инчае false
 	@Override
 	public boolean isExistUser(NewUserInfo user) throws DaoException {
