@@ -10,6 +10,7 @@ public final class NewUserInfo implements Serializable {
 	private String password;
 	private Role role;
 
+<<<<<<< HEAD
 	public NewUserInfo(){
 	}
 
@@ -19,6 +20,8 @@ public final class NewUserInfo implements Serializable {
 		this.password = password;
 	}
 
+=======
+>>>>>>> 919920c756abc7c1d7136076a909183def9aec5a
 	public NewUserInfo(String login, String email, String password, Role role) {
 		this.login = login;
 		this.email = email;
