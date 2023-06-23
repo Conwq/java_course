@@ -4,6 +4,7 @@ import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
+import by.htp.ex.util.ErrorHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,27 +26,31 @@ public final class DoSIgnIn implements Command {
 		String login = request.getParameter(JSP_LOGIN_PARAM);
  		String password = request.getParameter(JSP_PASSWORD_PARAM);
 
-		try {
+		 request.getSession().removeAttribute(JSP_AUTHENTICATION_ERROR_PARAM);
 
-			//TODO ПОДУМАТЬ КАК ЗАМЕНИТЬ IF ELSE ПАТТЕРН STRATEGY?
-			if (!isValidData(login, password)){
-				request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE);
-				request.setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, "Wrong Login/Password");
-				request.getRequestDispatcher("controller?command=go_to_base_page").forward(request, response);
-			}
-
-			String role = service.signIn(login, password);
-
-			//TODO ЗАМЕНИТЬ ФОРВАРД НА РЕДИРЕКТ (ИСПОЛЬЗОВАТЬ СЕССИЮ?)
-			if (!role.equals("guest")) {
-				request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_ACTIVE);
-				request.getSession().setAttribute(JSP_USER_ROLE, role);
-				response.sendRedirect("controller?command=go_to_news_list");
-			}
+		if (!isValidData(login, password)){
+			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE);
+			request.getSession().setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, "Wrong Login/Password");
+			response.sendRedirect("controller?command=go_to_base_page");
 		}
 
-		catch (ServiceException e) {
-			response.sendRedirect("error/error.jsp");
+		else {
+			try {
+
+				//TODO ПОДУМАТЬ КАК ЗАМЕНИТЬ IF ELSE ПАТТЕРН STRATEGY?
+				String role = service.signIn(login, password);
+
+				//TODO ЗАМЕНИТЬ ФОРВАРД НА РЕДИРЕКТ (ИСПОЛЬЗОВАТЬ СЕССИЮ?)
+				if (!role.equals("guest")) {
+					request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_ACTIVE);
+					request.getSession().setAttribute(JSP_USER_ROLE, role);
+					response.sendRedirect("controller?command=go_to_news_list");
+				}
+			}
+			catch (ServiceException e) {
+				request.getSession(true).setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, ErrorHandler.extractErrorMessage(e));
+				response.sendRedirect("controller?command=go_to_base_page");
+			}
 		}
 	}
 

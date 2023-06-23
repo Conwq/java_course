@@ -7,6 +7,7 @@ import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
+import by.htp.ex.util.ErrorHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,12 +31,10 @@ public final class DoRegistration implements Command {
 		if (!isValidData(login, email, password)){
 			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM,
 					"Login/Email/Password error. The number of characters must not be less than 1");
+			response.sendRedirect("controller?command=go_to_registration_page");
 		}
 
 		else {
-
-			//TODO ЭТО ИЗМЕНИТЬ НА ПАТТЕРН BUILDER
-
 			NewUserInfo user = new NewUserInfo(login, email, password);
 
 			try {
@@ -43,23 +42,14 @@ public final class DoRegistration implements Command {
 				response.sendRedirect("controller?command=go_to_base_page");
 			}
 			catch (ServiceException e) {
-				request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, extractErrorMessage(e));
-				request.getRequestDispatcher("/WEB-INF/pages/tiles/error.jsp").forward(request, response);
+				request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, ErrorHandler.extractErrorMessage(e));
+				response.sendRedirect("controller?command=go_to_registration_page");
 			}
 		}
 	}
 
-
 	//Первоначальная валидация данных
 	public boolean isValidData(String login, String email, String password){
 		return login.length() >= 1 && email.length() >= 1 && password.length() >= 1;
-	}
-
-	public static String extractErrorMessage(Throwable e) {
-		String message = e.getMessage();
-		if (message == null && e.getCause() != null) {
-			message = e.getCause().getMessage();
-		}
-		return message;
 	}
 }

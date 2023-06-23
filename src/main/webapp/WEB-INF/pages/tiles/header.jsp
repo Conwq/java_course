@@ -44,12 +44,12 @@
 					<label for="password">${password}</label>
 					<input type="password" name="password" id="password"/><br />
 
-					<c:if test="${not (requestScope.AuthenticationError eq null)}">
-						<font color="red"> 
-						   <c:out value="${requestScope.AuthenticationError}" />
+					<c:if test="${not (sessionScope.AuthenticationError eq null)}">
+						<font color="red">
+							<c:out value="${sessionScope.AuthenticationError}" />
 						</font> <br>
 					</c:if>
-					
+
 					<a href="controller?command=go_to_registration_page">${registartion_button}</a>
 					<input type="submit" value="${sign_in_button}" /><br />
 				</form>
