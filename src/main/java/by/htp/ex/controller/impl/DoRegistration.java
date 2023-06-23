@@ -29,7 +29,7 @@ public final class DoRegistration implements Command {
 
 		if (!isValidData(login, email, password)){
 			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM,
-					"Login/Email/Password error. The number of characters must not be less than 2");
+					"Login/Email/Password error. The number of characters must not be less than 1");
 		}
 
 		else {
@@ -43,17 +43,23 @@ public final class DoRegistration implements Command {
 				response.sendRedirect("controller?command=go_to_base_page");
 			}
 			catch (ServiceException e) {
-				request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, e);
+				request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, extractErrorMessage(e));
 				request.getRequestDispatcher("/WEB-INF/pages/tiles/error.jsp").forward(request, response);
 			}
 		}
 	}
 
 
-	//Первоначальная валидация
+	//Первоначальная валидация данных
 	public boolean isValidData(String login, String email, String password){
-		if (login.length() < 1 || email.length() < 1 || password.length() < 1)
-			return false;
-		return true;
+		return login.length() >= 1 && email.length() >= 1 && password.length() >= 1;
+	}
+
+	public static String extractErrorMessage(Throwable e) {
+		String message = e.getMessage();
+		if (message == null && e.getCause() != null) {
+			message = e.getCause().getMessage();
+		}
+		return message;
 	}
 }

@@ -1,7 +1,5 @@
 package by.htp.ex.bean;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import java.io.Serializable;
 
 public final class NewUserInfo implements Serializable {

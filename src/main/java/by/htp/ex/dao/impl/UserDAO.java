@@ -11,7 +11,6 @@ import java.sql.*;
 public final class UserDAO implements IUserDAO {
 
 	static {
-
 		try {
 			Class.forName(ConstantsName.DB_DRIVER);
 		}
@@ -48,11 +47,16 @@ public final class UserDAO implements IUserDAO {
 			preparedStatement.setString(1, login);
 			preparedStatement.setString(2, password);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			newUserInfo = new NewUserInfo();
-			newUserInfo.setLogin(resultSet.getString("login"));
-			newUserInfo.setPassword(resultSet.getString("password"));
-			newUserInfo.setEmail(resultSet.getString("email"));
-			newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+
+			if (resultSet.next()) {
+				newUserInfo = new NewUserInfo();
+				newUserInfo.setLogin(resultSet.getString("login"));
+				newUserInfo.setPassword(resultSet.getString("password"));
+				newUserInfo.setEmail(resultSet.getString("email"));
+				newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+			}
+			else
+				throw new DaoException("No user found with this login and password");
 		}
 		catch (SQLException e) {
 			throw new DaoException(e);
@@ -73,26 +77,7 @@ public final class UserDAO implements IUserDAO {
 			preparedStatementSQL.executeUpdate();
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw new DaoException(e);
 		}
 	}
-
-//	public NewUserInfo getNewUserInfo(ResultSet resultSet) throws SQLException{
-//		if (resultSet == null) {
-//			return null;
-//		}
-//		resultSet.next();
-//
-//
-//
-//		NewUserInfo newUserInfo = new NewUserInfo();
-//		newUserInfo.setLogin(resultSet.getString("login"));
-//		newUserInfo.setPassword(resultSet.getString("password"));
-//		newUserInfo.setEmail(resultSet.getString("email"));
-//		newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
-//
-//
-//		return newUserInfo;
-//	}
 }

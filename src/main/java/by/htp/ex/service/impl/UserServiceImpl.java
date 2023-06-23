@@ -17,14 +17,11 @@ public final class UserServiceImpl implements IUserService {
 		try {
 			NewUserInfo userDao = userDAO.authorization(login, password);
 
-			System.out.println(userDao);
-
 			if (userDao != null) {
-				System.out.println(userDao.getRole().toString().toLowerCase());
-				return userDao.getRole().toString().toLowerCase();
+				//TODO
+				return userDao.getRole().getRole();
 			}
-			System.out.println(Role.GUEST.toString().toLowerCase());
-			return Role.GUEST.toString().toLowerCase();
+			return Role.GUEST.getRole();
 		}
 		catch (DaoException e) {
 			throw new ServiceException(e);
@@ -33,6 +30,7 @@ public final class UserServiceImpl implements IUserService {
 
 	@Override
 	public void registration(NewUserInfo user) throws ServiceException {
+
 		try {
 			if (userDAO.isExistUser(user))
 				throw new ServiceException("User with this email exists");
@@ -40,7 +38,6 @@ public final class UserServiceImpl implements IUserService {
 			userDAO.registration(user);
 		}
 		catch (DaoException e) {
-			e.printStackTrace();
 			throw new ServiceException(e);
 		}
 	}
