@@ -3,6 +3,7 @@ package by.htp.ex.bean;
 import java.io.Serializable;
 
 public final class NewUserInfo implements Serializable {
+	private int userId;
 	private String login;
 	private String email;
 	private String password;
@@ -22,6 +23,14 @@ public final class NewUserInfo implements Serializable {
 		this.email = email;
 		this.password = password;
 		this.role = role;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getLogin() {

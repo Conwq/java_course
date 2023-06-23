@@ -50,6 +50,7 @@ public final class UserDAO implements IUserDAO {
 
 			if (resultSet.next()) {
 				newUserInfo = new NewUserInfo();
+				newUserInfo.setUserId(resultSet.getInt("id"));
 				newUserInfo.setLogin(resultSet.getString("login"));
 				newUserInfo.setPassword(resultSet.getString("password"));
 				newUserInfo.setEmail(resultSet.getString("email"));

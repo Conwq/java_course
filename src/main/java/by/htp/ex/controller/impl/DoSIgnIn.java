@@ -37,10 +37,8 @@ public final class DoSIgnIn implements Command {
 		else {
 			try {
 
-				//TODO ПОДУМАТЬ КАК ЗАМЕНИТЬ IF ELSE ПАТТЕРН STRATEGY?
 				String role = service.signIn(login, password);
 
-				//TODO ЗАМЕНИТЬ ФОРВАРД НА РЕДИРЕКТ (ИСПОЛЬЗОВАТЬ СЕССИЮ?)
 				if (!role.equals("guest")) {
 					request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_ACTIVE);
 					request.getSession().setAttribute(JSP_USER_ROLE, role);

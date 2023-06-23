@@ -10,7 +10,7 @@ public class ConstantsName {
 //	public static final String DB_PASSWORD = properties.getProperty("db.password");
 //	public static final String DB_DRIVER = properties.getProperty("db.driver");
 
-	public static final String DB_URL = "jdbc:mysql://localhost:3306/course";
+	public static final String DB_URL = "jdbc:mysql://localhost:3306/news";
 	public static final String DB_USERNAME = "root";
 	public static final String DB_PASSWORD = "1";
 	public static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
