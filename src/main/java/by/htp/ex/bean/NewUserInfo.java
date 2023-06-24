@@ -9,6 +9,12 @@ public final class NewUserInfo implements Serializable {
 	private String password;
 	private Role role;
 
+
+	//TODO ДОБАВИТЬ ЛИСТ ВСЕХ НОВОСТОЕЙ, КОТОРЫЕ ПРИНАДЛЕЖАТ ПОЛЬЗОВАТЕЛЮ
+
+
+
+
 	public NewUserInfo(){
 	}
 

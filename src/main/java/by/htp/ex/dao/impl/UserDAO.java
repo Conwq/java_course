@@ -7,6 +7,8 @@ import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.util.ConstantsName;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class UserDAO implements IUserDAO {
 
@@ -18,6 +20,14 @@ public final class UserDAO implements IUserDAO {
 			e.printStackTrace();
 		}
 	}
+
+
+
+	//TODO УБРАТЬ ПОВТОРЯЮЩИЙСЯ КОД ВЫНЕСТИ В ОТДЕЛЬНЫЙ МЕТОД
+
+
+
+
 
 	//Если пользователь есть, то возвращает true инчае false
 	@Override
@@ -55,14 +65,16 @@ public final class UserDAO implements IUserDAO {
 				newUserInfo.setPassword(resultSet.getString("password"));
 				newUserInfo.setEmail(resultSet.getString("email"));
 				newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+				return newUserInfo;
 			}
+
 			else
 				throw new DaoException("No user found with this login and password");
 		}
 		catch (SQLException e) {
 			throw new DaoException(e);
 		}
-		return newUserInfo;
+
 	}
 
 	@Override
@@ -78,6 +90,54 @@ public final class UserDAO implements IUserDAO {
 			preparedStatementSQL.executeUpdate();
 		}
 		catch (SQLException e) {
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public List<NewUserInfo> getUsers() throws DaoException {
+		String SQL = "SELECT * FROM users";
+		List<NewUserInfo> usersInfo = new ArrayList<>();
+
+		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
+			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL)) {
+			ResultSet resultSet = preparedStatementSQL.executeQuery();
+			while (resultSet.next()){
+				NewUserInfo newUserInfo = new NewUserInfo();
+				newUserInfo.setUserId(resultSet.getInt("id"));
+				newUserInfo.setLogin(resultSet.getString("login"));
+				newUserInfo.setPassword(resultSet.getString("password"));
+				newUserInfo.setEmail(resultSet.getString("email"));
+				newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+				usersInfo.add(newUserInfo);
+			}
+			return usersInfo;
+		}
+		catch (SQLException e){
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public NewUserInfo getUser(int id) throws DaoException {
+		String SQL = "SELECT * FROM users WHERE id = ?";
+
+		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
+			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL)) {
+			preparedStatementSQL.setInt(1, id);
+			ResultSet resultSet = preparedStatementSQL.executeQuery();
+			resultSet.next();
+
+			NewUserInfo newUserInfo = new NewUserInfo();
+			newUserInfo.setUserId(resultSet.getInt("id"));
+			newUserInfo.setLogin(resultSet.getString("login"));
+			newUserInfo.setPassword(resultSet.getString("password"));
+			newUserInfo.setEmail(resultSet.getString("email"));
+			newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+
+			return newUserInfo;
+		}
+		catch (SQLException e){
 			throw new DaoException(e);
 		}
 	}

@@ -16,22 +16,16 @@ public final class NewsDAO implements INewsDAO {
 			Class.forName(ConstantsName.DB_DRIVER);
 		}
 		catch(ClassNotFoundException e){
-			System.out.println("Class not find");
+			System.out.println("Class not found");
 		}
 	}
 
 
 	/////////////////////////////////////////////////////
-	//TODO Все тут перепроверить согласно таблице в БД//
-	////Убрать дублирование кода при создании новости///
+	////Добавить само создание новости в класс News??///
 	////////////////////////////////////////////////////
-
-
-
-
-
 	//TODO Этот метод пересмотреть, он должен возвращать последние 5 новостей.
-	// Наверное лучше сделать по дате добавления
+
 	@Override
 	public List<News> getLatestList(int count) throws DaoException {
 		String SQL = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
@@ -41,24 +35,17 @@ public final class NewsDAO implements INewsDAO {
 			PreparedStatement statement = connection.prepareStatement(SQL)){
 			statement.setInt(1, count);
 			ResultSet resultSet = statement.executeQuery();
+
 			while (resultSet.next()){
-				News findNews = new News();
-				findNews.setIdNews(resultSet.getInt("news_id"));
-				findNews.setTitle(resultSet.getString("title"));
-				findNews.setBriefNews(resultSet.getString("brief_news"));
-				findNews.setContent(resultSet.getString("content"));
-				findNews.setNewsDate(resultSet.getString("news_date"));
-				findNews.setPhotoPath(resultSet.getString("photo_path"));
+				News findNews = getNewsFromResultSet(resultSet);
 				news.add(findNews);
 			}
+
 			return news;
 		}
 		catch (SQLException e){
-			System.out.println("SQL exception");
-			e.printStackTrace();
 			throw new DaoException(e);
 		}
-
 	}
 
 	@Override
@@ -71,13 +58,7 @@ public final class NewsDAO implements INewsDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			while(resultSet.next()){
-				News findNews = new News();
-				findNews.setIdNews(resultSet.getInt("news_id"));
-				findNews.setTitle(resultSet.getString("title"));
-				findNews.setBriefNews(resultSet.getString("brief_news"));
-				findNews.setContent(resultSet.getString("content"));
-				findNews.setNewsDate(resultSet.getString("news_date"));
-				findNews.setPhotoPath(resultSet.getString("photo_path"));
+				News findNews = getNewsFromResultSet(resultSet);
 				news.add(findNews);
 			}
 
@@ -98,15 +79,9 @@ public final class NewsDAO implements INewsDAO {
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 
-			if (resultSet.next()){
-				findNews = new News();
-				findNews.setIdNews(resultSet.getInt("news_id"));
-				findNews.setTitle(resultSet.getString("title"));
-				findNews.setBriefNews(resultSet.getString("brief_news"));
-				findNews.setContent(resultSet.getString("content"));
-				findNews.setNewsDate(resultSet.getString("news_date"));
-				findNews.setPhotoPath(resultSet.getString("photo_path"));
-			}
+			if (resultSet.next())
+				findNews = getNewsFromResultSet(resultSet);
+
 			return findNews;
 		}
 		catch (SQLException e){
@@ -114,9 +89,10 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
+	//Время задается автоматически, прописано в конфиге БД
 	@Override
 	public void addNews(News news) throws DaoException {
-		String SQL = "INSERT INTO news (title, brief_news, content, news_date, photo_path) VALUES (?,?,?,NOW(),?)";
+		String SQL = "INSERT INTO news (title, brief_news, content, photo_path, users_id, news_date) VALUES (?,?,?,?,?, NOW())";
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
 			PreparedStatement statement = con.prepareStatement(SQL)){
@@ -124,6 +100,7 @@ public final class NewsDAO implements INewsDAO {
 			statement.setString(2, news.getBriefNews());
 			statement.setString(3, news.getContent());
 			statement.setString(4, news.getPhotoPath());
+			statement.setInt(5, news.getNewUserInfo().getUserId());
 			statement.executeUpdate();
 		}
 		catch(SQLException e){
@@ -158,9 +135,36 @@ public final class NewsDAO implements INewsDAO {
 			PreparedStatement statement = con.prepareStatement(SQL)){
 
 			statement.setArray(1, con.createArrayOf("INTEGER", idNewses));
+			statement.executeUpdate();
 		}
 		catch (SQLException e){
 			throw new DaoException(e);
 		}
+	}
+
+	@Override
+	public void deleteNews(int id) throws DaoException {
+		String SQL = "DELETE FROM news WHERE news_id = ?";
+
+		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
+			PreparedStatement statement = con.prepareStatement(SQL)){
+			statement.setInt(1, id);
+			statement.executeUpdate();
+		}
+		catch (SQLException e){
+			throw new DaoException(e);
+		}
+	}
+
+	private News getNewsFromResultSet(ResultSet resultSet) throws SQLException{
+		News findNews = new News();
+		findNews.setIdNews(resultSet.getInt("news_id"));
+		findNews.setTitle(resultSet.getString("title"));
+		findNews.setBriefNews(resultSet.getString("brief_news"));
+		findNews.setContent(resultSet.getString("content"));
+		findNews.setNewsDate(resultSet.getString("news_date"));
+		findNews.setPhotoPath(resultSet.getString("photo_path"));
+
+		return findNews;
 	}
 }

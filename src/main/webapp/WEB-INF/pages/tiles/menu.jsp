@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-
 <div class="menu-wrapper">
 
 	<div class="menu-title-wrapper">
@@ -15,17 +14,14 @@
 			<ul style="list-style-image: url(images/img.jpg); text-align: left;">
 
 				<li style="padding-left: 15px;">
-					<a href="">news list</a>
+					<a href="<c:url value="/controller?command=go_to_news_list"/> ">news list</a>
 					<br />
 				</li>
 
 				<c:if test="${sessionScope.role eq 'admin'}">
-
 				   <li style="padding-left: 15px;">
-				    	<a href="">add news </a>
-                   		<br />
+				    	<a href="<c:url value="/controller?command=go_to_add_news_page"/>">add news </a><br/>
 					</li>
-
 				</c:if>
 
 			</ul>
