@@ -7,7 +7,6 @@ import by.htp.ex.service.INewsService;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
-import com.oracle.wls.shaded.org.apache.xpath.operations.Number;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +23,6 @@ public class DoAddNews implements Command {
 
 
 		//TODO NEED VALIDATION AND ADD ERROR IN JSP PAGE
-		//TODO Обработать ошибки
 
 		String title = request.getParameter("title");
 		String briefNews = request.getParameter("brief_news");

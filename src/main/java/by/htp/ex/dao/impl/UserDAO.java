@@ -21,14 +21,6 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-
-
-	//TODO УБРАТЬ ПОВТОРЯЮЩИЙСЯ КОД ВЫНЕСТИ В ОТДЕЛЬНЫЙ МЕТОД
-
-
-
-
-
 	//Если пользователь есть, то возвращает true инчае false
 	@Override
 	public boolean isExistUser(NewUserInfo user) throws DaoException {
@@ -58,15 +50,8 @@ public final class UserDAO implements IUserDAO {
 			preparedStatement.setString(2, password);
 			ResultSet resultSet = preparedStatement.executeQuery();
 
-			if (resultSet.next()) {
-				newUserInfo = new NewUserInfo();
-				newUserInfo.setUserId(resultSet.getInt("id"));
-				newUserInfo.setLogin(resultSet.getString("login"));
-				newUserInfo.setPassword(resultSet.getString("password"));
-				newUserInfo.setEmail(resultSet.getString("email"));
-				newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
-				return newUserInfo;
-			}
+			if (resultSet.next())
+				return parseUserInfo(resultSet);
 
 			else
 				throw new DaoException("No user found with this login and password");
@@ -74,7 +59,6 @@ public final class UserDAO implements IUserDAO {
 		catch (SQLException e) {
 			throw new DaoException(e);
 		}
-
 	}
 
 	@Override
@@ -83,7 +67,6 @@ public final class UserDAO implements IUserDAO {
 
 		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
 			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL)) {
-
 			preparedStatementSQL.setString(1, user.getLogin());
 			preparedStatementSQL.setString(2, user.getPassword());
 			preparedStatementSQL.setString(3, user.getEmail());
@@ -102,15 +85,11 @@ public final class UserDAO implements IUserDAO {
 		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
 			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL)) {
 			ResultSet resultSet = preparedStatementSQL.executeQuery();
+
 			while (resultSet.next()){
-				NewUserInfo newUserInfo = new NewUserInfo();
-				newUserInfo.setUserId(resultSet.getInt("id"));
-				newUserInfo.setLogin(resultSet.getString("login"));
-				newUserInfo.setPassword(resultSet.getString("password"));
-				newUserInfo.setEmail(resultSet.getString("email"));
-				newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
-				usersInfo.add(newUserInfo);
+				usersInfo.add(parseUserInfo(resultSet));
 			}
+
 			return usersInfo;
 		}
 		catch (SQLException e){
@@ -126,19 +105,43 @@ public final class UserDAO implements IUserDAO {
 			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL)) {
 			preparedStatementSQL.setInt(1, id);
 			ResultSet resultSet = preparedStatementSQL.executeQuery();
-			resultSet.next();
 
-			NewUserInfo newUserInfo = new NewUserInfo();
-			newUserInfo.setUserId(resultSet.getInt("id"));
-			newUserInfo.setLogin(resultSet.getString("login"));
-			newUserInfo.setPassword(resultSet.getString("password"));
-			newUserInfo.setEmail(resultSet.getString("email"));
-			newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+			if (resultSet.next())
+				return parseUserInfo(resultSet);
 
-			return newUserInfo;
+			else
+				throw new DaoException("User with current data not exist");
 		}
 		catch (SQLException e){
 			throw new DaoException(e);
 		}
+	}
+
+	@Override
+	public void updateUserInfo(NewUserInfo userInfo) throws DaoException{
+		String SQL = "UPDATE users SET login=?, password=?, email=? WHERE id=?";
+
+		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
+			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL)) {
+			preparedStatementSQL.setString(1, userInfo.getLogin());
+			preparedStatementSQL.setString(2, userInfo.getPassword());
+			preparedStatementSQL.setString(3, userInfo.getEmail());
+			preparedStatementSQL.setInt(4, userInfo.getUserId());
+
+			preparedStatementSQL.executeUpdate();
+		}
+		catch(SQLException e){
+			throw new DaoException(e);
+		}
+	}
+
+	public NewUserInfo parseUserInfo(ResultSet resultSet) throws SQLException{
+		NewUserInfo newUserInfo = new NewUserInfo();
+		newUserInfo.setUserId(resultSet.getInt("id"));
+		newUserInfo.setLogin(resultSet.getString("login"));
+		newUserInfo.setPassword(resultSet.getString("password"));
+		newUserInfo.setEmail(resultSet.getString("email"));
+		newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+		return newUserInfo;
 	}
 }

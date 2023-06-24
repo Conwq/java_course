@@ -23,15 +23,18 @@ public class DoEditNews implements Command {
 		String date = request.getParameter("date");
 		String photo = request.getParameter("photo");
 
-		int parseId = Integer.parseInt(id);
 
-		News news = new News(parseId, title, briefNews, content, date, photo);
 		try {
+			int parseId = Integer.parseInt(id);
+			News news = new News(parseId, title, briefNews, content, date, photo);
 			newsService.update(news);
 			response.sendRedirect("controller?command=go_to_view_news&id=" + id);
 		}
 		catch (ServiceException e){
 			e.printStackTrace();
+		}
+		catch (NumberFormatException e){
+			System.out.println(e.getMessage());
 		}
 	}
 }

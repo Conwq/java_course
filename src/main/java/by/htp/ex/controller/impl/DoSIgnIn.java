@@ -1,5 +1,6 @@
 package by.htp.ex.controller.impl;
 
+import by.htp.ex.bean.NewUserInfo;
 import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
@@ -16,6 +17,7 @@ public final class DoSIgnIn implements Command {
 	private static final String JSP_LOGIN_PARAM = "login";
 	private static final String JSP_PASSWORD_PARAM = "password";
 	private static final String JSP_USER_PARAM = "user";
+	private static final String JSP_USER_INFO_PARAM = "userInfo";
 	private static final String JSP_USER_ACTIVE = "active";
 	private static final String JSP_USER_NOT_ACTIVE = "not active";
 	private static final String JSP_USER_ROLE = "role";
@@ -36,14 +38,13 @@ public final class DoSIgnIn implements Command {
 
 		else {
 			try {
+				NewUserInfo newUserInfo = service.signIn(login, password);
+				String role = newUserInfo.getRole().getRole();
 
-				String role = service.signIn(login, password);
-
-				if (!role.equals("guest")) {
-					request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_ACTIVE);
-					request.getSession().setAttribute(JSP_USER_ROLE, role);
-					response.sendRedirect("controller?command=go_to_news_list");
-				}
+				request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_ACTIVE);
+				request.getSession().setAttribute(JSP_USER_ROLE, role);
+				request.getSession().setAttribute(JSP_USER_INFO_PARAM, newUserInfo);
+				response.sendRedirect("controller?command=go_to_news_list");
 			}
 			catch (ServiceException e) {
 				request.getSession(true).setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, ErrorHandler.extractErrorMessage(e));

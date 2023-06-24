@@ -21,3 +21,5 @@
         <b><c:out value="${requestScope.IllegalFormat}"/> </b>
     </div>
 </c:if>
+
+<a href="${pageContext.request.contextPath}/index.jsp">Back</a>

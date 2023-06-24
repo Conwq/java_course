@@ -21,6 +21,7 @@ public final class GoToViewNews implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter(ID);
+
 		try {
 			int parseId = Integer.parseInt(request.getParameter(ID));
 			News news  = newsService.findById(parseId);

@@ -10,12 +10,17 @@ public final class NewUserInfo implements Serializable {
 	private Role role;
 
 
-	//TODO ДОБАВИТЬ ЛИСТ ВСЕХ НОВОСТОЕЙ, КОТОРЫЕ ПРИНАДЛЕЖАТ ПОЛЬЗОВАТЕЛЮ
-
-
+	//TODO ДОБАВИТЬ ЛИСТ ВСЕХ НОВОСТЕЙ, КОТОРЫЕ ПРИНАДЛЕЖАТ ПОЛЬЗОВАТЕЛЮ
 
 
 	public NewUserInfo(){
+	}
+
+	public NewUserInfo(int id, String login, String email, String password){
+		userId = id;
+		this.login = login;
+		this.email = email;
+		this.password = password;
 	}
 
 	public NewUserInfo(String login, String email, String password){

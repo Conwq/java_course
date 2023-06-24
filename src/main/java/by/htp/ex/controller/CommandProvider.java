@@ -20,11 +20,14 @@ public final class CommandProvider {
 		commands.put(CommandName.GO_TO_VIEW_NEWS, new GoToViewNews());
 		commands.put(CommandName.DO_REGISTRATION, new DoRegistration());
 		commands.put(CommandName.CHANGE_LOCALE, new ChangeLocale());
-		commands.put(CommandName.GO_TO_ADD_NEWS_PAGE, new GoToAddNews());
+		commands.put(CommandName.GO_TO_ADD_NEWS, new GoToAddNews());
 		commands.put(CommandName.DO_ADD_NEWS, new DoAddNews());
 		commands.put(CommandName.GO_TO_EDIT_NEWS, new GoToEditNews());
 		commands.put(CommandName.DO_EDIT_NEWS, new DoEditNews());
 		commands.put(CommandName.DO_DELETE_NEWS, new DoDeleteNews());
+		commands.put(CommandName.GO_TO_USERS_LIST, new GoToUsersList());
+		commands.put(CommandName.GO_TO_PERSONAL_CABINET, new GoToPersonalCabinet());
+		commands.put(CommandName.DO_EDIT_USER_INFO, new DoEditUserInfo());
 	}
 
 	public Command getCommand(String command) {

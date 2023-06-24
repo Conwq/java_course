@@ -6,8 +6,9 @@ import by.htp.ex.service.exception.ServiceException;
 import java.util.List;
 
 public interface IUserService {
-	String signIn(String login, String password) throws ServiceException;
+	NewUserInfo signIn(String login, String password) throws ServiceException;
 	void registration(NewUserInfo user) throws ServiceException;
 	List<NewUserInfo> getUsers() throws ServiceException;
 	NewUserInfo getUser(int id) throws ServiceException;
+	void updateUserInfo(NewUserInfo userInfo) throws ServiceException;
 }

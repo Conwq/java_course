@@ -14,15 +14,10 @@ public final class UserServiceImpl implements IUserService {
 	private final IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
 
 	@Override
-	public String signIn(String login, String password) throws ServiceException {
+	public NewUserInfo signIn(String login, String password) throws ServiceException {
 
 		try {
-			NewUserInfo userDao = userDAO.authorization(login, password);
-
-			if (userDao != null)
-				return userDao.getRole().getRole();
-
-			return Role.GUEST.getRole();
+			return userDAO.authorization(login, password);
 		}
 		catch (DaoException e) {
 			throw new ServiceException(e);
@@ -57,6 +52,16 @@ public final class UserServiceImpl implements IUserService {
 	public NewUserInfo getUser(int id) throws ServiceException {
 		try {
 			return userDAO.getUser(id);
+		}
+		catch (DaoException e){
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public void updateUserInfo(NewUserInfo userInfo) throws ServiceException {
+		try{
+			userDAO.updateUserInfo(userInfo);
 		}
 		catch (DaoException e){
 			throw new ServiceException(e);

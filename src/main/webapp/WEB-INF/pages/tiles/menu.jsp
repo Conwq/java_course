@@ -20,7 +20,7 @@
 
 				<c:if test="${sessionScope.role eq 'admin'}">
 				   <li style="padding-left: 15px;">
-				    	<a href="<c:url value="/controller?command=go_to_add_news_page"/>">add news </a><br/>
+				    	<a href="<c:url value="/controller?command=go_to_add_news"/>">add news</a><br/>
 					</li>
 				</c:if>
 

@@ -64,14 +64,18 @@
 				</form>
 			</div>
 
+			<div align="right" class="personal_cabinet">
+				<c:set value="${sessionScope.userInfo.userId}" var="id"/>
+				<a href="<c:url value="/controller?command=go_to_personal_cabinet&id=${id}"/> ">Personal cabinet</a>
+			</div>
+
 			<c:if test="${sessionScope.role eq 'admin'}">
 				<div align="right">
-					<a href="">Show all registered user</a>
+					<a href="<c:out value="/controller?command=go_to_users_list"/>" >Show all registered user</a>
 				</div>
 			</c:if>
 
 		</c:if>
-
 
 	</div>
 </div>

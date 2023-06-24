@@ -16,15 +16,18 @@ public class GoToEditNews implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String newsId = request.getParameter("id");
-		int id = Integer.parseInt(newsId);
 
 		try {
+			int id = Integer.parseInt(newsId);
 			News news = newsService.findById(id);
 			request.setAttribute("news", news);
 			request.getRequestDispatcher("WEB-INF/jsp/edit_news.jsp").forward(request, response);
 		}
 		catch (ServiceException e){
 			e.printStackTrace();
+		}
+		catch (NumberFormatException e){
+			System.out.println(e.getMessage());
 		}
 	}
 }
