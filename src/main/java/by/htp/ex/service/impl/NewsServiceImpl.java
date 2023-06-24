@@ -11,18 +11,40 @@ import by.htp.ex.service.exception.ServiceException;
 
 public final class NewsServiceImpl implements INewsService{
 	private final INewsDAO newsDAO = DaoProvider.getInstance().getNewsDAO();
-	
+
+	//TODO ADD ALL METHODS
+
 	@Override
-	public void save() {
+	public void save(News news) throws ServiceException{
+		try{
+			newsDAO.addNews(news);
+		}
+		catch (DaoException e){
+			throw new ServiceException(e);
+		}
 	}
 
 	@Override
 	public void find() {
+//		try{
+//
+//		}
+//		catch (DaoException e){
+//			throw new ServiceException(e);
+//		}
 	}
 
 	@Override
-	public void update() {
+	public void update(News news) throws ServiceException {
+		try{
+			newsDAO.updateNews(news);
+		}
+		catch (DaoException e){
+			throw new ServiceException(e);
+		}
 	}
+
+	//TODO ЧТО ТО СДЕЛАТЬ С COUNT
 
 	@Override
 	public List<News> latestList(int count) throws ServiceException {
@@ -50,6 +72,16 @@ public final class NewsServiceImpl implements INewsService{
 			return newsDAO.fetchById(id);
 		}
 		catch (DaoException e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public void delete(int id) throws ServiceException {
+		try {
+			newsDAO.deleteNews(id);
+		}
+		catch (DaoException e){
 			throw new ServiceException(e);
 		}
 	}

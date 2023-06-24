@@ -18,13 +18,13 @@
 				</div>
 
 				<div class="news-content" style="display: inline-block">
-					<c:out value="${news.briefNews}" />
+					<b><c:out value="${news.briefNews}" /></b>
 				</div>
 
 				<div class="news-link-to-wrapper">
 					<div class="link-position">
 						<c:if test="${sessionScope.role eq 'admin'}">
-						      <a href="">editlink </a> 
+						      <a href="<c:out value="/controller?command=go_to_edit_news&id=${news.idNews}"/>">editlink</a>
 						</c:if>
 						
 						<a href="controller?command=go_to_view_news&id=${news.idNews}">viewlink </a> 
@@ -40,13 +40,6 @@
 		<br><hr>
 
 	</c:forEach>
-<%--	<!-- 	<logic:notEmpty name="newsForm" property="newsList">--%>
-<%--		<div class="delete-button-position">--%>
-<%--				<html:submit>--%>
-<%--					<bean:message key="locale.newslink.deletebutton" />--%>
-<%--				</html:submit>--%>
-<%--		</div>--%>
-<%--			</logic:notEmpty> -->--%>
 
 	<div class="no-news">
 		<c:if test="${requestScope.news eq null}">

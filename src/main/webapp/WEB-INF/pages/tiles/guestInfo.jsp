@@ -4,10 +4,7 @@ guest info
 
 <div class="body-title">
 	<a href="">News >> </a> Latest News
-</div>
-
-
-	<br><hr>
+</div><br><hr>
 
 	<c:forEach var="news" items="${requestScope.news}">
 		<div class="single-news-wrapper">

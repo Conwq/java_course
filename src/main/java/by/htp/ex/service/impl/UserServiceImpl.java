@@ -8,6 +8,8 @@ import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.exception.ServiceException;
 
+import java.util.List;
+
 public final class UserServiceImpl implements IUserService {
 	private final IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
 
@@ -17,10 +19,9 @@ public final class UserServiceImpl implements IUserService {
 		try {
 			NewUserInfo userDao = userDAO.authorization(login, password);
 
-			if (userDao != null) {
-				//TODO
+			if (userDao != null)
 				return userDao.getRole().getRole();
-			}
+
 			return Role.GUEST.getRole();
 		}
 		catch (DaoException e) {
@@ -38,6 +39,26 @@ public final class UserServiceImpl implements IUserService {
 			userDAO.registration(user);
 		}
 		catch (DaoException e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public List<NewUserInfo> getUsers() throws ServiceException {
+		try {
+			return userDAO.getUsers();
+		}
+		catch (DaoException e){
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public NewUserInfo getUser(int id) throws ServiceException {
+		try {
+			return userDAO.getUser(id);
+		}
+		catch (DaoException e){
 			throw new ServiceException(e);
 		}
 	}

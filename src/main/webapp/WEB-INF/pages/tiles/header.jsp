@@ -63,6 +63,15 @@
 					<input type="submit" value="${sign_out_button}" /><br />
 				</form>
 			</div>
+
+			<c:if test="${sessionScope.role eq 'admin'}">
+				<div align="right">
+					<a href="">Show all registered user</a>
+				</div>
+			</c:if>
+
 		</c:if>
+
+
 	</div>
 </div>

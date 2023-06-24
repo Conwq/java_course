@@ -10,28 +10,48 @@ public final class News implements Serializable {
 	private String content;
 	private String newsDate;
 	private String photoPath;
+	private NewUserInfo newUserInfo;
 
 	public News() {
 	}
 
-	public News(int idNews, String title, String briefNews, String content, String newsDate, String photoPath) {
-		super();
-		this.photoPath = photoPath;
+	public News(int idNews, String title, String briefNews, String content, String newsDate, String photoPath){
 		this.idNews = idNews;
 		this.title = title;
 		this.briefNews = briefNews;
 		this.content = content;
 		this.newsDate = newsDate;
+		this.photoPath = photoPath;
 	}
 
-	public News(int idNews, String title, String briefNews, String content, String newsDate) {
-		super();
-		this.photoPath = null;
-		this.idNews = idNews;
+	public News(String title, String briefNews, String content, String photoPath, NewUserInfo newUserInfo) {
 		this.title = title;
 		this.briefNews = briefNews;
 		this.content = content;
-		this.newsDate = newsDate;
+		this.photoPath = photoPath;
+		this.newUserInfo = newUserInfo;
+	}
+
+	public News(String title, String briefNews, String content, String photoPath) {
+		this.photoPath = photoPath;
+		this.title = title;
+		this.briefNews = briefNews;
+		this.content = content;
+	}
+
+	public News(String title, String briefNews, String content) {
+		this.photoPath = null;
+		this.title = title;
+		this.briefNews = briefNews;
+		this.content = content;
+	}
+
+	public NewUserInfo getNewUserInfo() {
+		return newUserInfo;
+	}
+
+	public void setNewUserInfo(NewUserInfo newUserInfo) {
+		this.newUserInfo = newUserInfo;
 	}
 
 	public String getPhotoPath() {
@@ -80,5 +100,18 @@ public final class News implements Serializable {
 
 	public void setNewsDate(String newsDate) {
 		this.newsDate = newsDate;
+	}
+
+	@Override
+	public String toString() {
+		return "News{" +
+				"idNews=" + idNews +
+				", title='" + title + '\'' +
+				", briefNews='" + briefNews + '\'' +
+				", content='" + content + '\'' +
+				", newsDate='" + newsDate + '\'' +
+				", photoPath='" + photoPath + '\'' +
+				", newUserInfo=" + newUserInfo +
+				'}';
 	}
 }
