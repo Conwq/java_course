@@ -1,7 +1,6 @@
 package by.htp.ex.service.impl;
 
 import by.htp.ex.bean.NewUserInfo;
-import by.htp.ex.bean.Role;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.IUserDAO;
 import by.htp.ex.dao.exception.DaoException;
@@ -27,10 +26,15 @@ public final class UserServiceImpl implements IUserService {
 	@Override
 	public void registration(NewUserInfo user) throws ServiceException {
 
-		try {
-			if (userDAO.isExistUser(user))
-				throw new ServiceException("User with this email exists");
 
+
+		//TODO
+
+
+		try {
+			if (userDAO.isExistUser(user)) {
+				throw new ServiceException("User with this email exists");
+			}
 			userDAO.registration(user);
 		}
 		catch (DaoException e) {

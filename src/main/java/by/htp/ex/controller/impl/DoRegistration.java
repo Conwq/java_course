@@ -21,7 +21,6 @@ public final class DoRegistration implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		String login = request.getParameter(JSP_LOGIN_PARAM);
 		String email = request.getParameter(JSP_EMAIL_PARAM);
 		String password = request.getParameter(JSP_PASSWORD_PARAM);
@@ -29,22 +28,19 @@ public final class DoRegistration implements Command {
 		request.getSession().removeAttribute(JSP_REGISTRATION_ERROR_PARAM);
 
 		if (!isValidData(login, email, password)){
-			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM,
-					"Login/Email/Password error. The number of characters must not be less than 1");
+			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, "Login/Email/Password error. The number of characters must not be less than 1");
 			response.sendRedirect("controller?command=go_to_registration_page");
+			return;
 		}
 
-		else {
+		try {
 			NewUserInfo user = new NewUserInfo(login, email, password);
-
-			try {
-				userService.registration(user);
-				response.sendRedirect("controller?command=go_to_base_page");
-			}
-			catch (ServiceException e) {
-				request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, ErrorHandler.extractErrorMessage(e));
-				response.sendRedirect("controller?command=go_to_registration_page");
-			}
+			userService.registration(user);
+			response.sendRedirect("controller?command=go_to_base_page");
+		}
+		catch (ServiceException e) {
+			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, "The user with the specified email address already exist");
+			response.sendRedirect("controller?command=go_to_registration_page");
 		}
 	}
 

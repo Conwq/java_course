@@ -21,7 +21,6 @@ public class DoAddNews implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
 		//TODO NEED VALIDATION AND ADD ERROR IN JSP PAGE
 
 		String title = request.getParameter("title");
@@ -34,21 +33,12 @@ public class DoAddNews implements Command {
 			int id = Integer.parseInt(userId);
 
 			NewUserInfo newUserInfo = userService.getUser(id);
-			System.out.println(newUserInfo);
 			News news = new News(title, briefNews, content, photoPath, newUserInfo);
-			System.out.println(news);
 			newsService.save(news);
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
-		catch (NumberFormatException e){
-			System.out.println("Parsing error");
+		catch (NumberFormatException | ServiceException e){
+			response.sendRedirect("/error/error.jsp");
 		}
-		catch (ServiceException e){
-			e.printStackTrace();
-		}
-	}
-
-	public void isValidData(){
-
 	}
 }

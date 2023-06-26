@@ -12,21 +12,19 @@ import java.io.IOException;
 
 public class DoDeleteNews implements Command {
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private final static String JSP_ID_PARAM = "id";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String idParam = request.getParameter("id");
+		String idParam = request.getParameter(JSP_ID_PARAM);
 
 		try {
 			int id = Integer.parseInt(idParam);
 			newsService.delete(id);
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
-		catch (NumberFormatException e){
-			System.out.println("Данного id не существвует - " + idParam);
-		}
-		catch (ServiceException e){
-			e.printStackTrace();
+		catch (NumberFormatException | ServiceException e){
+			response.sendRedirect("/error/error.jsp");
 		}
 	}
 }

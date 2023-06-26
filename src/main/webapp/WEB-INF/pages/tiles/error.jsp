@@ -8,18 +8,4 @@
     </div>
 </c:if>
 
-<c:if test="${not (requestScope.CommandError eq null)}">
-    <c:forEach var="error" items="${requestScope.CommandError}">
-        <div style="color:red">
-            <b><c:out value="${error}"/></b>
-        </div>
-    </c:forEach>
-</c:if>
-
-<c:if test="${not (requestScope.IllegalFormat eq null)}">
-    <div style="color:red">
-        <b><c:out value="${requestScope.IllegalFormat}"/> </b>
-    </div>
-</c:if>
-
 <a href="${pageContext.request.contextPath}/index.jsp">Back</a>

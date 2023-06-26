@@ -2,7 +2,6 @@ package by.htp.ex.controller.command;
 
 public enum CommandName {
 	GO_TO_BASE_PAGE,
-	GO_TO_LOGINATION_PAGE,
 	GO_TO_REGISTRATION_PAGE,
 	GO_TO_NEWS_LIST,
 	GO_TO_VIEW_NEWS,
@@ -17,5 +16,6 @@ public enum CommandName {
 	DO_DELETE_NEWS,
 	GO_TO_USERS_LIST,
 	GO_TO_PERSONAL_CABINET,
-	DO_EDIT_USER_INFO
+	DO_EDIT_USER_INFO,
+	NO_COMMAND
 }

@@ -104,8 +104,8 @@ public final class News implements Serializable {
 
 	@Override
 	public String toString() {
-		return "News{" +
-				"idNews=" + idNews +
+		return getClass().getName() +
+				" {idNews=" + idNews +
 				", title='" + title + '\'' +
 				", briefNews='" + briefNews + '\'' +
 				", content='" + content + '\'' +
