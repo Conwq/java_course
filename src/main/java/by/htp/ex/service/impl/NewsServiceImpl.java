@@ -25,16 +25,6 @@ public final class NewsServiceImpl implements INewsService{
 	}
 
 	@Override
-	public void find() {
-//		try{
-//
-//		}
-//		catch (DaoException e){
-//			throw new ServiceException(e);
-//		}
-	}
-
-	@Override
 	public void update(News news) throws ServiceException {
 		try{
 			newsDAO.updateNews(news);

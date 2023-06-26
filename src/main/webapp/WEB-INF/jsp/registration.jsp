@@ -30,5 +30,7 @@
     <input type="submit" value="Submit">
 </form>
 
+<button onclick="history.back()">Back</button>
+
 </body>
 </html> 

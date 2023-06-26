@@ -24,15 +24,15 @@ public final class NewsDAO implements INewsDAO {
 	/////////////////////////////////////////////////////
 	////Добавить само создание новости в класс News??///
 	////////////////////////////////////////////////////
-	//TODO Этот метод пересмотреть, он должен возвращать последние 5 новостей.
+	//TODO Этот метод пересмотреть, он должен возвращать последние 5 новостей. Сделать что нибудь с count
 
+	private final static String SQL_QUERY_GET_LATEST_NEWS = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
 	@Override
 	public List<News> getLatestList(int count) throws DaoException {
-		String SQL = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
 		List<News> news = new ArrayList<>();
 
 		try(Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = connection.prepareStatement(SQL)){
+			PreparedStatement statement = connection.prepareStatement(SQL_QUERY_GET_LATEST_NEWS)){
 			statement.setInt(1, count);
 			ResultSet resultSet = statement.executeQuery();
 
@@ -48,13 +48,13 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
+	private final static String SQL_QUERY_GET_NEWS_LIST = "SELECT * FROM news ORDER BY news_date DESC";
 	@Override
 	public List<News> getList() throws DaoException {
-		String SQL = "SELECT * FROM news ORDER BY news_date DESC";
 		List<News> news = new ArrayList<>();
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL)){
+			PreparedStatement statement = con.prepareStatement(SQL_QUERY_GET_NEWS_LIST)){
 			ResultSet resultSet = statement.executeQuery();
 
 			while(resultSet.next()){
@@ -69,18 +69,19 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
+	private final static String SQL_QUERY_GET_USER_BY_ID = "SELECT * FROM news WHERE news_id = ?";
 	@Override
 	public News fetchById(int id) throws DaoException {
-		String SQL = "SELECT * FROM news WHERE news_id = ?";
 		News findNews = null;
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL)){
+			PreparedStatement statement = con.prepareStatement(SQL_QUERY_GET_USER_BY_ID)){
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 
-			if (resultSet.next())
+			if (resultSet.next()) {
 				findNews = getNewsFromResultSet(resultSet);
+			}
 
 			return findNews;
 		}
@@ -90,12 +91,12 @@ public final class NewsDAO implements INewsDAO {
 	}
 
 	//Время задается автоматически, прописано в конфиге БД
+	private final static String SQL_QUERY_ADD_NEWS = "INSERT INTO news (title, brief_news, content, photo_path, users_id, news_date) VALUES (?,?,?,?,?, NOW())";
 	@Override
 	public void addNews(News news) throws DaoException {
-		String SQL = "INSERT INTO news (title, brief_news, content, photo_path, users_id, news_date) VALUES (?,?,?,?,?, NOW())";
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL)){
+			PreparedStatement statement = con.prepareStatement(SQL_QUERY_ADD_NEWS)){
 			statement.setString(1, news.getTitle());
 			statement.setString(2, news.getBriefNews());
 			statement.setString(3, news.getContent());
@@ -108,12 +109,12 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
+	private final static String SQL_QUERY_UPDATE_NEWS = "UPDATE news SET title=?, brief_news=?, content=?, news_date=?, photo_path=? WHERE news_id=?";
 	@Override
 	public void updateNews(News news) throws DaoException {
-		String SQL = "UPDATE news SET title=?, brief_news=?, content=?, news_date=?, photo_path=? WHERE news_id=?";
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL)){
+			PreparedStatement statement = con.prepareStatement(SQL_QUERY_UPDATE_NEWS)){
 			statement.setString(1, news.getTitle());
 			statement.setString(2, news.getBriefNews());
 			statement.setString(3, news.getContent());
@@ -127,12 +128,12 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
+	private final static String SQL_QUERY_DELETE_NEWSES = "DELETE FROM news WHERE news_id IN (?)";
 	@Override
 	public void deleteNewses(String[] idNewses) throws DaoException {
-		String SQL = "DELETE FROM news WHERE news_id IN (?)";
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL)){
+			PreparedStatement statement = con.prepareStatement(SQL_QUERY_DELETE_NEWSES)){
 
 			statement.setArray(1, con.createArrayOf("INTEGER", idNewses));
 			statement.executeUpdate();
@@ -142,12 +143,12 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
+	private final static String SQL_QUERY_DELETE_NEWS ="DELETE FROM news WHERE news_id = ?";
 	@Override
 	public void deleteNews(int id) throws DaoException {
-		String SQL = "DELETE FROM news WHERE news_id = ?";
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL)){
+			PreparedStatement statement = con.prepareStatement(SQL_QUERY_DELETE_NEWS)){
 			statement.setInt(1, id);
 			statement.executeUpdate();
 		}

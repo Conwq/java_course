@@ -13,16 +13,22 @@ import java.io.IOException;
 
 public class DoEditNews implements Command {
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private final static String JSP_ID_PARAM = "id";
+	private final static String JSP_TITLE_PARAM = "title";
+	private final static String JSP_BRIEF_NEWS_PARAM = "brief_news";
+	private final static String JSP_CONTENT_PARAM = "content";
+	private final static String JSP_DATE_PARAM = "date";
+	private final static String JSP_PHOTO_PARAM = "photo";
+
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("id");
-		String title = request.getParameter("title");
-		String briefNews = request.getParameter("brief_news");
-		String content = request.getParameter("content");
-		String date = request.getParameter("date");
-		String photo = request.getParameter("photo");
-
+		String id = request.getParameter(JSP_ID_PARAM);
+		String title = request.getParameter(JSP_TITLE_PARAM);
+		String briefNews = request.getParameter(JSP_BRIEF_NEWS_PARAM);
+		String content = request.getParameter(JSP_CONTENT_PARAM);
+		String date = request.getParameter(JSP_DATE_PARAM);
+		String photo = request.getParameter(JSP_PHOTO_PARAM);
 
 		try {
 			int parseId = Integer.parseInt(id);
@@ -30,11 +36,8 @@ public class DoEditNews implements Command {
 			newsService.update(news);
 			response.sendRedirect("controller?command=go_to_view_news&id=" + id);
 		}
-		catch (ServiceException e){
-			e.printStackTrace();
-		}
-		catch (NumberFormatException e){
-			System.out.println(e.getMessage());
+		catch (NumberFormatException | ServiceException e){
+			response.sendRedirect("/error/error.jsp");
 		}
 	}
 }

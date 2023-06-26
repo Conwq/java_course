@@ -28,10 +28,20 @@ public final class CommandProvider {
 		commands.put(CommandName.GO_TO_USERS_LIST, new GoToUsersList());
 		commands.put(CommandName.GO_TO_PERSONAL_CABINET, new GoToPersonalCabinet());
 		commands.put(CommandName.DO_EDIT_USER_INFO, new DoEditUserInfo());
+
+		commands.put(CommandName.NO_COMMAND, new NoCommand());
 	}
 
 	public Command getCommand(String command) {
-		CommandName commandName = CommandName.valueOf(command.toUpperCase());
+		CommandName commandName;
+
+		try {
+			commandName = CommandName.valueOf(command.toUpperCase());
+		}
+		catch (NullPointerException | IllegalArgumentException e){
+			commandName = CommandName.NO_COMMAND;
+		}
+
 		return commands.get(commandName);
 	}
 

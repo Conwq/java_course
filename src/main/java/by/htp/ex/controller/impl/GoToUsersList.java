@@ -13,16 +13,18 @@ import java.io.IOException;
 import java.util.List;
 
 public class GoToUsersList implements Command {
-	private static final IUserService userService = ServiceProvider.getInstance().getUserService();
+	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
+	private final static String JSP_USERS_PARAM = "users";
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		try{
 			List<NewUserInfo> usersInfo = userService.getUsers();
-			request.setAttribute("users", usersInfo);
+			request.setAttribute(JSP_USERS_PARAM, usersInfo);
 			request.getRequestDispatcher("WEB-INF/jsp/users_list.jsp").forward(request, response);
 		}
 		catch (ServiceException e){
-			e.printStackTrace();
+			response.sendRedirect("/error/error.jsp");
 		}
 	}
 }

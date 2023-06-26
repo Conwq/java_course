@@ -13,21 +13,20 @@ import java.io.IOException;
 
 public class GoToEditNews implements Command {
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private final static String JSP_ID_PARAM = "id";
+	private final static String JSP_NEWS_PARAM = "news";
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String newsId = request.getParameter("id");
+		String newsId = request.getParameter(JSP_ID_PARAM);
 
 		try {
 			int id = Integer.parseInt(newsId);
 			News news = newsService.findById(id);
-			request.setAttribute("news", news);
+			request.setAttribute(JSP_NEWS_PARAM, news);
 			request.getRequestDispatcher("WEB-INF/jsp/edit_news.jsp").forward(request, response);
 		}
-		catch (ServiceException e){
-			e.printStackTrace();
-		}
-		catch (NumberFormatException e){
-			System.out.println(e.getMessage());
+		catch (NumberFormatException | ServiceException e){
+			response.sendRedirect("/error/error.jsp");
 		}
 	}
 }

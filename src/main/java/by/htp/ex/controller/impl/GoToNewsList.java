@@ -27,7 +27,6 @@ public final class GoToNewsList implements Command {
 			request.setAttribute(JSP_PRESENTATION_PARAM, JSP_NEWS_LIST_PARAM);
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		}
-
 		catch (ServiceException e) {
 			response.sendRedirect("error/error.jsp");
 		}

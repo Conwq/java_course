@@ -15,6 +15,7 @@ import java.util.List;
 public class GoToAddNews implements Command {
 
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
+	private final static String JSP_USERS_PARAM = "users";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,14 +23,13 @@ public class GoToAddNews implements Command {
 		//TODO ДОБАВИТЬ REDIRECT? ПОТОМУ ЧТО В НАШЕЙ БАЗЕ МОЖЕТ БЫТЬ МНОГО ПОЛЬЗОВАТЕЛЕЙ И ПРИ F5 БУДЕТ ПРОИСХОДИТЬ ПОСТОЯННОЕ ОБРАЩЕНИЕ К БД. ХОТЯ ДАННАЯ ВОЗМОЖНОСТЬ ПРИСУТСТВУЕТ ЛИШЬ У АДМИНА
 		//TODO Обработать ошибки
 
-
 		try {
 			List<NewUserInfo> users = userService.getUsers();
-			request.setAttribute("users", users);
+			request.setAttribute(JSP_USERS_PARAM, users);
 			request.getRequestDispatcher("WEB-INF/jsp/add_news.jsp").forward(request, response);
 		}
 		catch (ServiceException e) {
-			e.printStackTrace();
+			response.sendRedirect("/error/error.jsp");
 		}
 	}
 }

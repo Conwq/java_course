@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface INewsService {
   void save(News news) throws ServiceException;
-  void find() throws ServiceException;
   void update(News news) throws ServiceException;
   List<News> latestList(int count)  throws ServiceException;
   List<News> list()  throws ServiceException;

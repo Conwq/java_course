@@ -79,7 +79,7 @@ public final class NewUserInfo implements Serializable {
 	@Override
 	public String toString() {
 		return  getClass().getName() +
-				"login='" + login + '\'' +
+				" {login='" + login + '\'' +
 				", email='" + email + '\'' +
 				", password='" + password + '\'' +
 				", role=" + role +

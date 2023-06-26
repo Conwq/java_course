@@ -22,12 +22,12 @@ public final class UserDAO implements IUserDAO {
 	}
 
 	//Если пользователь есть, то возвращает true инчае false
+	private final static String SQL_QUERY_GET_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
 	@Override
 	public boolean isExistUser(NewUserInfo user) throws DaoException {
-		String SQL = "SELECT * FROM users WHERE email = ?";
 
 		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			 PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+			 PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY_GET_USER_BY_EMAIL)) {
 
 			preparedStatement.setString(1, user.getEmail());
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -39,34 +39,34 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	private final static String SQL_QUERY_GET_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE login = ? AND password = ?";
 	@Override
 	public NewUserInfo authorization(String login, String password) throws DaoException {
-		String SQL = "SELECT * FROM users WHERE login = ? AND password = ?";
-		NewUserInfo newUserInfo = null;
 
 		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			 PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+			 PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY_GET_USER_BY_LOGIN_AND_PASSWORD)) {
 			preparedStatement.setString(1, login);
 			preparedStatement.setString(2, password);
 			ResultSet resultSet = preparedStatement.executeQuery();
 
-			if (resultSet.next())
+			if (resultSet.next()) {
 				return parseUserInfo(resultSet);
-
-			else
+			}
+			else {
 				throw new DaoException("No user found with this login and password");
+			}
 		}
 		catch (SQLException e) {
 			throw new DaoException(e);
 		}
 	}
 
+	private final static String SQL_QUERY_ADD_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
 	@Override
 	public void registration(NewUserInfo user) throws DaoException {
-		String SQL = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
 
 		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL)) {
+			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL_QUERY_ADD_USER)) {
 			preparedStatementSQL.setString(1, user.getLogin());
 			preparedStatementSQL.setString(2, user.getPassword());
 			preparedStatementSQL.setString(3, user.getEmail());
@@ -77,13 +77,13 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	private final static String SQL_QUERY_GET_LIST_USERS = "SELECT * FROM users";
 	@Override
 	public List<NewUserInfo> getUsers() throws DaoException {
-		String SQL = "SELECT * FROM users";
 		List<NewUserInfo> usersInfo = new ArrayList<>();
 
 		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL)) {
+			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL_QUERY_GET_LIST_USERS)) {
 			ResultSet resultSet = preparedStatementSQL.executeQuery();
 
 			while (resultSet.next()){
@@ -97,32 +97,33 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	private final static String SQL_QUERY_GET_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
 	@Override
 	public NewUserInfo getUser(int id) throws DaoException {
-		String SQL = "SELECT * FROM users WHERE id = ?";
 
 		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL)) {
+			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL_QUERY_GET_USER_BY_ID)) {
 			preparedStatementSQL.setInt(1, id);
 			ResultSet resultSet = preparedStatementSQL.executeQuery();
 
-			if (resultSet.next())
+			if (resultSet.next()) {
 				return parseUserInfo(resultSet);
-
-			else
+			}
+			else {
 				throw new DaoException("User with current data not exist");
+			}
 		}
 		catch (SQLException e){
 			throw new DaoException(e);
 		}
 	}
 
+	private final static String SQL_QUERY_UPDATE_USER = "UPDATE users SET login=?, password=?, email=? WHERE id=?";
 	@Override
 	public void updateUserInfo(NewUserInfo userInfo) throws DaoException{
-		String SQL = "UPDATE users SET login=?, password=?, email=? WHERE id=?";
 
 		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL)) {
+			 PreparedStatement preparedStatementSQL = connection.prepareStatement(SQL_QUERY_UPDATE_USER)) {
 			preparedStatementSQL.setString(1, userInfo.getLogin());
 			preparedStatementSQL.setString(2, userInfo.getPassword());
 			preparedStatementSQL.setString(3, userInfo.getEmail());

@@ -27,10 +27,15 @@ public final class UserServiceImpl implements IUserService {
 	@Override
 	public void registration(NewUserInfo user) throws ServiceException {
 
-		try {
-			if (userDAO.isExistUser(user))
-				throw new ServiceException("User with this email exists");
 
+
+		//TODO
+
+
+		try {
+			if (userDAO.isExistUser(user)) {
+				throw new ServiceException("User with this email exists");
+			}
 			userDAO.registration(user);
 		}
 		catch (DaoException e) {

@@ -12,22 +12,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class GoToPersonalCabinet implements Command {
-	private static final IUserService userService = ServiceProvider.getInstance().getUserService();
+	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
+	private final static String JSP_ID_PARAM = "id";
+	private final static String JSP_USER_INFO_PARAM = "userInfo";
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String idParam = request.getParameter("id");
+		String idParam = request.getParameter(JSP_ID_PARAM);
 
 		try{
 			int id = Integer.parseInt(idParam);
 			NewUserInfo userInfo = userService.getUser(id);
-			request.getSession(true).setAttribute("userInfo", userInfo);
+			request.getSession(true).setAttribute(JSP_USER_INFO_PARAM, userInfo);
 			request.getRequestDispatcher("WEB-INF/jsp/personal_cabinet.jsp").forward(request, response);
 		}
-		catch (ServiceException e){
-			e.printStackTrace();
-		}
-		catch(NumberFormatException e){
-			System.out.println(e.getMessage());
+		catch (NumberFormatException | ServiceException e){
+			response.sendRedirect("/error/error.jsp");
 		}
 	}
 }
