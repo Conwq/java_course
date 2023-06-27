@@ -7,7 +7,6 @@ import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
-import by.htp.ex.util.ErrorHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

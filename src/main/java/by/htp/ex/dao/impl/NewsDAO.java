@@ -11,8 +11,8 @@ import java.util.List;
 
 public final class NewsDAO implements INewsDAO {
 
-	static{
-		try{
+	static {
+		try {
 			Class.forName(ConstantsName.DB_DRIVER);
 		}
 		catch(ClassNotFoundException e){
@@ -72,10 +72,10 @@ public final class NewsDAO implements INewsDAO {
 	private final static String SQL_QUERY_GET_USER_BY_ID = "SELECT * FROM news WHERE news_id = ?";
 	@Override
 	public News fetchById(int id) throws DaoException {
-		News findNews = null;
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
 			PreparedStatement statement = con.prepareStatement(SQL_QUERY_GET_USER_BY_ID)){
+			News findNews = null;
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 
