@@ -6,11 +6,14 @@ import by.htp.ex.dao.IUserDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.exception.ServiceException;
+import by.htp.ex.util.ReentrantLockSingleton;
 
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 public final class UserServiceImpl implements IUserService {
 	private final IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
+	private final ReentrantLock reentrantLock = ReentrantLockSingleton.getInstance();
 
 	@Override
 	public NewUserInfo signIn(String login, String password) throws ServiceException {
@@ -26,10 +29,7 @@ public final class UserServiceImpl implements IUserService {
 	@Override
 	public void registration(NewUserInfo user) throws ServiceException {
 
-
-
-		//TODO
-
+		reentrantLock.lock();
 
 		try {
 			if (userDAO.isExistUser(user)) {
@@ -39,6 +39,9 @@ public final class UserServiceImpl implements IUserService {
 		}
 		catch (DaoException e) {
 			throw new ServiceException(e);
+		}
+		finally {
+			reentrantLock.unlock();
 		}
 	}
 
