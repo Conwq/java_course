@@ -13,11 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public final class UserServiceImpl implements IUserService {
 	private final IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
-<<<<<<< HEAD
 	private final ReentrantLock reentrantLock = ReentrantLockSingleton.getInstance().getReentrantLock();
-=======
-	private final ReentrantLock reentrantLock = ReentrantLockSingleton.getInstance();
->>>>>>> 4673edc38e4c0758e6556f7badd7b7bb6611b3b4
 
 	@Override
 	public NewUserInfo signIn(String login, String password) throws ServiceException {
@@ -36,9 +32,6 @@ public final class UserServiceImpl implements IUserService {
 		try {
 			reentrantLock.lock();
 
-			if (userDAO.isExistUser(user)) {
-				throw new ServiceException("User with this email exists");
-			}
 			userDAO.registration(user);
 		}
 		catch (DaoException e) {
