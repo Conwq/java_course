@@ -5,16 +5,18 @@ import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
+import by.htp.ex.util.validation.UserDataValidation;
+import by.htp.ex.util.validation.ValidationProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 public class DoEditUserInfo implements Command {
-	private static final IUserService userService = ServiceProvider.getInstance().getUserService();
+	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
+	private final static UserDataValidation validation = ValidationProvider.getInstance().getUserValidator();
 	private final static String JSP_ID_PARAM = "id";
 	private final static String JSP_LOGIN_PARAM = "login";
 	private final static String JSP_EMAIL_PARAM = "email";
@@ -28,25 +30,21 @@ public class DoEditUserInfo implements Command {
 		String email = request.getParameter(JSP_EMAIL_PARAM);
 		String password = request.getParameter(JSP_PASSWORD_PARAM);
 		
-		if(!isValidData(login, email, password)) {
+		if(validation.isValidData(login, email, password)) {
 			response.sendRedirect("/error/error.jsp");
 			return;
 		}
 		
-		try{
-			password = null;
+		try {
 			int id = Integer.parseInt(idParam);
 			String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 			NewUserInfo newUserInfo = new NewUserInfo(id, login, email, hashedPassword);
-			userService.updateUserInfo(newUserInfo);
+ 			userService.updateUserInfo(newUserInfo);
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch (NumberFormatException | ServiceException e){
+			e.printStackTrace();
 			response.sendRedirect("/error/error.jsp");
 		}
-	}
-	
-	public boolean isValidData(String login, String email, String password) {
-		return login.length() >= 1 && email.length() >= 1 && password.length() >= 1;
 	}
 }

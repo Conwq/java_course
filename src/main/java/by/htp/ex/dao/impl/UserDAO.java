@@ -1,7 +1,6 @@
 package by.htp.ex.dao.impl;
 
 import by.htp.ex.bean.NewUserInfo;
-import by.htp.ex.bean.Role;
 import by.htp.ex.dao.IUserDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.util.ConstantsName;
@@ -24,17 +23,15 @@ public final class UserDAO implements IUserDAO {
 	}
 
 	//Если пользователь есть, то возвращает true инчае false
-	private final static String SQL_QUERY_GET_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
-	private boolean isExistUser(NewUserInfo user) throws SQLException {
+	private final static String SQL_QUERY_GET_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ? OR login = ?";
+	private boolean isExistUser(NewUserInfo user, Connection connection) throws SQLException {
+		PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY_GET_USER_BY_EMAIL);
 
-		try (Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			 PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY_GET_USER_BY_EMAIL)) {
+		preparedStatement.setString(1, user.getEmail());
+		preparedStatement.setString(2, user.getLogin());
+		ResultSet resultSet = preparedStatement.executeQuery();
 
-			preparedStatement.setString(1, user.getEmail());
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			return resultSet.next();
-		}
+		return resultSet.next();
 	}
 
 	private final static String SQL_QUERY_ADD_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
@@ -49,27 +46,24 @@ public final class UserDAO implements IUserDAO {
 
 			preparedStatement = connection.prepareStatement(SQL_QUERY_ADD_USER);
 
-			if (!isExistUser(user)){
+			if (!isExistUser(user, connection)){
 				preparedStatement.setString(1, user.getLogin());
 				preparedStatement.setString(2, user.getPassword());
 				preparedStatement.setString(3, user.getEmail());
 				
-				System.out.println(user.getPassword());
-
 				preparedStatement.executeUpdate();
 				connection.commit();
 			}
 			else {
 				connection.rollback();
-				throw new DaoException("User with this email exists");
+				throw new DaoException("User with this email or login exists");
 			}
 		}
 		catch (SQLException e) {
 			helper.exceptionSQLHandler(connection, e);
 		}
 		finally {
-			helper.closeConnectionResources(preparedStatement);
-			helper.closeConnectionResources(connection);
+			helper.closeConnectionResources(connection, preparedStatement);
 		}
 	}
 
@@ -98,9 +92,7 @@ public final class UserDAO implements IUserDAO {
 			throw new DaoException(e);
 		}
 		finally {
-			helper.closeConnectionResources(resultSet);
-			helper.closeConnectionResources(preparedStatement);
-			helper.closeConnectionResources(connection);
+			helper.closeConnectionResources(connection, preparedStatement, resultSet);
 		}
 	}
 
@@ -126,9 +118,7 @@ public final class UserDAO implements IUserDAO {
 			throw new DaoException(e);
 		}
 		finally {
-			helper.closeConnectionResources(resultSet);
-			helper.closeConnectionResources(preparedStatement);
-			helper.closeConnectionResources(connection);
+			helper.closeConnectionResources(connection, preparedStatement, resultSet);
 		}
 
 		return usersInfo;
@@ -160,9 +150,7 @@ public final class UserDAO implements IUserDAO {
 			throw new DaoException(e);
 		}
 		finally{
-			helper.closeConnectionResources(resultSet);
-			helper.closeConnectionResources(preparedStatement);
-			helper.closeConnectionResources(connection);
+			helper.closeConnectionResources(connection, preparedStatement, resultSet);
 		}
 	}
 
@@ -186,8 +174,7 @@ public final class UserDAO implements IUserDAO {
 			throw new DaoException(e);
 		}
 		finally {
-			helper.closeConnectionResources(preparedStatement);
-			helper.closeConnectionResources(connection);
+			helper.closeConnectionResources(connection, preparedStatement);
 		}
 	}
 }

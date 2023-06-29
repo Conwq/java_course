@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 public final class UserServiceImpl implements IUserService {
-	private final IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
-	private final ReentrantLock reentrantLock = ReentrantLockSingleton.getInstance().getReentrantLock();
+	private final static IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
+	private final static ReentrantLock reentrantLock = ReentrantLockSingleton.getInstance().getReentrantLock();
 
 	@Override
 	public NewUserInfo signIn(String login, String password) throws ServiceException {

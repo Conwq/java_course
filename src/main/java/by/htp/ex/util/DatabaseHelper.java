@@ -3,13 +3,12 @@ package by.htp.ex.util;
 import by.htp.ex.bean.NewUserInfo;
 import by.htp.ex.bean.Role;
 import by.htp.ex.dao.exception.DaoException;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.mindrot.jbcrypt.BCrypt;
 
 public class DatabaseHelper {
 
@@ -35,27 +34,29 @@ public class DatabaseHelper {
 		throw new DaoException(e);
 	}
 
-	public void closeConnectionResources(PreparedStatement preparedStatement) throws DaoException{
+	public void closeConnectionResources(Connection connection, PreparedStatement preparedStatement) throws DaoException{
+
 		if (preparedStatement != null) {
 			try {
 				preparedStatement.close();
-			} catch (SQLException e) {
+			}
+			catch (SQLException e) {
 				throw new DaoException(e);
 			}
 		}
-	}
 
-	public void closeConnectionResources(Connection connection) throws DaoException{
 		if (connection != null) {
 			try {
 				connection.close();
-			} catch (SQLException e) {
+			}
+			catch (SQLException e) {
 				throw new DaoException(e);
 			}
 		}
 	}
 
-	public void closeConnectionResources(ResultSet resultSet) throws DaoException{
+	public void closeConnectionResources(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) throws DaoException{
+
 		if (resultSet != null) {
 			try {
 				resultSet.close();
@@ -63,6 +64,7 @@ public class DatabaseHelper {
 				throw new DaoException(e);
 			}
 		}
+		closeConnectionResources(connection, preparedStatement);
 	}
 
 
@@ -78,13 +80,7 @@ public class DatabaseHelper {
 	
 	public NewUserInfo parseUserInfo(ResultSet resultSet, String password) throws SQLException, DaoException{
 		if(BCrypt.checkpw(password, resultSet.getString("password"))) {
-			NewUserInfo newUserInfo = new NewUserInfo();
-			newUserInfo.setUserId(resultSet.getInt("id"));
-			newUserInfo.setLogin(resultSet.getString("login"));
-			newUserInfo.setPassword(resultSet.getString("password"));
-			newUserInfo.setEmail(resultSet.getString("email"));
-			newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
-			return newUserInfo;
+			return parseUserInfo(resultSet);
 		}
 		else {
 			throw new DaoException("Not valid password");
