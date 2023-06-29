@@ -34,7 +34,6 @@ public final class CommandProvider {
 
 	public Command getCommand(String command) {
 		CommandName commandName;
-
 		try {
 			commandName = CommandName.valueOf(command.toUpperCase());
 		}

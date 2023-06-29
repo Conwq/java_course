@@ -31,7 +31,6 @@ public final class UserServiceImpl implements IUserService {
 
 		try {
 			reentrantLock.lock();
-
 			userDAO.registration(user);
 		}
 		catch (DaoException e) {

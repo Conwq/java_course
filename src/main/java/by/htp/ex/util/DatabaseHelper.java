@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class DatabaseHelper {
 
 	private final static DatabaseHelper instance = new DatabaseHelper();
@@ -72,5 +74,20 @@ public class DatabaseHelper {
 		newUserInfo.setEmail(resultSet.getString("email"));
 		newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
 		return newUserInfo;
+	}
+	
+	public NewUserInfo parseUserInfo(ResultSet resultSet, String password) throws SQLException, DaoException{
+		if(BCrypt.checkpw(password, resultSet.getString("password"))) {
+			NewUserInfo newUserInfo = new NewUserInfo();
+			newUserInfo.setUserId(resultSet.getInt("id"));
+			newUserInfo.setLogin(resultSet.getString("login"));
+			newUserInfo.setPassword(resultSet.getString("password"));
+			newUserInfo.setEmail(resultSet.getString("email"));
+			newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+			return newUserInfo;
+		}
+		else {
+			throw new DaoException("Not valid password");
+		}
 	}
 }

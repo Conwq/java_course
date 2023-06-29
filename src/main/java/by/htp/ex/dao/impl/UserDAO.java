@@ -53,6 +53,8 @@ public final class UserDAO implements IUserDAO {
 				preparedStatement.setString(1, user.getLogin());
 				preparedStatement.setString(2, user.getPassword());
 				preparedStatement.setString(3, user.getEmail());
+				
+				System.out.println(user.getPassword());
 
 				preparedStatement.executeUpdate();
 				connection.commit();
@@ -71,7 +73,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_QUERY_GET_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE login = ? AND password = ?";
+	private final static String SQL_QUERY_GET_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE login = ?";
 	@Override
 	public NewUserInfo authorization(String login, String password) throws DaoException {
 		Connection connection = null;
@@ -83,14 +85,13 @@ public final class UserDAO implements IUserDAO {
 			preparedStatement = connection.prepareStatement(SQL_QUERY_GET_USER_BY_LOGIN_AND_PASSWORD);
 
 			preparedStatement.setString(1, login);
-			preparedStatement.setString(2, password);
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
-				return helper.parseUserInfo(resultSet);
+				return helper.parseUserInfo(resultSet, password);
 			}
 			else {
-				throw new DaoException("No user found with this login and password");
+				throw new DaoException("User not found with this login");
 			}
 		}
 		catch (SQLException e) {

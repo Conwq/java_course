@@ -16,14 +16,14 @@
     <input type="hidden" name="command" value="do_edit_user_info"/>
     <input type="hidden" name="id" value="${sessionScope.userInfo.userId}">
 
-    <label for="login">Old login:</label><br>
-    <input type="text" name="login" id="login" value="${sessionScope.userInfo.login}"/><br> <br>
+    <label for="login">Old login:</label> <br>
+    <input type="text" name="login" id="login" value="${sessionScope.userInfo.login}"/> <br><br>
 
     <label for="email">Old email:</label><br>
-    <input type="text" name="email" id="email" value="${sessionScope.userInfo.email}"/><br> <br>
+    <input type="text" name="email" id="email" value="${sessionScope.userInfo.email}"/> <br><br>
 
-    <label for="password">Old password:</label><br>
-    <input type="text" name="password" id="password" value="${sessionScope.userInfo.password}"/><br> <br>
+    <label for="password">Enter new password:</label> <br>
+    <input type="text" name="password" id="password" value=""/> <br><br>
 
     <input type="submit" value="Edit"/>
 </form>

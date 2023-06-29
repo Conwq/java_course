@@ -10,6 +10,7 @@ import by.htp.ex.service.exception.ServiceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.mindrot.jbcrypt.BCrypt;
 
 public final class DoRegistration implements Command {
 	private static final String JSP_LOGIN_PARAM = "login";
@@ -31,9 +32,11 @@ public final class DoRegistration implements Command {
 			response.sendRedirect("controller?command=go_to_registration_page");
 			return;
 		}
-
+		
 		try {
-			NewUserInfo user = new NewUserInfo(login, email, password);
+			String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+			password = null;
+			NewUserInfo user = new NewUserInfo(login, email, hashedPassword);
 			userService.registration(user);
 			response.sendRedirect("controller?command=go_to_base_page");
 		}

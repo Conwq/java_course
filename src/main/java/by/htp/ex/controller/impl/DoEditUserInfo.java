@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class DoEditUserInfo implements Command {
 	private static final IUserService userService = ServiceProvider.getInstance().getUserService();
 	private final static String JSP_ID_PARAM = "id";
@@ -25,15 +27,26 @@ public class DoEditUserInfo implements Command {
 		String login = request.getParameter(JSP_LOGIN_PARAM);
 		String email = request.getParameter(JSP_EMAIL_PARAM);
 		String password = request.getParameter(JSP_PASSWORD_PARAM);
-
+		
+		if(!isValidData(login, email, password)) {
+			response.sendRedirect("/error/error.jsp");
+			return;
+		}
+		
 		try{
+			password = null;
 			int id = Integer.parseInt(idParam);
-			NewUserInfo newUserInfo = new NewUserInfo(id, login, email, password);
+			String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+			NewUserInfo newUserInfo = new NewUserInfo(id, login, email, hashedPassword);
 			userService.updateUserInfo(newUserInfo);
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch (NumberFormatException | ServiceException e){
 			response.sendRedirect("/error/error.jsp");
 		}
+	}
+	
+	public boolean isValidData(String login, String email, String password) {
+		return login.length() >= 1 && email.length() >= 1 && password.length() >= 1;
 	}
 }
