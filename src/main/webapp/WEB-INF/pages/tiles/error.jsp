@@ -8,4 +8,4 @@
     </div>
 </c:if>
 
-<a href="${pageContext.request.contextPath}/index.jsp">Back</a>
+<a href="${pageContext.request.contextPath}/index.jsp">Go to main page</a>

@@ -4,13 +4,14 @@ import by.htp.ex.bean.News;
 import by.htp.ex.dao.INewsDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.util.ConstantsName;
+import by.htp.ex.util.DatabaseHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class NewsDAO implements INewsDAO {
-
+	private final static DatabaseHelper helper = DatabaseHelper.getInstance();
 	static {
 		try {
 			Class.forName(ConstantsName.DB_DRIVER);
@@ -26,18 +27,22 @@ public final class NewsDAO implements INewsDAO {
 	////////////////////////////////////////////////////
 	//TODO Этот метод пересмотреть, он должен возвращать последние 5 новостей. Сделать что нибудь с count
 
-	private final static String SQL_QUERY_GET_LATEST_NEWS = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
 	@Override
 	public List<News> getLatestList(int count) throws DaoException {
-		List<News> news = new ArrayList<>();
+		List<News> news = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 
-		try(Connection connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = connection.prepareStatement(SQL_QUERY_GET_LATEST_NEWS)){
-			statement.setInt(1, count);
-			ResultSet resultSet = statement.executeQuery();
+		try{
+			connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
+			preparedStatement = connection.prepareStatement("SELECT * FROM news ORDER BY news_date DESC LIMIT ?");
+			preparedStatement.setInt(1, count);
+			resultSet = preparedStatement.executeQuery();
+			news = new ArrayList<>();
 
 			while (resultSet.next()){
-				News findNews = getNewsFromResultSet(resultSet);
+				News findNews = helper.parseNews(resultSet);
 				news.add(findNews);
 			}
 
@@ -45,6 +50,9 @@ public final class NewsDAO implements INewsDAO {
 		}
 		catch (SQLException e){
 			throw new DaoException(e);
+		}
+		finally {
+			helper.closeConnectionResources(connection, preparedStatement, resultSet);
 		}
 	}
 
@@ -58,7 +66,7 @@ public final class NewsDAO implements INewsDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			while(resultSet.next()){
-				News findNews = getNewsFromResultSet(resultSet);
+				News findNews = helper.parseNews(resultSet);
 				news.add(findNews);
 			}
 
@@ -80,7 +88,7 @@ public final class NewsDAO implements INewsDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			if (resultSet.next()) {
-				findNews = getNewsFromResultSet(resultSet);
+				findNews = helper.parseNews(resultSet);
 			}
 
 			return findNews;
@@ -155,17 +163,5 @@ public final class NewsDAO implements INewsDAO {
 		catch (SQLException e){
 			throw new DaoException(e);
 		}
-	}
-
-	private News getNewsFromResultSet(ResultSet resultSet) throws SQLException{
-		News findNews = new News();
-		findNews.setIdNews(resultSet.getInt("news_id"));
-		findNews.setTitle(resultSet.getString("title"));
-		findNews.setBriefNews(resultSet.getString("brief_news"));
-		findNews.setContent(resultSet.getString("content"));
-		findNews.setNewsDate(resultSet.getString("news_date"));
-		findNews.setPhotoPath(resultSet.getString("photo_path"));
-
-		return findNews;
 	}
 }

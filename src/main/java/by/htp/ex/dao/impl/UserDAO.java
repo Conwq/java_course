@@ -22,10 +22,8 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	//Если пользователь есть, то возвращает true инчае false
-	private final static String SQL_QUERY_GET_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ? OR login = ?";
 	private boolean isExistUser(NewUserInfo user, Connection connection) throws SQLException {
-		PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY_GET_USER_BY_EMAIL);
+		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ? OR login = ?");
 
 		preparedStatement.setString(1, user.getEmail());
 		preparedStatement.setString(2, user.getLogin());
@@ -34,7 +32,6 @@ public final class UserDAO implements IUserDAO {
 		return resultSet.next();
 	}
 
-	private final static String SQL_QUERY_ADD_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
 	@Override
 	public void registration(NewUserInfo user) throws DaoException {
 		Connection connection = null;
@@ -44,7 +41,7 @@ public final class UserDAO implements IUserDAO {
 			connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
 			connection.setAutoCommit(false);
 
-			preparedStatement = connection.prepareStatement(SQL_QUERY_ADD_USER);
+			preparedStatement = connection.prepareStatement("INSERT INTO users (login, password, email) VALUES (?, ?, ?)");
 
 			if (!isExistUser(user, connection)){
 				preparedStatement.setString(1, user.getLogin());
@@ -66,8 +63,7 @@ public final class UserDAO implements IUserDAO {
 			helper.closeConnectionResources(connection, preparedStatement);
 		}
 	}
-
-	private final static String SQL_QUERY_GET_USER_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE login = ?";
+	
 	@Override
 	public NewUserInfo authorization(String login, String password) throws DaoException {
 		Connection connection = null;
@@ -76,7 +72,7 @@ public final class UserDAO implements IUserDAO {
 
 		try {
 			connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			preparedStatement = connection.prepareStatement(SQL_QUERY_GET_USER_BY_LOGIN_AND_PASSWORD);
+			preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE login = ?");
 
 			preparedStatement.setString(1, login);
 			resultSet = preparedStatement.executeQuery();
@@ -96,7 +92,6 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_QUERY_GET_LIST_USERS = "SELECT * FROM users";
 	@Override
 	public List<NewUserInfo> getUsers() throws DaoException {
 		Connection connection = null;
@@ -106,7 +101,7 @@ public final class UserDAO implements IUserDAO {
 
 		try {
 			connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			preparedStatement = connection.prepareStatement(SQL_QUERY_GET_LIST_USERS);
+			preparedStatement = connection.prepareStatement("SELECT * FROM users");
 			resultSet = preparedStatement.executeQuery();
 			usersInfo = new ArrayList<>();
 
@@ -124,7 +119,6 @@ public final class UserDAO implements IUserDAO {
 		return usersInfo;
 	}
 
-	private final static String SQL_QUERY_GET_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
 	@Override
 	public NewUserInfo getUser(int id) throws DaoException {
 		Connection connection = null;
@@ -134,7 +128,7 @@ public final class UserDAO implements IUserDAO {
 		try {
 			connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
 
-			preparedStatement = connection.prepareStatement(SQL_QUERY_GET_USER_BY_ID);
+			preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id = ?");
 			preparedStatement.setInt(1, id);
 
 			resultSet = preparedStatement.executeQuery();
@@ -154,7 +148,6 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_QUERY_UPDATE_USER = "UPDATE users SET login=?, password=?, email=? WHERE id=?";
 	@Override
 	public void updateUserInfo(NewUserInfo userInfo) throws DaoException{
 		Connection connection = null;
@@ -163,7 +156,7 @@ public final class UserDAO implements IUserDAO {
 		try {
 			connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
 
-			preparedStatement = connection.prepareStatement(SQL_QUERY_UPDATE_USER);
+			preparedStatement = connection.prepareStatement("UPDATE users SET login=?, password=?, email=? WHERE id=?");
 			preparedStatement.setString(1, userInfo.getLogin());
 			preparedStatement.setString(2, userInfo.getPassword());
 			preparedStatement.setString(3, userInfo.getEmail());
