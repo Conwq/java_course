@@ -78,12 +78,11 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
-	private final static String SQL_QUERY_GET_USER_BY_ID = "SELECT * FROM news WHERE news_id = ?";
 	@Override
 	public News fetchById(int id) throws DaoException {
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL_QUERY_GET_USER_BY_ID)){
+			PreparedStatement statement = con.prepareStatement("SELECT * FROM news WHERE news_id = ?")){
 			News findNews = null;
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
@@ -100,12 +99,11 @@ public final class NewsDAO implements INewsDAO {
 	}
 
 	//Время задается автоматически, прописано в конфиге БД
-	private final static String SQL_QUERY_ADD_NEWS = "INSERT INTO news (title, brief_news, content, photo_path, users_id, news_date) VALUES (?,?,?,?,?, NOW())";
 	@Override
 	public void addNews(News news) throws DaoException {
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL_QUERY_ADD_NEWS)){
+			PreparedStatement statement = con.prepareStatement("INSERT INTO news (title, brief_news, content, photo_path, users_id, news_date) VALUES (?,?,?,?,?, NOW())")){
 			statement.setString(1, news.getTitle());
 			statement.setString(2, news.getBriefNews());
 			statement.setString(3, news.getContent());
@@ -118,12 +116,11 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
-	private final static String SQL_QUERY_UPDATE_NEWS = "UPDATE news SET title=?, brief_news=?, content=?, news_date=?, photo_path=? WHERE news_id=?";
 	@Override
 	public void updateNews(News news) throws DaoException {
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL_QUERY_UPDATE_NEWS)){
+			PreparedStatement statement = con.prepareStatement("UPDATE news SET title=?, brief_news=?, content=?, news_date=?, photo_path=? WHERE news_id=?")){
 			statement.setString(1, news.getTitle());
 			statement.setString(2, news.getBriefNews());
 			statement.setString(3, news.getContent());
@@ -137,12 +134,12 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
-	private final static String SQL_QUERY_DELETE_NEWSES = "DELETE FROM news WHERE news_id IN (?)";
+	//TODO при удалении новостей, мы будем менять статус колонки в таблице, которая будет очищаться через месяц, и вот именно по этой колонке и будет проходить удаление
 	@Override
 	public void deleteNewses(String[] idNewses) throws DaoException {
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL_QUERY_DELETE_NEWSES)){
+			PreparedStatement statement = con.prepareStatement("DELETE FROM news WHERE news_id IN (?)")){
 
 			statement.setArray(1, con.createArrayOf("INTEGER", idNewses));
 			statement.executeUpdate();
@@ -152,12 +149,11 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
-	private final static String SQL_QUERY_DELETE_NEWS ="DELETE FROM news WHERE news_id = ?";
 	@Override
 	public void deleteNews(int id) throws DaoException {
 
 		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL_QUERY_DELETE_NEWS)){
+			PreparedStatement statement = con.prepareStatement("DELETE FROM news WHERE news_id = ?")){
 			statement.setInt(1, id);
 			statement.executeUpdate();
 		}

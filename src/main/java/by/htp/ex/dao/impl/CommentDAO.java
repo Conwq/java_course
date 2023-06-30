@@ -51,7 +51,7 @@ public class CommentDAO implements ICommentDAO{
 				
 				//TODO тут нужно форматировать дату, для того, чтобы ее добавить в качестве поля объекту
 				//TODO обязательно проверить
-				comment.setDate(resultSet.getDate("publication date"));
+				comment.setDate(resultSet.getDate("publication_date"));
 				
 				//TODO тоже исправить, придумать какой нибудь маппер + добавить SQL запрос на получение новости по id из БД
 //				comment.setNews((News)(resultSet.getObject("news_id")));

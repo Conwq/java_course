@@ -87,6 +87,7 @@ public class DatabaseHelper {
 		newUserInfo.setLogin(resultSet.getString("login"));
 		newUserInfo.setEmail(resultSet.getString("email"));
 		newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
+		
 		return newUserInfo;
 	}
 	

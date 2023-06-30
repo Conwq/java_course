@@ -28,6 +28,7 @@ public final class CommandProvider {
 		commands.put(CommandName.GO_TO_USERS_LIST, new GoToUsersList());
 		commands.put(CommandName.GO_TO_PERSONAL_CABINET, new GoToPersonalCabinet());
 		commands.put(CommandName.DO_EDIT_USER_INFO, new DoEditUserInfo());
+		commands.put(CommandName.DO_ADD_COMMENT, new DoAddComment());
 
 		commands.put(CommandName.NO_COMMAND, new NoCommand());
 	}
