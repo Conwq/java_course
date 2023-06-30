@@ -12,6 +12,7 @@ import java.util.List;
 
 public final class NewsDAO implements INewsDAO {
 	private final static DatabaseHelper helper = DatabaseHelper.getInstance();
+	
 	static {
 		try {
 			Class.forName(ConstantsName.DB_DRIVER);

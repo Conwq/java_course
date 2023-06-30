@@ -8,6 +8,10 @@ public final class Comment {
 	private News news;
 	private Date date;
 	private String text;
+	
+	public Comment() {
+		
+	}
 
 	public Comment(NewUserInfo user, News news, Date date, String text) {
 		this.user = user;
