@@ -9,8 +9,7 @@
 <body>
 
   <h1>It`s error page</h1> <br> <br>
-  <a href="${pageContext.request.contextPath}/index.jsp">Back</a>
-
+  <a href="${pageContext.request.contextPath}/index.jsp">Go to main page</a>
 
 </body>
 </html>

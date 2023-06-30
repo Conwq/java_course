@@ -54,7 +54,14 @@
 			</form>
 		</div>
 	</c:if>
-	<img src="${requestScope.news.photoPath}" alt="Not photo"/>
+	<img src="${requestScope.news.photoPath}" alt="Not photo"/> <br><br>
+	
+	<hr>
+	
+	<c:import url="/WEB_INF/pages/tiles/comments.jsp"/>
+	
+	
+	
 </div>
 
 

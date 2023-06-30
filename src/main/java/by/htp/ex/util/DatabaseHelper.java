@@ -72,7 +72,6 @@ public class DatabaseHelper {
 		NewUserInfo newUserInfo = new NewUserInfo();
 		newUserInfo.setUserId(resultSet.getInt("id"));
 		newUserInfo.setLogin(resultSet.getString("login"));
-		newUserInfo.setPassword(resultSet.getString("password"));
 		newUserInfo.setEmail(resultSet.getString("email"));
 		newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
 		return newUserInfo;
