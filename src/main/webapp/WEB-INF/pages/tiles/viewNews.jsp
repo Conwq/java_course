@@ -57,8 +57,8 @@
 	<img src="${requestScope.news.photoPath}" alt="Not photo"/> <br><br>
 	
 	<hr>
-	
-	<c:import url="/WEB_INF/pages/tiles/comments.jsp"/>
+
+	<c:import url="/WEB-INF/pages/tiles/comments.jsp"/>
 	
 	
 	

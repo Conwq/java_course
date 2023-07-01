@@ -4,7 +4,7 @@ import java.util.Date;
 
 public final class Comment {
 	private int commentId;
-	private NewUserInfo user;
+	private NewUserInfo newUserInfo;
 	private News news;
 	private Date date;
 	private String text;
@@ -13,10 +13,9 @@ public final class Comment {
 		
 	}
 
-	public Comment(NewUserInfo user, News news, Date date, String text) {
-		this.user = user;
+	public Comment(NewUserInfo newUserInfo, News news, String text) {
+		this.newUserInfo = newUserInfo;
 		this.news = news;
-		this.date = date;
 		this.text = text;
 	}
 	
@@ -29,11 +28,11 @@ public final class Comment {
 	}
 	
 	public NewUserInfo getNewUserInfo() {
-		return user;
+		return newUserInfo;
 	}
 	
 	public void setNewUserInfo(NewUserInfo user) {
-		this.user = user;
+		this.newUserInfo = user;
 	}
 	
 	public News getNews() {
@@ -58,5 +57,16 @@ public final class Comment {
 	
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getName() +"{" +
+				"commentId=" + commentId +
+				", user=" + newUserInfo +
+				", news=" + news +
+				", date=" + date +
+				", text='" + text + '\'' +
+				'}';
 	}
 }

@@ -32,8 +32,8 @@ public final class GoToViewNews implements Command {
 		try {
 			int parseId = Integer.parseInt(id);
 			News news  = newsService.findById(parseId);
-			
-			
+
+
 			//TODO получаем комментарии которые относится к нашей новости
 			List<Comment> comments = commentService.findByIdNews(parseId);
 			
@@ -43,6 +43,7 @@ public final class GoToViewNews implements Command {
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		}
 		catch (NumberFormatException | ServiceException e){
+			e.printStackTrace();
 			response.sendRedirect("/error/error.jsp");
 		}
 	}

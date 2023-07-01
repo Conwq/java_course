@@ -46,8 +46,6 @@ public final class NewsDAO implements INewsDAO {
 				News findNews = helper.parseNews(resultSet);
 				news.add(findNews);
 			}
-
-			return news;
 		}
 		catch (SQLException e){
 			throw new DaoException(e);
@@ -55,6 +53,7 @@ public final class NewsDAO implements INewsDAO {
 		finally {
 			helper.closeConnectionResources(connection, preparedStatement, resultSet);
 		}
+		return news;
 	}
 
 	private final static String SQL_QUERY_GET_NEWS_LIST = "SELECT * FROM news ORDER BY news_date DESC";
@@ -70,12 +69,11 @@ public final class NewsDAO implements INewsDAO {
 				News findNews = helper.parseNews(resultSet);
 				news.add(findNews);
 			}
-
-			return news;
 		}
 		catch (SQLException e){
 			throw new DaoException(e);
 		}
+		return news;
 	}
 
 	@Override

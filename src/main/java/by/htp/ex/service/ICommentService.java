@@ -8,4 +8,5 @@ import by.htp.ex.service.exception.ServiceException;
 public interface ICommentService {
 	
 	List<Comment> findByIdNews(int id) throws ServiceException;
+	void addComment(String text, int userId, int newsId) throws ServiceException;
 }

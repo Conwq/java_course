@@ -19,12 +19,6 @@ public final class FrontController extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
- //		try {
-//			connectionPool.initConnectionPool();
-//		}
-//		catch (ConnectionPoolException e) {
-//			throw new ServletException("Failed to connect to database");
-//		}
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

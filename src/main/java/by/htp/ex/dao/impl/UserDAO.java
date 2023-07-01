@@ -158,7 +158,6 @@ public final class UserDAO implements IUserDAO {
 
 			preparedStatement = connection.prepareStatement("UPDATE users SET login=?, password=?, email=? WHERE id=?");
 			preparedStatement.setString(1, userInfo.getLogin());
-			preparedStatement.setString(2, userInfo.getPassword());
 			preparedStatement.setString(3, userInfo.getEmail());
 			preparedStatement.setInt(4, userInfo.getUserId());
 			preparedStatement.executeUpdate();
