@@ -35,9 +35,6 @@ public class CommentDAO implements ICommentDAO{
 		
 		try {
 			connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			
-			//TODO написать JOIN на получение данных и из user и из news
-//			preparedStatement = connection.prepareStatement("SELECT * FROM comments WHERE news_id = ?");
 			preparedStatement = connection.prepareStatement("SELECT * FROM news "
 															+ "JOIN comments ON news.news_id = comments.news_id "
 															+ "JOIN users ON comments.users_id = users.id "
@@ -49,28 +46,20 @@ public class CommentDAO implements ICommentDAO{
 			
 			while (resultSet.next()){
 				Comment comment = new Comment();
-
 				comment.setCommentId(resultSet.getInt("comment_id"));
-
 				comment.setText(resultSet.getString("text"));
-
-				//TODO отображается только дата, но еще нужно и время
-				comment.setDate(resultSet.getDate("date_comment"));
-
+				comment.setDate(resultSet.getTimestamp("date_comment"));
 				comment.setNewUserInfo(helper.parseUserInfo(resultSet));
-
 				comment.setNews(helper.parseNews(resultSet));
-
 				comments.add(comment);
 			}
 		}
-		catch(Exception e) {
-			e.printStackTrace();
+		catch(SQLException e) {
+			throw new DaoException(e);
 		}
 		finally {
 			helper.closeConnectionResources(connection, preparedStatement, resultSet);
 		}
-		System.out.println(comments);
 		return comments;
 	}
 

@@ -16,7 +16,7 @@ public final class ConnectionPool {
 	private final String url;
 	private final String user;
 	private final String password;
-	private int countPool;
+	private int poolSize;
 
 	private BlockingQueue<Connection> queueAvailableConnection;
 	private BlockingQueue<Connection> queueTakenConnection;
@@ -29,10 +29,10 @@ public final class ConnectionPool {
 		this.user = resources.getValue(DBParameters.DB_USER);
 		this.password = resources.getValue(DBParameters.DB_PASSWORD);
 		try {
-			this.countPool = Integer.parseInt(resources.getValue(DBParameters.DB_COUNT_POOL));
+			this.poolSize = Integer.parseInt(resources.getValue(DBParameters.DB_POOL_SIZE));
 		}
 		catch (NumberFormatException e) {
-			this.countPool = 2;
+			this.poolSize = 3;
 		}
 	}
 
@@ -44,10 +44,10 @@ public final class ConnectionPool {
 
 		try {
 			Class.forName(driver);
-			queueAvailableConnection = new ArrayBlockingQueue<>(countPool);
-			queueTakenConnection = new ArrayBlockingQueue<>(countPool);
+			queueAvailableConnection = new ArrayBlockingQueue<>(poolSize);
+			queueTakenConnection = new ArrayBlockingQueue<>(poolSize);
 
-			for (int i = 0; i < countPool; i++) {
+			for (int i = 0; i < poolSize; i++) {
 				Connection connection = DriverManager.getConnection(url, user, password);
 				PooledConnection pooledConnection = new PooledConnection(connection);
 				queueAvailableConnection.add(pooledConnection);
@@ -70,11 +70,7 @@ public final class ConnectionPool {
 
 		try {
 			connection = queueAvailableConnection.take();
-			PooledConnection pooledConnection = new PooledConnection(connection);
-			queueTakenConnection.add(pooledConnection);
-		}
-		catch (SQLException e) {
-			throw new ConnectionPoolException(e);
+			queueTakenConnection.add(connection);
 		}
 		catch (InterruptedException e) {
 			throw new ConnectionPoolException("Error with taken connection from queueAvailableConnection", e);
@@ -159,7 +155,18 @@ public final class ConnectionPool {
 
 		@Override
 		public void close() throws SQLException {
-			connection.close();
+			if(connection.isClosed()){
+				throw new SQLException("Attempting to close closed");
+			}
+			if (connection.isReadOnly()){
+				connection.setReadOnly(false);
+			}
+			if (!queueTakenConnection.remove(this)){
+				throw new SQLException("Error deleting connection from the given");
+			}
+			if (!queueAvailableConnection.offer(this)){
+				throw new SQLException("Error allocating connection in the pool");
+			}
 		}
 
 		@Override
