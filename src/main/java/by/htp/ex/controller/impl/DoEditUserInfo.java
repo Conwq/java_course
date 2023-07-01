@@ -43,7 +43,6 @@ public class DoEditUserInfo implements Command {
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch (NumberFormatException | ServiceException e){
-			e.printStackTrace();
 			response.sendRedirect("/error/error.jsp");
 		}
 	}

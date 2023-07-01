@@ -11,36 +11,27 @@ import java.util.List;
 import by.htp.ex.bean.Comment;
 import by.htp.ex.dao.ICommentDAO;
 import by.htp.ex.dao.exception.DaoException;
+import by.htp.ex.dao.pool.ConnectionPool;
+import by.htp.ex.dao.pool.ConnectionPoolException;
 import by.htp.ex.util.ConstantsName;
 import by.htp.ex.util.DatabaseHelper;
 
 public class CommentDAO implements ICommentDAO{
 	private final static DatabaseHelper helper = DatabaseHelper.getInstance();
-	
-	static {
-		try {
-			Class.forName(ConstantsName.DB_DRIVER);
-		}
-		catch(ClassNotFoundException e) {
-			System.out.println("Class not found");
-		}
-	}
+	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
 	@Override
 	public List<Comment> findByIdNews(int id) throws DaoException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
 		List<Comment> comments = null;
 		
-		try {
-			connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			preparedStatement = connection.prepareStatement("SELECT * FROM news "
-															+ "JOIN comments ON news.news_id = comments.news_id "
-															+ "JOIN users ON comments.users_id = users.id "
-															+ "WHERE news.news_id = ?");
+		try (Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM news "
+																					+ "JOIN comments ON news.news_id = comments.news_id "
+																					+ "JOIN users ON comments.users_id = users.id "
+																					+ "WHERE news.news_id = ?")) {
+
 			preparedStatement.setInt(1, id);
-			resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = preparedStatement.executeQuery();
 
 			comments = new ArrayList<>();
 			
@@ -54,34 +45,26 @@ public class CommentDAO implements ICommentDAO{
 				comments.add(comment);
 			}
 		}
-		catch(SQLException e) {
+		catch(SQLException | ConnectionPoolException e) {
 			throw new DaoException(e);
-		}
-		finally {
-			helper.closeConnectionResources(connection, preparedStatement, resultSet);
 		}
 		return comments;
 	}
 
 	@Override
 	public void addComment(String text, int userId, int newsId) throws DaoException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
 
-		try{
-			connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			preparedStatement = connection.prepareStatement("INSERT INTO comments (text, news_id, users_id) VALUES (?,?,?)");
+		try (Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO comments (text, news_id, users_id) VALUES (?,?,?)")){
+
 			preparedStatement.setString(1, text);
 			preparedStatement.setInt(2, newsId);
 			preparedStatement.setInt(3, userId);
 
 			preparedStatement.executeUpdate();
 		}
-		catch (SQLException e){
+		catch (SQLException | ConnectionPoolException e){
 			throw new DaoException(e);
-		}
-		finally{
-			helper.closeConnectionResources(connection, preparedStatement);
 		}
 	}
 }

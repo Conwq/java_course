@@ -3,6 +3,8 @@ package by.htp.ex.dao.impl;
 import by.htp.ex.bean.News;
 import by.htp.ex.dao.INewsDAO;
 import by.htp.ex.dao.exception.DaoException;
+import by.htp.ex.dao.pool.ConnectionPool;
+import by.htp.ex.dao.pool.ConnectionPoolException;
 import by.htp.ex.util.ConstantsName;
 import by.htp.ex.util.DatabaseHelper;
 
@@ -12,34 +14,19 @@ import java.util.List;
 
 public final class NewsDAO implements INewsDAO {
 	private final static DatabaseHelper helper = DatabaseHelper.getInstance();
+	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 	
-	static {
-		try {
-			Class.forName(ConstantsName.DB_DRIVER);
-		}
-		catch(ClassNotFoundException e){
-			System.out.println("Class not found");
-		}
-	}
-
-
-	/////////////////////////////////////////////////////
-	////Добавить само создание новости в класс News??///
-	////////////////////////////////////////////////////
 	//TODO Этот метод пересмотреть, он должен возвращать последние 5 новостей. Сделать что нибудь с count
 
 	@Override
 	public List<News> getLatestList(int count) throws DaoException {
 		List<News> news = null;
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
 
-		try{
-			connection = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			preparedStatement = connection.prepareStatement("SELECT * FROM news ORDER BY news_date DESC LIMIT ?");
+		try (Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM news ORDER BY news_date DESC LIMIT ?")){
+
 			preparedStatement.setInt(1, count);
-			resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = preparedStatement.executeQuery();
 			news = new ArrayList<>();
 
 			while (resultSet.next()){
@@ -47,30 +34,26 @@ public final class NewsDAO implements INewsDAO {
 				news.add(findNews);
 			}
 		}
-		catch (SQLException e){
+		catch (SQLException | ConnectionPoolException e){
 			throw new DaoException(e);
-		}
-		finally {
-			helper.closeConnectionResources(connection, preparedStatement, resultSet);
 		}
 		return news;
 	}
 
-	private final static String SQL_QUERY_GET_NEWS_LIST = "SELECT * FROM news ORDER BY news_date DESC";
 	@Override
 	public List<News> getList() throws DaoException {
 		List<News> news = new ArrayList<>();
 
-		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement(SQL_QUERY_GET_NEWS_LIST)){
-			ResultSet resultSet = statement.executeQuery();
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM news ORDER BY news_date DESC");
+			ResultSet resultSet = statement.executeQuery()){
 
 			while(resultSet.next()){
 				News findNews = helper.parseNews(resultSet);
 				news.add(findNews);
 			}
 		}
-		catch (SQLException e){
+		catch (SQLException |ConnectionPoolException e){
 			throw new DaoException(e);
 		}
 		return news;
@@ -78,38 +61,40 @@ public final class NewsDAO implements INewsDAO {
 
 	@Override
 	public News fetchById(int id) throws DaoException {
+		News findNews = null;
 
-		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM news WHERE news_id = ?")){
-			News findNews = null;
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM news WHERE news_id = ?")){
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 
 			if (resultSet.next()) {
 				findNews = helper.parseNews(resultSet);
 			}
-
-			return findNews;
 		}
-		catch (SQLException e){
+		catch (SQLException |ConnectionPoolException e){
 			throw new DaoException(e);
 		}
+		return findNews;
 	}
 
 	//Время задается автоматически, прописано в конфиге БД
 	@Override
 	public void addNews(News news) throws DaoException {
 
-		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement("INSERT INTO news (title, brief_news, content, photo_path, users_id, news_date) VALUES (?,?,?,?,?, NOW())")){
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement statement = connection.prepareStatement(
+					"INSERT INTO news (title, brief_news, content, photo_path, users_id, news_date) VALUES (?,?,?,?,?, NOW())")){
+
 			statement.setString(1, news.getTitle());
 			statement.setString(2, news.getBriefNews());
 			statement.setString(3, news.getContent());
 			statement.setString(4, news.getPhotoPath());
 			statement.setInt(5, news.getNewUserInfo().getUserId());
+
 			statement.executeUpdate();
 		}
-		catch(SQLException e){
+		catch(SQLException |ConnectionPoolException e){
 			throw new DaoException(e);
 		}
 	}
@@ -117,17 +102,20 @@ public final class NewsDAO implements INewsDAO {
 	@Override
 	public void updateNews(News news) throws DaoException {
 
-		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement("UPDATE news SET title=?, brief_news=?, content=?, news_date=?, photo_path=? WHERE news_id=?")){
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement statement = connection.prepareStatement(
+					"UPDATE news SET title=?, brief_news=?, content=?, news_date=?, photo_path=? WHERE news_id=?")){
+
 			statement.setString(1, news.getTitle());
 			statement.setString(2, news.getBriefNews());
 			statement.setString(3, news.getContent());
 			statement.setString(4, news.getNewsDate());
 			statement.setString(5, news.getPhotoPath());
 			statement.setInt(6, news.getIdNews());
+
 			statement.executeUpdate();
 		}
-		catch (SQLException e){
+		catch (SQLException |ConnectionPoolException e){
 			throw new DaoException(e);
 		}
 	}
@@ -136,26 +124,28 @@ public final class NewsDAO implements INewsDAO {
 	@Override
 	public void deleteNewses(String[] idNewses) throws DaoException {
 
-		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement("DELETE FROM news WHERE news_id IN (?)")){
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement statement = connection.prepareStatement("DELETE FROM news WHERE news_id IN (?)")){
 
-			statement.setArray(1, con.createArrayOf("INTEGER", idNewses));
+			statement.setArray(1, connection.createArrayOf("INTEGER", idNewses));
 			statement.executeUpdate();
 		}
-		catch (SQLException e){
+		catch (SQLException |ConnectionPoolException e){
 			throw new DaoException(e);
 		}
 	}
 
+	//TODO при удалении новостей, мы будем менять статус колонки в таблице, которая будет очищаться через месяц, и вот именно по этой колонке и будет проходить удаление
 	@Override
 	public void deleteNews(int id) throws DaoException {
 
-		try(Connection con = DriverManager.getConnection(ConstantsName.DB_URL, ConstantsName.DB_USERNAME, ConstantsName.DB_PASSWORD);
-			PreparedStatement statement = con.prepareStatement("DELETE FROM news WHERE news_id = ?")){
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement statement = connection.prepareStatement("DELETE FROM news WHERE news_id = ?")){
+
 			statement.setInt(1, id);
 			statement.executeUpdate();
 		}
-		catch (SQLException e){
+		catch (SQLException | ConnectionPoolException e){
 			throw new DaoException(e);
 		}
 	}

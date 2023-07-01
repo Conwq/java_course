@@ -1,7 +1,5 @@
 package by.htp.ex.dao.pool;
 
-import jakarta.resource.cci.ResultSet;
-
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
@@ -82,14 +80,18 @@ public final class ConnectionPool {
 	public void closeConnection(Connection connection, Statement statement) throws ConnectionPoolException{
 
 		try {
-			statement.close();
+			if (statement != null) {
+				statement.close();
+			}
 		}
 		catch (SQLException e) {
 			throw new ConnectionPoolException("Exception with close Statement", e);
 		}
 
 		try {
-			connection.close();
+			if (connection != null) {
+				connection.close();
+			}
 		}
 		catch (SQLException e) {
 			throw new ConnectionPoolException("Exception with close Connection", e);
@@ -99,21 +101,27 @@ public final class ConnectionPool {
 	public void closeConnection(Connection connection, Statement statement, ResultSet resultSet) throws ConnectionPoolException{
 
 		try {
-			resultSet.close();
+			if (resultSet != null) {
+				resultSet.close();
+			}
 		}
 		catch (SQLException e) {
 			throw new ConnectionPoolException("Exception with close ResultSet", e);
 		}
 
 		try {
-			statement.close();
+			if (statement != null) {
+				statement.close();
+			}
 		}
 		catch (SQLException e) {
 			throw new ConnectionPoolException("Exception with close Statement", e);
 		}
 
 		try {
-			connection.close();
+			if (connection != null) {
+				connection.close();
+			}
 		}
 		catch (SQLException e) {
 			throw new ConnectionPoolException("Exception with close Connection", e);
