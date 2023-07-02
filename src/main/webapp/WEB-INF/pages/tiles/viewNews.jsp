@@ -54,12 +54,15 @@
 			</form>
 		</div>
 	</c:if>
-	<img src="${requestScope.news.photoPath}" alt="Not photo"/> <br><br>
-	
-	<hr>
+    <button onclick="history.back()">Back</button>
+    <br>
 
-	<c:import url="/WEB-INF/pages/tiles/comments.jsp"/>
-	
+    <img src="${requestScope.news.photoPath}" alt="Not photo" width="30%" height="30%" style="display: block; margin-left: auto; margin-right: auto;"/> <br><br>
+
+    <hr>
+
+    <c:import url="/WEB-INF/pages/tiles/comments.jsp"/>
+
 	
 	
 </div>

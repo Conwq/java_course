@@ -1,7 +1,6 @@
 package by.htp.ex.dao.impl;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,12 +12,38 @@ import by.htp.ex.dao.ICommentDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
-import by.htp.ex.util.ConstantsName;
 import by.htp.ex.util.DatabaseHelper;
 
 public class CommentDAO implements ICommentDAO{
 	private final static DatabaseHelper helper = DatabaseHelper.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
+
+	@Override
+	public void deleteById(int id) throws DaoException {
+		try (Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM comments WHERE comment_id = ?")){
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+		}
+		catch (ConnectionPoolException | SQLException e){
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public String getTextByIdComment(int id) throws DaoException {
+		try (Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement("SELECT text FROM comments WHERE comment_id = ?")){
+			preparedStatement.setInt(1, id);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet.next();
+
+			return resultSet.getString("text");
+		}
+		catch (ConnectionPoolException | SQLException e){
+			throw new DaoException(e);
+		}
+	}
 
 	@Override
 	public List<Comment> findByIdNews(int id) throws DaoException {
@@ -60,6 +85,20 @@ public class CommentDAO implements ICommentDAO{
 			preparedStatement.setString(1, text);
 			preparedStatement.setInt(2, newsId);
 			preparedStatement.setInt(3, userId);
+
+			preparedStatement.executeUpdate();
+		}
+		catch (SQLException | ConnectionPoolException e){
+			throw new DaoException(e);
+		}
+	}
+
+	@Override
+	public void editCommentTextById(int id, String text) throws DaoException{
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE comments SET text = ? WHERE comment_id = ?")){
+			preparedStatement.setString(1, text);
+			preparedStatement.setInt(2, id);
 
 			preparedStatement.executeUpdate();
 		}

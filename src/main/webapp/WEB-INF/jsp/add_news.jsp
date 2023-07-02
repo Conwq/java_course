@@ -8,7 +8,7 @@
 
 <body>
 
-<form action="<c:url value="/controller?command=do_add_news"/> " method="post">
+<form action="<c:url value="/controller?command=do_add_news"/> " method="post" enctype="multipart/form-data">
     <label for="title">Title:</label><br>
     <input type="text" name="title" id="title"/><br>
 
@@ -18,8 +18,8 @@
     <label for="content">Content:</label><br>
     <input type="text" name="content" id="content"/><br>
 
-    <label for="photo">Path to photo:</label><br>
-    <input type="text" name="photo" id="photo"/><br>
+    <label for="photo">Add photo:</label><br>
+    <input type="file" name="photo" id="photo"/><br>
 
     <label for="author">Choose author:</label>
     <select name="user_id" id="author">

@@ -7,9 +7,11 @@ import by.htp.ex.service.INewsService;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
+import by.htp.ex.util.DatabaseHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
 import java.io.IOException;
 
@@ -17,27 +19,40 @@ public class DoAddNews implements Command {
 
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
+	private final static DatabaseHelper helper = DatabaseHelper.getInstance();
+
+	private final static String JSP_TITLE_PARAM = "title";
+	private final static String JSP_BRIEF_NEWS_PARAM = "brief_news";
+	private final static String JSP_CONTENT_PARAM = "content";
+	private final static String JSP_USER_ID_PARAM = "user_id";
+	private final static String JSP_PHOTO_PARAM = "photo";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		//TODO NEED VALIDATION AND ADD ERROR IN JSP PAGE
 
-		String title = request.getParameter("title");
-		String briefNews = request.getParameter("brief_news");
-		String content = request.getParameter("content");
-		String photoPath = request.getParameter("photo");
-		String userId = request.getParameter("user_id");
+		String title = request.getParameter(JSP_TITLE_PARAM);
+		String briefNews = request.getParameter(JSP_BRIEF_NEWS_PARAM);
+		String content = request.getParameter(JSP_CONTENT_PARAM);
+		String userId = request.getParameter(JSP_USER_ID_PARAM);
+
+		Part imagePart = request.getPart(JSP_PHOTO_PARAM);
+		String fileName = imagePart.getSubmittedFileName();
+		String pathToImage = request.getServletContext().getRealPath("/images/") + fileName;
+		String myPath = "images/" + fileName;
+		imagePart.write(pathToImage);
 
 		try {
 			int id = Integer.parseInt(userId);
 
 			NewUserInfo newUserInfo = userService.getUser(id);
-			News news = new News(title, briefNews, content, photoPath, newUserInfo);
+			News news = new News(title, briefNews, content, myPath, newUserInfo);
 			newsService.save(news);
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch (NumberFormatException | ServiceException e){
+			e.printStackTrace();
 			response.sendRedirect("/error/error.jsp");
 		}
 	}

@@ -15,26 +15,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public final class GoToViewNews implements Command {
-	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
-	private final ICommentService commentService = ServiceProvider.getInstance().getCommentService();
-	private static final String JSP_ID_PARAM = "id";
-	private static final String JSP_NEWS_PARAM = "news";
-	private static final String JSP_PRESENTATION_PARAM = "presentation";
-	private static final String JSP_VIEW_NEWS_PARAM = "viewNews";
-	private static final String JSP_COMMENTS_PARAM = "comments";
+	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private final static ICommentService commentService = ServiceProvider.getInstance().getCommentService();
+	private final static String JSP_ID_PARAM = "id";
+	private final static String JSP_NEWS_PARAM = "news";
+	private final static String JSP_PRESENTATION_PARAM = "presentation";
+	private final static String JSP_VIEW_NEWS_PARAM = "viewNews";
+	private final static String JSP_COMMENTS_PARAM = "comments";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter(JSP_ID_PARAM);
 		
-		//TODO получить здесь по id_news новости комментарии, которые относятся к данной новости
-
 		try {
 			int parseId = Integer.parseInt(id);
 			News news  = newsService.findById(parseId);
 
-
-			//TODO получаем комментарии которые относится к нашей новости
 			List<Comment> comments = commentService.findByIdNews(parseId);
 			
 			request.setAttribute(JSP_COMMENTS_PARAM, comments);
@@ -43,7 +39,6 @@ public final class GoToViewNews implements Command {
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		}
 		catch (NumberFormatException | ServiceException e){
-			e.printStackTrace();
 			response.sendRedirect("/error/error.jsp");
 		}
 	}

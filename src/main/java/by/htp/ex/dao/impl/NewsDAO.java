@@ -104,14 +104,13 @@ public final class NewsDAO implements INewsDAO {
 
 		try(Connection connection = connectionPool.takeConnection();
 			PreparedStatement statement = connection.prepareStatement(
-					"UPDATE news SET title=?, brief_news=?, content=?, news_date=?, photo_path=? WHERE news_id=?")){
+					"UPDATE news SET title=?, brief_news=?, content=?, photo_path=? WHERE news_id=?")){
 
 			statement.setString(1, news.getTitle());
 			statement.setString(2, news.getBriefNews());
 			statement.setString(3, news.getContent());
-			statement.setString(4, news.getNewsDate());
-			statement.setString(5, news.getPhotoPath());
-			statement.setInt(6, news.getIdNews());
+			statement.setString(4, news.getPhotoPath());
+			statement.setInt(5, news.getIdNews());
 
 			statement.executeUpdate();
 		}

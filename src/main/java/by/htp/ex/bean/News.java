@@ -32,6 +32,14 @@ public final class News implements Serializable {
 		this.newUserInfo = newUserInfo;
 	}
 
+	public News(int idNews, String title, String briefNews, String content, String photoPath) {
+		this.idNews = idNews;
+		this.title = title;
+		this.briefNews = briefNews;
+		this.content = content;
+		this.photoPath = photoPath;
+	}
+
 	public News(String title, String briefNews, String content, String photoPath) {
 		this.photoPath = photoPath;
 		this.title = title;

@@ -23,9 +23,39 @@ public class CommentServiceImpl implements ICommentService{
 	}
 
 	@Override
+	public void editCommentTextById(int id, String text) throws ServiceException{
+		try {
+			commentDAO.editCommentTextById(id, text);
+		}
+		catch (DaoException e){
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
 	public void addComment(String text, int userId, int newsId) throws ServiceException {
 		try {
 			commentDAO.addComment(text, userId, newsId);
+		}
+		catch (DaoException e){
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public void deleteById(int id) throws ServiceException {
+		try {
+			commentDAO.deleteById(id);
+		}
+		catch (DaoException e){
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public String getTextByIdComment(int id) throws ServiceException {
+		try {
+			return commentDAO.getTextByIdComment(id);
 		}
 		catch (DaoException e){
 			throw new ServiceException(e);

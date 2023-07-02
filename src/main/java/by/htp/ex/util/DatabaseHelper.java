@@ -1,5 +1,6 @@
 package by.htp.ex.util;
 
+import by.htp.ex.bean.Comment;
 import by.htp.ex.bean.NewUserInfo;
 import by.htp.ex.bean.News;
 import by.htp.ex.bean.Role;
