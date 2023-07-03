@@ -5,10 +5,12 @@ import by.htp.ex.dao.IUserDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
-import by.htp.ex.util.ConstantsName;
 import by.htp.ex.util.DatabaseHelper;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +19,11 @@ public final class UserDAO implements IUserDAO {
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
 	private boolean isExistUser(NewUserInfo user, Connection connection) throws SQLException {
-		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ? OR login = ?");
+		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ? OR login = ? AND id <> ?");
 
 		preparedStatement.setString(1, user.getEmail());
 		preparedStatement.setString(2, user.getLogin());
+		preparedStatement.setInt(3, user.getUserId());
 		ResultSet resultSet = preparedStatement.executeQuery();
 
 		return resultSet.next();
@@ -84,8 +87,11 @@ public final class UserDAO implements IUserDAO {
 				throw new DaoException("User not found with this login");
 			}
 		}
-		catch (SQLException | ConnectionPoolException e) {
-			throw new DaoException(e);
+		catch (SQLException e) {
+			throw new DaoException("Error with SQL", e);
+		}
+		catch (ConnectionPoolException e){
+			throw new DaoException("Error with ConnectionPool", e);
 		}
 	}
 
@@ -102,8 +108,11 @@ public final class UserDAO implements IUserDAO {
 				usersInfo.add(helper.parseUserInfo(resultSet));
 			}
 		}
-		catch (SQLException | ConnectionPoolException e) {
-			throw new DaoException(e);
+		catch (SQLException e) {
+			throw new DaoException("SQLException", e);
+		}
+		catch (ConnectionPoolException e){
+			throw new DaoException("ConnectionPoolException", e);
 		}
 		return usersInfo;
 	}
@@ -125,8 +134,11 @@ public final class UserDAO implements IUserDAO {
 				throw new DaoException("User with current data not exist");
 			}
 		}
-		catch (SQLException | ConnectionPoolException e) {
-			throw new DaoException(e);
+		catch (SQLException e) {
+			throw new DaoException("SQLException", e);
+		}
+		catch (ConnectionPoolException e){
+			throw new DaoException("ConnectionPoolException", e);
 		}
 	}
 
@@ -136,13 +148,21 @@ public final class UserDAO implements IUserDAO {
 		try (Connection connection = connectionPool.takeConnection();
 			 PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET login=?, password=?, email=? WHERE id=?")) {
 
+			if (isExistUser(userInfo, connection)){
+				throw new DaoException("User with current email or login exist");
+			}
+
 			preparedStatement.setString(1, userInfo.getLogin());
 			preparedStatement.setString(2, userInfo.getPassword());
 			preparedStatement.setString(3, userInfo.getEmail());
 			preparedStatement.setInt(4, userInfo.getUserId());
 			preparedStatement.executeUpdate();
-		} catch (SQLException | ConnectionPoolException e) {
-			throw new DaoException(e);
+		}
+		catch (SQLException e) {
+			throw new DaoException("SQLException", e);
+		}
+		catch (ConnectionPoolException e){
+			throw new DaoException("ConnectionPoolException", e);
 		}
 	}
 }

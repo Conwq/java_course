@@ -51,7 +51,7 @@ public final class DatabaseHelper {
 			return parseUserInfo(resultSet);
 		}
 		else {
-			throw new DaoException("Not valid password");
+			throw new DaoException("Incorrect password");
 		}
 	}
 }

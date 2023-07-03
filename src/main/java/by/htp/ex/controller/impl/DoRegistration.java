@@ -30,8 +30,8 @@ public final class DoRegistration implements Command {
 
 		request.getSession().removeAttribute(JSP_REGISTRATION_ERROR_PARAM);
 
-		if (validation.isValidData(login, email, password)){
-			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, "Login/Email/Password error. The number of characters must not be less than 1");
+		if (!validation.isValidData(login, email, password)){
+			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, "Login/Email/Password not valid. The number of characters must not be less than 1");
 			response.sendRedirect("controller?command=go_to_registration_page");
 			return;
 		}
@@ -44,7 +44,7 @@ public final class DoRegistration implements Command {
 			response.sendRedirect("controller?command=go_to_base_page");
 		}
 		catch (ServiceException e) {
-			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, "The user with the specified email address already exist");
+			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, e.getCause().getMessage());
 			response.sendRedirect("controller?command=go_to_registration_page");
 		}
 	}

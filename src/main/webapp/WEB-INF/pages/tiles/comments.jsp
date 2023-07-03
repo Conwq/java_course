@@ -81,5 +81,9 @@
 			<input type="submit" value="Send">
 		</form>
 	</c:if>
+
+	<c:if test="${not (sessionScope.error eq null)}">
+		<div style="color:red"><c:out value="${sessionScope.error}"/></div>
+	</c:if>
 </body>
 	

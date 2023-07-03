@@ -5,10 +5,12 @@ import by.htp.ex.dao.INewsDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
-import by.htp.ex.util.ConstantsName;
 import by.htp.ex.util.DatabaseHelper;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,10 @@ public final class NewsDAO implements INewsDAO {
 				news.add(findNews);
 			}
 		}
-		catch (SQLException | ConnectionPoolException e){
+		catch (SQLException e){
+			throw new DaoException(e);
+		}
+		catch (ConnectionPoolException e){
 			throw new DaoException(e);
 		}
 		return news;

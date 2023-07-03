@@ -3,7 +3,8 @@ package by.htp.ex.util.validation;
 public class ValidationProvider {
 
 	private final static ValidationProvider instance = new ValidationProvider();
-	private final UserDataValidationImpl userDataValidation = new UserDataValidationImpl();
+	private final UserDataValidation userDataValidation = new UserDataValidationImpl();
+	private final CommentDataValidation commentDataValidation = new CommentDataValidationImpl();
 
 	private ValidationProvider(){
 
@@ -13,7 +14,10 @@ public class ValidationProvider {
 		return instance;
 	}
 
-	public UserDataValidationImpl getUserValidator(){
+	public UserDataValidation getUserValidator(){
 		return userDataValidation;
+	}
+	public CommentDataValidation getCommentDataValidation(){
+		return commentDataValidation;
 	}
 }

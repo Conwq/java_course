@@ -21,6 +21,7 @@ public class DoEditUserInfo implements Command {
 	private final static String JSP_LOGIN_PARAM = "login";
 	private final static String JSP_EMAIL_PARAM = "email";
 	private final static String JSP_PASSWORD_PARAM = "password";
+	private final static String JSP_ERROR_PARAM = "error";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,9 +30,12 @@ public class DoEditUserInfo implements Command {
 		String login = request.getParameter(JSP_LOGIN_PARAM);
 		String email = request.getParameter(JSP_EMAIL_PARAM);
 		String password = request.getParameter(JSP_PASSWORD_PARAM);
+
+		request.getSession().removeAttribute(JSP_ERROR_PARAM);
 		
-		if(validation.isValidData(login, email, password)) {
-			response.sendRedirect("/error/error.jsp");
+		if(!validation.isValidData(login, email, password)) {
+			request.getSession(true).setAttribute(JSP_ERROR_PARAM, "Login/Email/Password not valid. The number of characters must not be less than 1");
+			response.sendRedirect("controller?command=go_to_personal_cabinet&id=" + idParam);
 			return;
 		}
 		
@@ -42,8 +46,13 @@ public class DoEditUserInfo implements Command {
  			userService.updateUserInfo(newUserInfo);
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
-		catch (NumberFormatException | ServiceException e){
-			response.sendRedirect("/error/error.jsp");
+		catch (ServiceException e){
+			request.getSession(true).setAttribute(JSP_ERROR_PARAM, e.getCause().getMessage());
+			response.sendRedirect("controller?command=go_to_personal_cabinet&id=" + idParam);
+		}
+		catch (NumberFormatException e){
+			request.setAttribute(JSP_ERROR_PARAM, "This user does not exist");
+			request.getRequestDispatcher("/error/error.jsp").forward(request, response);
 		}
 	}
 }

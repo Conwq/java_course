@@ -2,6 +2,8 @@ package by.htp.ex.controller.impl;
 
 import by.htp.ex.bean.NewUserInfo;
 import by.htp.ex.controller.command.Command;
+import by.htp.ex.dao.exception.DaoException;
+import by.htp.ex.dao.pool.ConnectionPoolException;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
@@ -33,12 +35,12 @@ public final class DoSignIn implements Command {
 
 		request.getSession().removeAttribute(JSP_AUTHENTICATION_ERROR_PARAM);
 
-		if (!validation.isValidData(login, password)) {
-			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE_PARAM);
-			request.getSession().setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, "Wrong Login/Password");
-			response.sendRedirect("controller?command=go_to_base_page");
-			return;
-		}
+//		if (!validation.isValidData(login, password)) {
+//			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE_PARAM);
+//			request.getSession().setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, "Wrong Login/Password");
+//			response.sendRedirect("controller?command=go_to_base_page");
+//			return;
+//		}
 
 		try {
 			NewUserInfo newUserInfo = service.signIn(login, password);
@@ -50,7 +52,11 @@ public final class DoSignIn implements Command {
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch (ServiceException e) {
-			request.getSession(true).setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, "User with current login or password not exist");
+			if (e.getCause() == null){
+				response.sendRedirect("error/error.jsp");
+				return;
+			}
+			request.getSession(true).setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, e.getCause().getMessage());
 			response.sendRedirect("controller?command=go_to_base_page");
 		}
 	}
