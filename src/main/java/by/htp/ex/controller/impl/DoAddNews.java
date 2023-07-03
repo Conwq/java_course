@@ -38,22 +38,31 @@ public class DoAddNews implements Command {
 		String userId = request.getParameter(JSP_USER_ID_PARAM);
 
 		Part imagePart = request.getPart(JSP_PHOTO_PARAM);
-		String fileName = imagePart.getSubmittedFileName();
-		String pathToImage = request.getServletContext().getRealPath("/images/") + fileName;
-		String myPath = "images/" + fileName;
-		imagePart.write(pathToImage);
+		String pathToImage = null;
+
+		if (imagePart.getSize() > 0){
+			pathToImage = getPathToSavedImage(imagePart, request);
+		}
 
 		try {
 			int id = Integer.parseInt(userId);
 
 			NewUserInfo newUserInfo = userService.getUser(id);
-			News news = new News(title, briefNews, content, myPath, newUserInfo);
+			News news = new News(title, briefNews, content, pathToImage, newUserInfo);
 			newsService.save(news);
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
-		catch (NumberFormatException | ServiceException e){
+		catch (NumberFormatException | ServiceException | IOException e){
 			e.printStackTrace();
 			response.sendRedirect("/error/error.jsp");
 		}
+	}
+
+	private String getPathToSavedImage(Part imagePart, HttpServletRequest request) throws IOException{
+		System.out.println("I`m here");
+		String fileName = imagePart.getSubmittedFileName();
+		String pathToImage = request.getServletContext().getRealPath("/images/") + fileName;
+		imagePart.write(pathToImage);
+		return "images/" + fileName;
 	}
 }

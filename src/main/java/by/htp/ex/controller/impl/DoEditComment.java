@@ -28,11 +28,11 @@ public class DoEditComment implements Command {
 
 		request.getSession().removeAttribute(JSP_ERROR_PARAM);
 
-		if (!validator.textValidator(text)){
-			request.getSession(true).setAttribute(JSP_ERROR_PARAM, "The number of characters in the text must be more than two");
-			request.getRequestDispatcher("controller?command=go_to_edit_comment&comment_id=" + commentId + "&news_id=" + newsId).forward(request, response);
-			return;
-		}
+//		if (!validator.textValidator(text)){
+//			request.getSession(true).setAttribute(JSP_ERROR_PARAM, "The number of characters in the text must be more than two");
+//			request.getRequestDispatcher("controller?command=go_to_edit_comment&comment_id=" + commentId + "&news_id=" + newsId).forward(request, response);
+//			return;
+//		}
 
 		try {
 			int parseCommentId = Integer.parseInt(commentId);

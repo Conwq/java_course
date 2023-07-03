@@ -20,6 +20,7 @@ public class DoEditNews implements Command {
 	private final static String JSP_BRIEF_NEWS_PARAM = "brief_news";
 	private final static String JSP_CONTENT_PARAM = "content";
 	private final static String JSP_PHOTO_PARAM = "photo";
+	private final static String JSP_PHOTO_PATH_PARAM = "photo_path";
 
 
 	@Override
@@ -30,20 +31,30 @@ public class DoEditNews implements Command {
 		String content = request.getParameter(JSP_CONTENT_PARAM);
 
 		Part imagePart = request.getPart(JSP_PHOTO_PARAM);
-		String fileName = imagePart.getSubmittedFileName();
-		String pathToImage = request.getServletContext().getRealPath("/images/") + fileName;
+		String pathToImage = request.getParameter(JSP_PHOTO_PATH_PARAM);
 
-		String myPath = "images/" + fileName;
-		imagePart.write(pathToImage);
+		if (imagePart.getSize() > 0){
+			File file = new File(pathToImage);
+			System.out.println(file.delete());
+			pathToImage = getPathToSavedImage(imagePart, request);
+		}
 
 		try {
 			int parseId = Integer.parseInt(id);
-			News news = new News(parseId, title, briefNews, content, myPath);
+			News news = new News(parseId, title, briefNews, content, pathToImage);
 			newsService.update(news);
 			response.sendRedirect("controller?command=go_to_view_news&id=" + id);
 		}
 		catch (NumberFormatException | ServiceException e) {
 			response.sendRedirect("/error/error.jsp");
 		}
+	}
+
+	private String getPathToSavedImage(Part imagePart, HttpServletRequest request) throws IOException{
+		System.out.println("I`m here");
+		String fileName = imagePart.getSubmittedFileName();
+		String pathToImage = request.getServletContext().getRealPath("/images/") + fileName;
+		imagePart.write(pathToImage);
+		return "images/" + fileName;
 	}
 }

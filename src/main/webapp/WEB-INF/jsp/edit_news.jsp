@@ -3,6 +3,7 @@
          pageEncoding="UTF-8"%>
 
 <c:set value="${requestScope.news}" var="news"/>
+
 <html>
 <head>
     <title>Edit news</title>
@@ -11,6 +12,7 @@
 
 <form action="controller?command=do_edit_news" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="${news.idNews}"/>
+    <input type="hidden" name="photo_path" value="${news.photoPath}">
 
     <label for="title">Enter title:</label><br>
     <input type="text" name="title" id="title" value="${news.title}"><br>
@@ -25,7 +27,7 @@
     <input type="text" name="date" id="date" value="${news.newsDate}"><br>
 
     <label for="photo">Change photo:</label><br>
-    <input type="file" name="photo" id="photo" value="${news.photoPath}"/><br>
+    <input type="file" name="photo" id="photo"/><br>
 
     <input type="submit" value="Submit">
 </form>
