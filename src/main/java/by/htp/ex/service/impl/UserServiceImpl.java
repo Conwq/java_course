@@ -16,6 +16,15 @@ public final class UserServiceImpl implements IUserService {
 	private final static ReentrantLock reentrantLock = ReentrantLockSingleton.getInstance().getReentrantLock();
 
 	@Override
+	public void unbanUser(int id) throws ServiceException {
+		try {
+			userDAO.unbanUser(id);
+		}
+		catch (DaoException e){
+			throw new ServiceException(e);
+		}
+	}
+	@Override
 	public NewUserInfo signIn(String login, String password) throws ServiceException {
 
 		try {

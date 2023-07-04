@@ -165,4 +165,24 @@ public final class UserDAO implements IUserDAO {
 			throw new DaoException("ConnectionPoolException", e);
 		}
 	}
+
+	@Override
+	public void unbanUser(int id) throws DaoException {
+		try (Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET banned = 0 WHERE id = ?")){
+			NewUserInfo user = getUser(id);
+
+			if (!user.isBanned()){
+				throw new DaoException("User can not banned");
+			}
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+		}
+		catch (SQLException e){
+			throw new DaoException(e);
+		}
+		catch (ConnectionPoolException e){
+			e.printStackTrace();
+		}
+	}
 }

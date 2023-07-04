@@ -8,6 +8,7 @@ public final class NewUserInfo implements Serializable {
 	private String email;
 	private String password;
 	private Role role;
+	private boolean banned;
 
 
 	//TODO ДОБАВИТЬ ЛИСТ ВСЕХ НОВОСТЕЙ, КОТОРЫЕ ПРИНАДЛЕЖАТ ПОЛЬЗОВАТЕЛЮ
@@ -74,6 +75,14 @@ public final class NewUserInfo implements Serializable {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public boolean isBanned() {
+		return banned;
+	}
+
+	public void setBanned(boolean banned) {
+		this.banned = banned;
 	}
 
 	@Override

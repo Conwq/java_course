@@ -11,4 +11,5 @@ public interface IUserDAO {
 	List<NewUserInfo> getUsers() throws DaoException;
 	NewUserInfo getUser(int id) throws DaoException;
 	void updateUserInfo(NewUserInfo userInfo) throws DaoException;
+	void unbanUser(int id) throws DaoException;
 }
