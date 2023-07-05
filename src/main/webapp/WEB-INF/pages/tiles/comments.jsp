@@ -6,6 +6,9 @@
 	<c:set value="${requestScope.news}" var="news"/>
 	<c:set value="${sessionScope.userInfo}" var="user"/>
 	<c:set value="${sessionScope.role}" var="role"/>
+	<c:set value="${requestScope.comment_text}" var="text"/>
+	<c:set value="${sessionScope.error}" var="error"/>
+	<c:set value="${requestScope.comment_id}" var="comment_id"/>
 
 <body>
 	<div align="center">
@@ -58,19 +61,19 @@
 	</c:if>
 
 	<br><br>
-	<c:if test="${not (requestScope.comment_text eq null)}">
+	<c:if test="${not (text eq null)}">
 		<form action="controller?command=do_edit_comment" method="post">
-			<input type="hidden" name="comment_id" value="${requestScope.comment_id}"/>
+			<input type="hidden" name="comment_id" value="${comment_id}"/>
 			<input type="hidden" name="news_id" value="${news.idNews}"/>
 
 			<label for="text">Write here:</label> <br>
-			<textarea id="text" name="text" rows="4" cols="120" required><c:out value="${requestScope.comment_text}"/></textarea><br>
+			<textarea id="text" name="text" rows="4" cols="120" required><c:out value="${text}"/></textarea><br>
 
 			<input type="submit" value="Send">
 		</form>
 	</c:if>
 
-	<c:if test="${requestScope.comment_text eq null}">
+	<c:if test="${text eq null}">
 		<form action="controller?command=do_add_comment" method="post">
 			<input type="hidden" name="news_id" value="${news.idNews}"/>
 			<input type="hidden" name="user_id" value="${user.userId}"/>
@@ -82,8 +85,8 @@
 		</form>
 	</c:if>
 
-	<c:if test="${not (sessionScope.error eq null)}">
-		<div style="color:red"><c:out value="${sessionScope.error}"/></div>
+	<c:if test="${not (error eq null)}">
+		<div style="color:red"><c:out value="${error}"/></div>
 	</c:if>
 </body>
 	

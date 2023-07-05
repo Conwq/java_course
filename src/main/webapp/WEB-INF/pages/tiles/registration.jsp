@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<c:set value="${sessionScope.RegistrationError}" var="error"/>
+
 <h2><i>Registration form</i></h2><br>
 <hr>
 <br>
@@ -19,8 +21,8 @@
         <label for="password">Enter password:</label><br>
         <input type="text" name="password" id="password"><br>
 
-        <c:if test="${not (sessionScope.RegistrationError == null)}">
-            <div style="color:red"><c:out value="${sessionScope.RegistrationError}"/></div>
+        <c:if test="${not (error == null)}">
+            <div style="color:red"><c:out value="${error}"/></div>
         </c:if>
 
         <input type="submit" value="Submit">

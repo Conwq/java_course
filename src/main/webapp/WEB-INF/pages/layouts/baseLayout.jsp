@@ -3,6 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<c:set value="${sessionScope.user}" var="user"/>
+<c:set value="${requestScope.registration}" var="registration"/>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -26,22 +29,22 @@
 		<div class="base-layout-wrapper">
 
 			<div class="menu">
-				<c:if test="${not (sessionScope.user eq 'active')}">
+				<c:if test="${not (user eq 'active')}">
 				    Welcome!!!!!
 				</c:if>
 
-				<c:if test="${sessionScope.user eq 'active'}">
+				<c:if test="${user eq 'active'}">
 					<c:import url="/WEB-INF/pages/tiles/menu.jsp" />
 				</c:if>
 			</div>
 
 			<div class="content">
 				<c:choose>
-					<c:when test="${sessionScope.user eq 'active'}">
+					<c:when test="${user eq 'active'}">
 						<c:import url="/WEB-INF/pages/tiles/body.jsp" />
 					</c:when>
 
-					<c:when test="${requestScope.registration eq 'registration'}">
+					<c:when test="${registration eq 'registration'}">
 						<c:import url="/WEB-INF/pages/tiles/registration.jsp"/>
 					</c:when>
 
