@@ -18,10 +18,11 @@ public class CommentDAO implements ICommentDAO{
 	private final static DatabaseHelper helper = DatabaseHelper.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
+	private final static String SQL_TO_DELETE_COMMENT = "DELETE FROM comments WHERE comment_id = ?";
 	@Override
 	public void deleteById(int id) throws DaoException {
 		try (Connection connection = connectionPool.takeConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM comments WHERE comment_id = ?")){
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_DELETE_COMMENT)){
 			preparedStatement.setInt(1, id);
 			preparedStatement.executeUpdate();
 		}
@@ -30,10 +31,11 @@ public class CommentDAO implements ICommentDAO{
 		}
 	}
 
+	private final static String SQL_TO_GET_COMMENT = "SELECT text FROM comments WHERE comment_id = ?";
 	@Override
 	public String getTextByIdComment(int id) throws DaoException {
 		try (Connection connection = connectionPool.takeConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement("SELECT text FROM comments WHERE comment_id = ?")){
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_GET_COMMENT)){
 			preparedStatement.setInt(1, id);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
@@ -45,15 +47,16 @@ public class CommentDAO implements ICommentDAO{
 		}
 	}
 
+	private final static String SQL_GET_ALL_COMMENTS_FROM_NEWS = "SELECT * FROM news "
+																+ "JOIN comments ON news.news_id = comments.news_id "
+																+ "JOIN users ON comments.users_id = users.id "
+																+ "WHERE news.news_id = ?";
 	@Override
 	public List<Comment> findByIdNews(int id) throws DaoException {
 		List<Comment> comments = null;
 		
 		try (Connection connection = connectionPool.takeConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM news "
-																					+ "JOIN comments ON news.news_id = comments.news_id "
-																					+ "JOIN users ON comments.users_id = users.id "
-																					+ "WHERE news.news_id = ?")) {
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_GET_ALL_COMMENTS_FROM_NEWS)) {
 
 			preparedStatement.setInt(1, id);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -76,11 +79,12 @@ public class CommentDAO implements ICommentDAO{
 		return comments;
 	}
 
+	private final static String SQL_ADD_COMMENT = "INSERT INTO comments (text, news_id, users_id) VALUES (?,?,?)";
 	@Override
 	public void addComment(String text, int userId, int newsId) throws DaoException {
 
 		try (Connection connection = connectionPool.takeConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO comments (text, news_id, users_id) VALUES (?,?,?)")){
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_COMMENT)){
 
 			preparedStatement.setString(1, text);
 			preparedStatement.setInt(2, newsId);
@@ -93,10 +97,11 @@ public class CommentDAO implements ICommentDAO{
 		}
 	}
 
+	private final static String SQL_EDIT_COMMENT = "UPDATE comments SET text = ? WHERE comment_id = ?";
 	@Override
 	public void editCommentTextById(int id, String text) throws DaoException{
 		try(Connection connection = connectionPool.takeConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE comments SET text = ? WHERE comment_id = ?")){
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_EDIT_COMMENT)){
 			preparedStatement.setString(1, text);
 			preparedStatement.setInt(2, id);
 

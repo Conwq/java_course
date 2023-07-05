@@ -1,8 +1,10 @@
 package by.htp.ex.bean;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
-public final class Comment {
+public final class Comment implements Serializable {
 	private int commentId;
 	private NewUserInfo newUserInfo;
 	private News news;
@@ -68,5 +70,18 @@ public final class Comment {
 				", date=" + date +
 				", text='" + text + '\'' +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Comment comment = (Comment) o;
+		return Objects.equals(newUserInfo, comment.newUserInfo) && Objects.equals(news, comment.news) && Objects.equals(date, comment.date) && Objects.equals(text, comment.text);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(newUserInfo, news, date, text);
 	}
 }

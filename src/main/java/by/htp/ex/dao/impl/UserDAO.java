@@ -18,17 +18,7 @@ public final class UserDAO implements IUserDAO {
 	private final static DatabaseHelper helper = DatabaseHelper.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
-	private boolean isExistUser(NewUserInfo user, Connection connection) throws SQLException {
-		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ? OR login = ? AND id <> ?");
-
-		preparedStatement.setString(1, user.getEmail());
-		preparedStatement.setString(2, user.getLogin());
-		preparedStatement.setInt(3, user.getUserId());
-		ResultSet resultSet = preparedStatement.executeQuery();
-
-		return resultSet.next();
-	}
-
+	private static final String SQL_TO_ADD_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
 	@Override
 	public void registration(NewUserInfo user) throws DaoException {
 		Connection connection = null;
@@ -36,7 +26,7 @@ public final class UserDAO implements IUserDAO {
 		try {
 			connection = connectionPool.takeConnection();
 			connection.setAutoCommit(false);
-			preparedStatement = connection.prepareStatement("INSERT INTO users (login, password, email) VALUES (?, ?, ?)");
+			preparedStatement = connection.prepareStatement(SQL_TO_ADD_USER);
 
 			if (!isExistUser(user, connection)) {
 				preparedStatement.setString(1, user.getLogin());
@@ -71,11 +61,12 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	private final static String SQL_TO_AUTH_USER = "SELECT * FROM users WHERE login = ?";
 	@Override
 	public NewUserInfo authorization(String login, String password) throws DaoException {
 
 		try (Connection connection = connectionPool.takeConnection();
-			 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE login = ?")) {
+			 PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_AUTH_USER)) {
 
 			preparedStatement.setString(1, login);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -95,12 +86,13 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	private final static String SQL_TO_GET_ALL_USERS =  "SELECT * FROM users";
 	@Override
 	public List<NewUserInfo> getUsers() throws DaoException {
 		List<NewUserInfo> usersInfo = null;
 
 		try (Connection connection = connectionPool.takeConnection();
-			 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users");
+			 PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_GET_ALL_USERS);
 			 ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			usersInfo = new ArrayList<>();
@@ -117,11 +109,12 @@ public final class UserDAO implements IUserDAO {
 		return usersInfo;
 	}
 
+	private final static String SQL_TO_GET_USER = "SELECT * FROM users WHERE id = ?";
 	@Override
 	public NewUserInfo getUser(int id) throws DaoException {
 
 		try (Connection connection = connectionPool.takeConnection();
-			 PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id = ?")) {
+			 PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_GET_USER)) {
 
 			preparedStatement.setInt(1, id);
 
@@ -142,11 +135,12 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	private final static String SQL_TO_UPDATE_USER = "UPDATE users SET login=?, password=?, email=? WHERE id=?";
 	@Override
 	public void updateUserInfo(NewUserInfo userInfo) throws DaoException {
 
 		try (Connection connection = connectionPool.takeConnection();
-			 PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET login=?, password=?, email=? WHERE id=?")) {
+			 PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_UPDATE_USER)) {
 
 			if (isExistUser(userInfo, connection)){
 				throw new DaoException("User with current email or login exist");
@@ -164,5 +158,17 @@ public final class UserDAO implements IUserDAO {
 		catch (ConnectionPoolException e){
 			throw new DaoException("ConnectionPoolException", e);
 		}
+	}
+
+	private final static String SQL_TO_CHECK_USER_EXIST = "SELECT * FROM users WHERE email = ? OR login = ? AND id <> ?";
+	private boolean isExistUser(NewUserInfo user, Connection connection) throws SQLException {
+		PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_CHECK_USER_EXIST);
+
+		preparedStatement.setString(1, user.getEmail());
+		preparedStatement.setString(2, user.getLogin());
+		preparedStatement.setInt(3, user.getUserId());
+		ResultSet resultSet = preparedStatement.executeQuery();
+
+		return resultSet.next();
 	}
 }

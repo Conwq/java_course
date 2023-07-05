@@ -20,12 +20,13 @@ public final class NewsDAO implements INewsDAO {
 	
 	//TODO Этот метод пересмотреть, он должен возвращать последние 5 новостей. Сделать что нибудь с count
 
+	private final static String SQL_TO_GET_LAST_NEWSES = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
 	@Override
 	public List<News> getLatestList(int count) throws DaoException {
 		List<News> news = null;
 
 		try (Connection connection = connectionPool.takeConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM news ORDER BY news_date DESC LIMIT ?")){
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_GET_LAST_NEWSES)){
 
 			preparedStatement.setInt(1, count);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -45,12 +46,13 @@ public final class NewsDAO implements INewsDAO {
 		return news;
 	}
 
+	private final static String SQL_TO_GET_ALL_NEWSES = "SELECT * FROM news ORDER BY news_date DESC";
 	@Override
 	public List<News> getList() throws DaoException {
 		List<News> news = new ArrayList<>();
 
 		try(Connection connection = connectionPool.takeConnection();
-			PreparedStatement statement = connection.prepareStatement("SELECT * FROM news ORDER BY news_date DESC");
+			PreparedStatement statement = connection.prepareStatement(SQL_TO_GET_ALL_NEWSES);
 			ResultSet resultSet = statement.executeQuery()){
 
 			while(resultSet.next()){
@@ -64,12 +66,13 @@ public final class NewsDAO implements INewsDAO {
 		return news;
 	}
 
+	private final static String SQL_TO_GET_NEWS = "SELECT * FROM news WHERE news_id = ?";
 	@Override
 	public News fetchById(int id) throws DaoException {
 		News findNews = null;
 
 		try(Connection connection = connectionPool.takeConnection();
-			PreparedStatement statement = connection.prepareStatement("SELECT * FROM news WHERE news_id = ?")){
+			PreparedStatement statement = connection.prepareStatement(SQL_TO_GET_NEWS)){
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 
@@ -83,13 +86,12 @@ public final class NewsDAO implements INewsDAO {
 		return findNews;
 	}
 
-	//Время задается автоматически, прописано в конфиге БД
+	private final static String SQL_TO_ADD_NEWS = "INSERT INTO news (title, brief_news, content, photo_path, users_id, news_date) VALUES (?,?,?,?,?, NOW())";
 	@Override
 	public void addNews(News news) throws DaoException {
 
 		try(Connection connection = connectionPool.takeConnection();
-			PreparedStatement statement = connection.prepareStatement(
-					"INSERT INTO news (title, brief_news, content, photo_path, users_id, news_date) VALUES (?,?,?,?,?, NOW())")){
+			PreparedStatement statement = connection.prepareStatement(SQL_TO_ADD_NEWS)){
 
 			statement.setString(1, news.getTitle());
 			statement.setString(2, news.getBriefNews());
@@ -103,13 +105,12 @@ public final class NewsDAO implements INewsDAO {
 			throw new DaoException(e);
 		}
 	}
-
+	private final static String SQL_TO_UPDATE_NEWS = "UPDATE news SET title=?, brief_news=?, content=?, photo_path=? WHERE news_id=?";
 	@Override
 	public void updateNews(News news) throws DaoException {
 
 		try(Connection connection = connectionPool.takeConnection();
-			PreparedStatement statement = connection.prepareStatement(
-					"UPDATE news SET title=?, brief_news=?, content=?, photo_path=? WHERE news_id=?")){
+			PreparedStatement statement = connection.prepareStatement(SQL_TO_UPDATE_NEWS)){
 
 			statement.setString(1, news.getTitle());
 			statement.setString(2, news.getBriefNews());
@@ -125,11 +126,12 @@ public final class NewsDAO implements INewsDAO {
 	}
 
 	//TODO при удалении новостей, мы будем менять статус колонки в таблице, которая будет очищаться через месяц, и вот именно по этой колонке и будет проходить удаление
+	private final static String SQL_TO_DELETE_NEWSES = "DELETE FROM news WHERE news_id IN (?)";
 	@Override
 	public void deleteNewses(String[] idNewses) throws DaoException {
 
 		try(Connection connection = connectionPool.takeConnection();
-			PreparedStatement statement = connection.prepareStatement("DELETE FROM news WHERE news_id IN (?)")){
+			PreparedStatement statement = connection.prepareStatement(SQL_TO_DELETE_NEWSES)){
 
 			statement.setArray(1, connection.createArrayOf("INTEGER", idNewses));
 			statement.executeUpdate();
@@ -140,11 +142,12 @@ public final class NewsDAO implements INewsDAO {
 	}
 
 	//TODO при удалении новостей, мы будем менять статус колонки в таблице, которая будет очищаться через месяц, и вот именно по этой колонке и будет проходить удаление
+	private final static String SQL_TO_DELETE_NEWS = "DELETE FROM news WHERE news_id = ?";
 	@Override
 	public void deleteNews(int id) throws DaoException {
 
 		try(Connection connection = connectionPool.takeConnection();
-			PreparedStatement statement = connection.prepareStatement("DELETE FROM news WHERE news_id = ?")){
+			PreparedStatement statement = connection.prepareStatement(SQL_TO_DELETE_NEWS)){
 
 			statement.setInt(1, id);
 			statement.executeUpdate();
