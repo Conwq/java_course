@@ -9,8 +9,11 @@ import java.io.IOException;
 
 public final class GoToRegistrationPage implements Command {
 
+	private final static String JSP_REGISTRATION_PARAM = "registration";
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("WEB-INF/jsp/registration.jsp").forward(request, response);
+		request.setAttribute(JSP_REGISTRATION_PARAM, JSP_REGISTRATION_PARAM);
+		request.getRequestDispatcher("/WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 	}
 }

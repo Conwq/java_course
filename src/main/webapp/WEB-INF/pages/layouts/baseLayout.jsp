@@ -36,14 +36,21 @@
 			</div>
 
 			<div class="content">
-				<c:if test="${not (sessionScope.user eq 'active')}">
-					<c:import url="/WEB-INF/pages/tiles/guestInfo.jsp" />
-				</c:if>
+				<c:choose>
+					<c:when test="${sessionScope.user eq 'active'}">
+						<c:import url="/WEB-INF/pages/tiles/body.jsp" />
+					</c:when>
 
-				<c:if test="${sessionScope.user eq 'active'}">
-					<c:import url="/WEB-INF/pages/tiles/body.jsp" />
-				</c:if>
+					<c:when test="${requestScope.registration eq 'registration'}">
+						<c:import url="/WEB-INF/pages/tiles/registration.jsp"/>
+					</c:when>
+
+					<c:otherwise>
+						<c:import url="/WEB-INF/pages/tiles/guestInfo.jsp" />
+					</c:otherwise>
+				</c:choose>
 			</div>
+
 		</div>
 
 		<div class="footer">
