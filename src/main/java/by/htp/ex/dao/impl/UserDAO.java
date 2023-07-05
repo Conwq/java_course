@@ -185,4 +185,35 @@ public final class UserDAO implements IUserDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void banUser(int id) throws DaoException{
+		
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET banned = 1 WHERE id = ?")){
+			 preparedStatement.setInt(1, id);
+			 preparedStatement.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new DaoException(e);
+		}
+		catch(ConnectionPoolException e) {
+			throw new DaoException(e);
+		}
+	}
+	
+	@Override
+	public void downgradeRoleToUser(int id) throws DaoException {
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET role = 'user' WHERE id = ?")){
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new DaoException(e);
+		}
+		catch(ConnectionPoolException e) {
+			
+		}
+	}
 }

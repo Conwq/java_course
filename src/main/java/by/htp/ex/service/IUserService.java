@@ -12,4 +12,6 @@ public interface IUserService {
 	NewUserInfo getUser(int id) throws ServiceException;
 	void updateUserInfo(NewUserInfo userInfo) throws ServiceException;
 	void unbanUser(int id) throws ServiceException;
+	void banUser (int id) throws ServiceException;
+	void downgradeRoleToUser(int id) throws ServiceException;
 }

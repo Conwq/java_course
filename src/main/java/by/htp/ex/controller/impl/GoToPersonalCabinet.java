@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class GoToPersonalCabinet implements Command {
+public final class GoToPersonalCabinet implements Command {
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
 	private final static String JSP_ID_PARAM = "id";
 	private final static String JSP_USER_INFO_PARAM = "userInfo";

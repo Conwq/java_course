@@ -13,7 +13,7 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 
-public class DoEditNews implements Command {
+public final class DoEditNews implements Command {
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
 	private final static String JSP_ID_PARAM = "id";
 	private final static String JSP_TITLE_PARAM = "title";

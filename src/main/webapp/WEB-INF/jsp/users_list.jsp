@@ -31,7 +31,7 @@
 
         <c:if test="${user.role eq 'admin'.toUpperCase()}">
           <a href=" <c:url value='/controller?command=do_downgrade_user&user_id=${user.userId}'/>">
-            <button type="submit">Downgrade to user</button>
+            <button type="submit">Downgrade role to user</button>
           </a>
         </c:if>
       </li>

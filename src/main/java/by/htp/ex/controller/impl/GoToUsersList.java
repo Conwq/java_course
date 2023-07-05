@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class GoToUsersList implements Command {
+public final class GoToUsersList implements Command {
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
 	private final static String JSP_USERS_PARAM = "users";
 	@Override

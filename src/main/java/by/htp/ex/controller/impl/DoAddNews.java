@@ -15,7 +15,7 @@ import jakarta.servlet.http.Part;
 
 import java.io.IOException;
 
-public class DoAddNews implements Command {
+public final class DoAddNews implements Command {
 
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();

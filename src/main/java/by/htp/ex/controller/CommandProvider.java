@@ -33,6 +33,8 @@ public final class CommandProvider {
 		commands.put(CommandName.DO_DELETE_COMMENT, new DoDeleteComment());
 		commands.put(CommandName.DO_EDIT_COMMENT, new DoEditComment());
 		commands.put(CommandName.DO_UNBAN_USER, new DoUnbanUser());
+		commands.put(CommandName.DO_BAN_USER, new DoBanUser());
+		commands.put(CommandName.DO_DOWNGRADE_USER, new DoDowngradeUser());
 
 		commands.put(CommandName.NO_COMMAND, new NoCommand());
 	}

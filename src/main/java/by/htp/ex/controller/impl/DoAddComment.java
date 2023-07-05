@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class DoAddComment implements Command{
+public final class DoAddComment implements Command{
 	
 	private final static String JSP_TEXT_PARAM = "text";
 	private final static String JSP_USER_ID_PARAM = "user_id";

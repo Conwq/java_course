@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class DoDeleteNews implements Command {
+public final class DoDeleteNews implements Command {
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
 	private final static String JSP_ID_PARAM = "id";
 
