@@ -35,19 +35,23 @@ public final class DatabaseHelper {
 		return findNews;
 	}
 
-
 	public NewUserInfo parseUserInfo(ResultSet resultSet) throws SQLException{
 		NewUserInfo newUserInfo = new NewUserInfo();
 		newUserInfo.setUserId(resultSet.getInt("id"));
 		newUserInfo.setLogin(resultSet.getString("login"));
 		newUserInfo.setEmail(resultSet.getString("email"));
 		newUserInfo.setRole(Role.valueOf(resultSet.getString("role").toUpperCase()));
-		
+		newUserInfo.setBanned(resultSet.getBoolean("banned"));
+
 		return newUserInfo;
 	}
 	
 	public NewUserInfo parseUserInfo(ResultSet resultSet, String password) throws SQLException, DaoException{
+
 		if(BCrypt.checkpw(password, resultSet.getString("password"))) {
+			if (resultSet.getBoolean("banned")) {
+				throw new DaoException("Current user was banned");
+			}
 			return parseUserInfo(resultSet);
 		}
 		else {

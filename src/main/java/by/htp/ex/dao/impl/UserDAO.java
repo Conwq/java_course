@@ -171,4 +171,58 @@ public final class UserDAO implements IUserDAO {
 
 		return resultSet.next();
 	}
+
+	private final static String SQL_UNBAN_USER = "UPDATE users SET banned = 0 WHERE id = ?";
+	@Override
+	public void unbanUser(int id) throws DaoException {
+		try (Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_UNBAN_USER)){
+			NewUserInfo user = getUser(id);
+
+			if (!user.isBanned()){
+				throw new DaoException("User can not banned");
+			}
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+		}
+		catch (SQLException e){
+			throw new DaoException(e);
+		}
+		catch (ConnectionPoolException e){
+			e.printStackTrace();
+		}
+	}
+
+	private final static String SQL_BAN_USER = "UPDATE users SET banned = 1 WHERE id = ?";
+	@Override
+	public void banUser(int id) throws DaoException{
+		
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_BAN_USER)){
+			 preparedStatement.setInt(1, id);
+			 preparedStatement.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new DaoException(e);
+		}
+		catch(ConnectionPoolException e) {
+			throw new DaoException(e);
+		}
+	}
+
+	private final static String SQL_DOWNGRADE_ROLE_USER = "UPDATE users SET role = 'user' WHERE id = ?";
+	@Override
+	public void downgradeRoleToUser(int id) throws DaoException {
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_DOWNGRADE_ROLE_USER)){
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new DaoException(e);
+		}
+		catch(ConnectionPoolException e) {
+			
+		}
+	}
 }

@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class DoEditComment implements Command {
+public final class DoEditComment implements Command {
 	private final static ICommentService commentService = ServiceProvider.getInstance().getCommentService();
 	private final static CommentDataValidation validator = ValidationProvider.getInstance().getCommentDataValidation();
 	private final static String JSP_TEXT_PARAM = "text";

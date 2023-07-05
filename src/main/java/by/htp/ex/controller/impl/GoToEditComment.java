@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class GoToEditComment implements Command {
+public final class GoToEditComment implements Command {
 	private final static ICommentService commentService = ServiceProvider.getInstance().getCommentService();
 	private final static String JSP_COMMENT_ID_PARAM = "comment_id";
 	private final static String JSP_NEWS_ID_PARAM = "news_id";

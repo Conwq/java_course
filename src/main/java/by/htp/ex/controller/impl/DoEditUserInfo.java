@@ -14,7 +14,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
-public class DoEditUserInfo implements Command {
+public final class DoEditUserInfo implements Command {
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
 	private final static UserDataValidation validation = ValidationProvider.getInstance().getUserValidator();
 	private final static String JSP_ID_PARAM = "id";

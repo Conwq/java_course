@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class GoToEditNews implements Command {
+public final class GoToEditNews implements Command {
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
 	private final static String JSP_ID_PARAM = "id";
 	private final static String JSP_NEWS_PARAM = "news";
