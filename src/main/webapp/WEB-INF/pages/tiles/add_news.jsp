@@ -1,12 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<html>
-<head>
-    <title>Add News Page</title>
-</head>
-
-<body>
+<c:set value="${requestScope.users}" var="users"/>
 
 <form action="<c:url value="/controller?command=do_add_news"/> " method="post" enctype="multipart/form-data">
     <label for="title">Title:</label><br>
@@ -23,7 +18,7 @@
 
     <label for="author">Choose author:</label>
     <select name="user_id" id="author">
-        <c:forEach var="user" items="${requestScope.users}">
+        <c:forEach var="user" items="${users}">
             <option value="${user.userId}">
                 ${user.login}
             </option>
@@ -33,7 +28,3 @@
     <input type="submit" value="Add news"/>
 </form>
 <button onclick="history.back()">Back</button>
-
-
-</body>
-</html>

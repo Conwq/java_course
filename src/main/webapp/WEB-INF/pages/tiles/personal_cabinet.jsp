@@ -4,15 +4,8 @@
 <c:set value="${sessionScope.userInfo}" var="user"/>
 <c:set value="${sessionScope.error}" var="error"/>
 
-<html>
-<head>
-    <title>Cabinet</title>
-</head>
-<body>
 
-<h1>Hello, <b><c:out value="${user.login}"/></b>. Your role ${sessionScope.role}.</h1>
-<hr>
-<br>
+<h1>Hello, <b><c:out value="${user.login}"/></b>. Your role ${sessionScope.role}.</h1><hr><br>
 
 <h3>Your personal data. In this form you can edit them.</h3><br>
 
@@ -38,5 +31,3 @@
 
 <button onclick="history.back()">Back</button>
 
-</body>
-</html>

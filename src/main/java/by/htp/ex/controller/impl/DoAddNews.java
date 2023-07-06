@@ -7,7 +7,6 @@ import by.htp.ex.service.INewsService;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
-import by.htp.ex.util.DatabaseHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +18,6 @@ public final class DoAddNews implements Command {
 
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
-	private final static DatabaseHelper helper = DatabaseHelper.getInstance();
 
 	private final static String JSP_TITLE_PARAM = "title";
 	private final static String JSP_BRIEF_NEWS_PARAM = "brief_news";
@@ -53,13 +51,11 @@ public final class DoAddNews implements Command {
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch (NumberFormatException | ServiceException | IOException e){
-			e.printStackTrace();
 			response.sendRedirect("/error/error.jsp");
 		}
 	}
 
 	private String getPathToSavedImage(Part imagePart, HttpServletRequest request) throws IOException{
-		System.out.println("I`m here");
 		String fileName = imagePart.getSubmittedFileName();
 		String pathToImage = request.getServletContext().getRealPath("/images/") + fileName;
 		imagePart.write(pathToImage);

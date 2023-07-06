@@ -4,12 +4,6 @@
 
 <c:set value="${requestScope.news}" var="news"/>
 
-<html>
-<head>
-    <title>Edit news</title>
-</head>
-<body>
-
 <form action="controller?command=do_edit_news" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="${news.idNews}"/>
     <input type="hidden" name="photo_path" value="${news.photoPath}">
@@ -32,7 +26,3 @@
     <input type="submit" value="Submit">
 </form>
 <button onclick="history.back()">Back</button>
-
-
-</body>
-</html>

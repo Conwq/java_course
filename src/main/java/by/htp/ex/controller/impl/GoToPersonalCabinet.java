@@ -15,6 +15,9 @@ public final class GoToPersonalCabinet implements Command {
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
 	private final static String JSP_ID_PARAM = "id";
 	private final static String JSP_USER_INFO_PARAM = "userInfo";
+	private final static String JSP_PERSONAL_CABINET_PARAM = "personal_cabinet";
+	private final static String JSP_ACTION_PARAM = "action";
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idParam = request.getParameter(JSP_ID_PARAM);
@@ -23,7 +26,8 @@ public final class GoToPersonalCabinet implements Command {
 			int id = Integer.parseInt(idParam);
 			NewUserInfo userInfo = userService.getUser(id);
 			request.getSession(true).setAttribute(JSP_USER_INFO_PARAM, userInfo);
-			request.getRequestDispatcher("WEB-INF/jsp/personal_cabinet.jsp").forward(request, response);
+			request.setAttribute(JSP_ACTION_PARAM, JSP_PERSONAL_CABINET_PARAM);
+			request.getRequestDispatcher("/WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		}
 		catch (NumberFormatException | ServiceException e){
 			response.sendRedirect("/error/error.jsp");

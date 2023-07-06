@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public final class Comment implements Serializable {
+	private final static long serialVersionUID = 1L;
 	private int commentId;
 	private NewUserInfo newUserInfo;
 	private News news;

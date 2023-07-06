@@ -24,10 +24,10 @@ public final class DoBanUser implements Command{
 			response.sendRedirect("controller?command=go_to_users_list");
 		}
 		catch(NumberFormatException e) {
-			System.out.println("Error with parse");
+			response.sendRedirect("/error/error.jsp");
 		}
 		catch(ServiceException e) {
-			System.out.println("ServiceException");
+			response.sendRedirect("/error/error.jsp");
 		}
 	}
 }

@@ -3,12 +3,6 @@
 
 <c:set value="${requestScope.users}" var="users"/>
 
-<html>
-<head>
-    <title>Users</title>
-</head>
-<body>
-
   <ul>
     <c:forEach var="user" items="${users}">
 
@@ -39,6 +33,3 @@
     </c:forEach>
   </ul>
   <button onclick="history.back()">Back</button>
-
-</body>
-</html>

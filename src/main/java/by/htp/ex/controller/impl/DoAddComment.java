@@ -31,10 +31,10 @@ public final class DoAddComment implements Command{
 			response.sendRedirect("controller?command=go_to_view_news&id=" + newsId);
 		}
 		catch (NumberFormatException e){
-			e.printStackTrace();
+			response.sendRedirect("/error/error.jsp");
 		}
 		catch (ServiceException e){
-			System.out.println(e.getMessage());
+			response.sendRedirect("/error/error.jsp");
 		}
 	}
 }

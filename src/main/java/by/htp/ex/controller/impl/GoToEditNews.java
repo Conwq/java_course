@@ -15,6 +15,9 @@ public final class GoToEditNews implements Command {
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
 	private final static String JSP_ID_PARAM = "id";
 	private final static String JSP_NEWS_PARAM = "news";
+	private final static String JSP_ACTION_PARAM = "action";
+	private final static String JSP_EDIT_NEWS_PARAM = "edit_news";
+	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String newsId = request.getParameter(JSP_ID_PARAM);
@@ -23,9 +26,13 @@ public final class GoToEditNews implements Command {
 			int id = Integer.parseInt(newsId);
 			News news = newsService.findById(id);
 			request.setAttribute(JSP_NEWS_PARAM, news);
-			request.getRequestDispatcher("WEB-INF/jsp/edit_news.jsp").forward(request, response);
+			request.setAttribute(JSP_ACTION_PARAM, JSP_EDIT_NEWS_PARAM);
+			request.getRequestDispatcher("/WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		}
-		catch (NumberFormatException | ServiceException e){
+		catch (NumberFormatException e) {
+			response.sendRedirect("/error/error.jsp");
+		}
+		catch (ServiceException e){
 			response.sendRedirect("/error/error.jsp");
 		}
 	}
