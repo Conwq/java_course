@@ -17,9 +17,6 @@
     <label for="content">Enter content news:</label><br>
     <input type="text" name="content" id="content" value="${news.content}"><br>
 
-    <label for="date">Enter date news:</label><br>
-    <input type="text" name="date" id="date" value="${news.newsDate}"><br>
-
     <label for="photo">Change photo:</label><br>
     <input type="file" name="photo" id="photo"/><br>
 

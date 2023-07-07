@@ -3,9 +3,10 @@
 
 <c:set value="${sessionScope.userInfo}" var="user"/>
 <c:set value="${sessionScope.error}" var="error"/>
+<c:set value="${sessionScope.role}" var="role"/>
 
 
-<h1>Hello, <b><c:out value="${user.login}"/></b>. Your role ${sessionScope.role}.</h1><hr><br>
+<h1>Hello, <b><c:out value="${user.login}"/></b>. Your role ${role}.</h1><hr><br>
 
 <h3>Your personal data. In this form you can edit them.</h3><br>
 
@@ -13,10 +14,10 @@
     <input type="hidden" name="command" value="do_edit_user_info"/>
     <input type="hidden" name="id" value="${user.userId}">
 
-    <label for="login">Old login:</label> <br>
+    <label for="login">New login:</label> <br>
     <input type="text" name="login" id="login" value="${user.login}"/> <br><br>
 
-    <label for="email">Old email:</label><br>
+    <label for="email">New email:</label><br>
     <input type="text" name="email" id="email" value="${user.email}"/> <br><br>
 
     <label for="password">Enter new password:</label> <br>

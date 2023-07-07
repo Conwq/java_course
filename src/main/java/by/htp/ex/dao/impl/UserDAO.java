@@ -26,15 +26,16 @@ public final class UserDAO implements IUserDAO {
 		try {
 			connection = connectionPool.takeConnection();
 			connection.setAutoCommit(false);
-			preparedStatement = connection.prepareStatement(SQL_TO_ADD_USER);
 
 			if (!isExistUser(user, connection)) {
+				preparedStatement = connection.prepareStatement(SQL_TO_ADD_USER);
 				preparedStatement.setString(1, user.getLogin());
 				preparedStatement.setString(2, user.getPassword());
 				preparedStatement.setString(3, user.getEmail());
 
 				preparedStatement.executeUpdate();
 				connection.commit();
+				connection.setAutoCommit(true);
 			}
 			else {
 				throw new DaoException("User with this email or login exists");
@@ -160,18 +161,6 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_TO_CHECK_USER_EXIST = "SELECT * FROM users WHERE email = ? OR login = ? AND id <> ?";
-	private boolean isExistUser(NewUserInfo user, Connection connection) throws SQLException {
-		PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_CHECK_USER_EXIST);
-
-		preparedStatement.setString(1, user.getEmail());
-		preparedStatement.setString(2, user.getLogin());
-		preparedStatement.setInt(3, user.getUserId());
-		ResultSet resultSet = preparedStatement.executeQuery();
-
-		return resultSet.next();
-	}
-
 	private final static String SQL_UNBAN_USER = "UPDATE users SET banned = 0 WHERE id = ?";
 	@Override
 	public void unbanUser(int id) throws DaoException {
@@ -224,5 +213,17 @@ public final class UserDAO implements IUserDAO {
 		catch(ConnectionPoolException e) {
 			
 		}
+	}
+
+	private final static String SQL_TO_CHECK_USER_EXIST = "SELECT * FROM users WHERE email = ? OR login = ? AND id <> ?";
+	private boolean isExistUser(NewUserInfo user, Connection connection) throws SQLException {
+		PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_CHECK_USER_EXIST);
+
+		preparedStatement.setString(1, user.getEmail());
+		preparedStatement.setString(2, user.getLogin());
+		preparedStatement.setInt(3, user.getUserId());
+		ResultSet resultSet = preparedStatement.executeQuery();
+
+		return resultSet.next();
 	}
 }

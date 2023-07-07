@@ -10,9 +10,7 @@ public final class NewUserInfo implements Serializable {
 	private Role role;
 	private boolean banned;
 
-
 	//TODO ДОБАВИТЬ ЛИСТ ВСЕХ НОВОСТЕЙ, КОТОРЫЕ ПРИНАДЛЕЖАТ ПОЛЬЗОВАТЕЛЮ
-
 
 	public NewUserInfo(){
 	}

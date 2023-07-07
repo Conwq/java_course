@@ -22,7 +22,6 @@ public final class DoEditNews implements Command {
 	private final static String JSP_PHOTO_PARAM = "photo";
 	private final static String JSP_PHOTO_PATH_PARAM = "photo_path";
 
-
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter(JSP_ID_PARAM);

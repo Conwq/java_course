@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.List;
 
 public final class GoToAddNews implements Command {
-
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
 	private final static String JSP_USERS_PARAM = "users";
 	private final static String JSP_ACTION_PARAM = "action";

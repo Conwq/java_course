@@ -1,6 +1,5 @@
 package by.htp.ex.util;
 
-import by.htp.ex.bean.Comment;
 import by.htp.ex.bean.NewUserInfo;
 import by.htp.ex.bean.News;
 import by.htp.ex.bean.Role;
@@ -11,17 +10,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public final class DatabaseHelper {
-
 	private final static DatabaseHelper instance = new DatabaseHelper();
-
 	private DatabaseHelper(){
-
 	}
 
 	public static DatabaseHelper getInstance(){
 		return instance;
 	}
-
 
 	public News parseNews(ResultSet resultSet) throws SQLException{
 		News findNews = new News();
