@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <c:set value="${sessionScope.user}" var="user"/>
+<c:set value="${sessionScope.role}" var="role"/>
 <c:set value="${requestScope.action}" var="action"/>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -12,11 +13,10 @@
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script type="text/javascript" src="script/validation.js"></script>
-<title>News manager</title>
-
-<link rel="stylesheet" type="text/css" href="styles/newsStyle.css">
+	<title>News manager</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script type="text/javascript" src="script/validation.js"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/newsStyle.css">
 </head>
 
 <body>
@@ -28,7 +28,7 @@
 
 		<div class="base-layout-wrapper">
 			<div class="menu">
-				<c:if test="${not (user eq 'active')}">
+				<c:if test="${user eq 'not active'}">
 				    Welcome!!!
 				</c:if>
 
@@ -39,15 +39,15 @@
 
 			<div class="content">
 				<c:choose>
-					<c:when test="${action eq 'users_list'}">
+					<c:when test="${action eq 'users_list' && user eq 'active' && role eq 'admin'}">
 						<c:import url="/WEB-INF/pages/tiles/users_list.jsp"/>
 					</c:when>
 				
-					<c:when test="${action eq 'add_news'}">
+					<c:when test="${action eq 'add_news' && user eq 'active' && role eq 'admin'}">
 						<c:import url="/WEB-INF/pages/tiles/add_news.jsp"/>
 					</c:when>
 				
-					<c:when test="${action eq 'edit_news'}">
+					<c:when test="${action eq 'edit_news' && user eq 'active' && role eq 'admin'}">
 						<c:import url="/WEB-INF/pages/tiles/edit_news.jsp"/>	
 					</c:when>
 					
@@ -55,7 +55,7 @@
 						<c:import url="/WEB-INF/pages/tiles/registration.jsp"/>
 					</c:when>
 					
-					<c:when test="${action eq 'personal_cabinet'}">
+					<c:when test="${action eq 'personal_cabinet' && user eq 'active'}">
 						<c:import url="/WEB-INF/pages/tiles/personal_cabinet.jsp"/>
 					</c:when>
 					

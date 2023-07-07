@@ -105,6 +105,7 @@ public final class NewsDAO implements INewsDAO {
 			throw new DaoException(e);
 		}
 	}
+
 	private final static String SQL_TO_UPDATE_NEWS = "UPDATE news SET title=?, brief_news=?, content=?, photo_path=? WHERE news_id=?";
 	@Override
 	public void updateNews(News news) throws DaoException {

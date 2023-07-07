@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public final class GoToRegistrationPage implements Command {
-
 	private final static String JSP_REGISTRATION_PARAM = "registration";
 	private final static String JSP_ACTION_PARAM = "action";
 	

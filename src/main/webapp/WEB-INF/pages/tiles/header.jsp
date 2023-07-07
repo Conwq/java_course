@@ -12,7 +12,10 @@
 	<fmt:message bundle="${local}" key="local.locbutton.header.sign_in" var="sign_in_button"/>
 	<fmt:message bundle="${local}" key="local.locbutton.header.sign_out" var="sign_out_button"/>
 
-
+	<c:set value="${sessionScope.user}" var="user"/>
+	<c:set value="${sessionScope.userInfo.userId}" var="id"/>
+	<c:set value="${sessionScope.role}" var="role"/>
+	<c:set value="${sessionScope.AuthenticationError}" var="error"/>
 
 <div class="wrapper">
 
@@ -33,7 +36,7 @@
 			</form>
 		</div>
 
-		<c:if test="${not (sessionScope.user eq 'active')}">
+		<c:if test="${not (user eq 'active')}">
 			<div align="right">
 				<form action="controller" method="post">
 					<input type="hidden" name="command" value="do_sign_in" />
@@ -44,9 +47,9 @@
 					<label for="password">${password}</label>
 					<input type="password" name="password" id="password"/><br />
 
-					<c:if test="${not (sessionScope.AuthenticationError eq null)}">
+					<c:if test="${not (error eq null)}">
 						<font color="red">
-							<c:out value="${sessionScope.AuthenticationError}" />
+							<c:out value="${error}" />
 						</font> <br>
 					</c:if>
 
@@ -56,7 +59,7 @@
 			</div>
 		</c:if>
 
-		<c:if test="${sessionScope.user eq 'active'}">
+		<c:if test="${user eq 'active'}">
 			<div align="right">
 				<form action="controller" method="post">
 					<input type="hidden" name="command" value="do_sign_out" /> 
@@ -65,11 +68,10 @@
 			</div>
 
 			<div align="right" class="personal_cabinet">
-				<c:set value="${sessionScope.userInfo.userId}" var="id"/>
 				<a href="<c:url value="/controller?command=go_to_personal_cabinet&id=${id}"/> ">Personal cabinet</a>
 			</div>
 
-			<c:if test="${sessionScope.role eq 'admin'}">
+			<c:if test="${role eq 'admin'}">
 				<div align="right">
 					<a href="<c:out value="/controller?command=go_to_users_list"/>" >Show all registered user</a>
 				</div>

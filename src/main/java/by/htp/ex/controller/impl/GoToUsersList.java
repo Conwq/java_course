@@ -21,7 +21,7 @@ public final class GoToUsersList implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		try{
+		try {
 			List<NewUserInfo> usersInfo = userService.getUsers();
 			request.setAttribute(JSP_USERS_PARAM, usersInfo);
 			request.setAttribute(JSP_ACTION_PARAM, JSP_USERS_LIST_PARAM);

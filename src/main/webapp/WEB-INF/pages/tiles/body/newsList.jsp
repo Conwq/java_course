@@ -26,15 +26,16 @@
 						<c:if test="${sessionScope.role eq 'admin'}">
 						      <a href="<c:out value="/controller?command=go_to_edit_news&id=${news.idNews}"/>">editlink</a>
 						</c:if>
-						
-						<a href="controller?command=go_to_view_news&id=${news.idNews}">viewlink </a> 
-   					    
-<%--   					    <c:if test="${sessionScope.role eq 'admin'}">--%>
-<%--   					         <input type="checkbox" name="idNews" value="${news.idNews }" />--%>
-<%--   					    </c:if>--%>
+						&nbsp;&nbsp;&nbsp;
+
+						<a href="controller?command=go_to_view_news&id=${news.idNews}">viewlink </a>
+						&nbsp;&nbsp;&nbsp;
+
+   					    <c:if test="${sessionScope.role eq 'admin'}">
+   					         <input type="checkbox" name="idNews" value="${news.idNews }" />
+   					    </c:if>
 					</div>
 				</div>
-
 			</div>
 		</div>
 		<br><hr>
