@@ -1,6 +1,7 @@
 package by.htp.ex.bean;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public final class NewUserInfo implements Serializable {
 	private int userId;
@@ -91,6 +92,19 @@ public final class NewUserInfo implements Serializable {
 				", password='" + password + '\'' +
 				", role=" + role +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		NewUserInfo that = (NewUserInfo) o;
+		return banned == that.banned && Objects.equals(login, that.login) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && role == that.role;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(login, email, password, role, banned);
 	}
 }
 

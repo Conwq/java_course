@@ -75,4 +75,17 @@ public final class NewsServiceImpl implements INewsService{
 			throw new ServiceException(e);
 		}
 	}
+
+	public void deleteNewses(String[] newses) throws ServiceException{
+		int[] newsesId = new int[newses.length];
+		for (int i = 0; i < newses.length; i++){
+			newsesId[i] = Integer.parseInt(newses[i]);
+		}
+		try {
+			newsDAO.deleteNewses(newsesId);
+		}
+		catch(DaoException e){
+			throw new ServiceException(e);
+		}
+	}
 }

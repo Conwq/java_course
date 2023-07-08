@@ -109,23 +109,7 @@ public final class ConnectionPool {
 			throw new ConnectionPoolException("Exception with close ResultSet", e);
 		}
 
-		try {
-			if (statement != null) {
-				statement.close();
-			}
-		}
-		catch (SQLException e) {
-			throw new ConnectionPoolException("Exception with close Statement", e);
-		}
-
-		try {
-			if (connection != null) {
-				connection.close();
-			}
-		}
-		catch (SQLException e) {
-			throw new ConnectionPoolException("Exception with close Connection", e);
-		}
+		closeConnection(connection, statement);
 	}
 
 	private void clearConnectionQueue() {

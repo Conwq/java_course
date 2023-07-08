@@ -1,6 +1,8 @@
 package by.htp.ex.bean;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 public final class News implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -121,5 +123,18 @@ public final class News implements Serializable {
 				", photoPath='" + photoPath + '\'' +
 				", newUserInfo=" + newUserInfo +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		News news = (News) o;
+		return Objects.equals(title, news.title) && Objects.equals(briefNews, news.briefNews) && Objects.equals(content, news.content) && Objects.equals(newsDate, news.newsDate) && Objects.equals(photoPath, news.photoPath) && Objects.equals(newUserInfo, news.newUserInfo);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(title, briefNews, content, newsDate, photoPath, newUserInfo);
 	}
 }

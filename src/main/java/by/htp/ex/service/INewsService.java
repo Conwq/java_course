@@ -12,4 +12,5 @@ public interface INewsService {
   List<News> list()  throws ServiceException;
   News findById(int id) throws ServiceException;
   void delete(int id) throws ServiceException;
+  void deleteNewses(String[] newses) throws ServiceException;
 }

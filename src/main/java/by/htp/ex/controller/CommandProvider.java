@@ -35,6 +35,7 @@ public final class CommandProvider {
 		commands.put(CommandName.DO_UNBAN_USER, new DoUnbanUser());
 		commands.put(CommandName.DO_BAN_USER, new DoBanUser());
 		commands.put(CommandName.DO_DOWNGRADE_USER, new DoDowngradeUser());
+		commands.put(CommandName.DO_DELETE_NEWSES, new DoDeleteNewses());
 
 		commands.put(CommandName.NO_COMMAND, new NoCommand());
 	}

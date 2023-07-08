@@ -24,5 +24,6 @@ public enum CommandName {
 	DO_UNBAN_USER,
 	DO_BAN_USER,
 	DO_DOWNGRADE_USER,
+	DO_DELETE_NEWSES,
 	NO_COMMAND
 }

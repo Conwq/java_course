@@ -127,14 +127,17 @@ public final class NewsDAO implements INewsDAO {
 	}
 
 	//TODO при удалении новостей, мы будем менять статус колонки в таблице, которая будет очищаться через месяц, и вот именно по этой колонке и будет проходить удаление
-	private final static String SQL_TO_DELETE_NEWSES = "DELETE FROM news WHERE news_id IN (?)";
 	@Override
-	public void deleteNewses(String[] idNewses) throws DaoException {
+	public void deleteNewses(int[] idNewses) throws DaoException {
+
+		String SQL_TO_DELETE_NEWSES = helper.buildSQLQuery(idNewses);
 
 		try(Connection connection = connectionPool.takeConnection();
 			PreparedStatement statement = connection.prepareStatement(SQL_TO_DELETE_NEWSES)){
 
-			statement.setArray(1, connection.createArrayOf("INTEGER", idNewses));
+			for (int i = 0; i < idNewses.length; i++) {
+				statement.setInt(i + 1, idNewses[i]);
+			}
 			statement.executeUpdate();
 		}
 		catch (SQLException |ConnectionPoolException e){
