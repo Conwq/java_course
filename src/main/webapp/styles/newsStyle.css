@@ -42,16 +42,16 @@ html,body {
 }
 
 .content {
-	left: 25%; 
+	left: 25%;
 	right: 0;
-	
+
 	padding-top: 5px;
 	padding-bottom: 5px;
 	padding-right: 5px;
- 	padding-left: 10px; 
-	
+ 	padding-left: 10px;
+
 	border: solid 1px grey;
-	
+
 	margin-top: 5px;
 	margin-bottom: 10px;
 	margin-left: 10px;
@@ -174,11 +174,11 @@ html,body {
 	padding-bottom: 5px;
 	padding-top: 5px;
 	padding-right: 25%;
-	padding-left: 20px; 
+	padding-left: 20px;
 }
 
 .news-link-to-wrapper {
-	
+
 }
 
 .link-position {

@@ -11,13 +11,15 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 
-public final class DatabaseHelper {
-	private final static DatabaseHelper instance = new DatabaseHelper();
-	private DatabaseHelper(){
+public final class NewsManagerHelper {
+	private final static NewsManagerHelper instance = new NewsManagerHelper();
+	private NewsManagerHelper(){
 	}
 
-	public static DatabaseHelper getInstance(){
+	public static NewsManagerHelper getInstance(){
 		return instance;
 	}
 
@@ -58,18 +60,22 @@ public final class DatabaseHelper {
 	}
 
 	private String definingDateOutputFormat(String date) {
+		Locale locale = Locale.getDefault();
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime dateTimeNews = LocalDateTime.parse(date, formatter);
 
 		LocalDate currentDate = LocalDate.now();
 		LocalDate datePublicationNews = dateTimeNews.toLocalDate();
 
+		String formatDateTime = dateTimeNews.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale));
+		String formatDate = dateTimeNews.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale));
+
 		if (datePublicationNews.equals(currentDate)) {
-			return date;
+			return formatDateTime;
 		}
 
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		return dateTimeNews.format(dateTimeFormatter);
+		return formatDate;
 	}
 
 	public String buildSQLQuery(int[] idNewses){

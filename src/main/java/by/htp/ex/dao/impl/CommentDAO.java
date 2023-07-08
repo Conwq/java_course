@@ -12,10 +12,10 @@ import by.htp.ex.dao.ICommentDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
-import by.htp.ex.util.DatabaseHelper;
+import by.htp.ex.util.NewsManagerHelper;
 
 public class CommentDAO implements ICommentDAO{
-	private final static DatabaseHelper helper = DatabaseHelper.getInstance();
+	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
 	private final static String SQL_TO_DELETE_COMMENT = "DELETE FROM comments WHERE comment_id = ?";
