@@ -34,7 +34,6 @@ public final class DoEditNews implements Command {
 
 		if (imagePart.getSize() > 0){
 			File file = new File(pathToImage);
-			System.out.println(file.delete());
 			pathToImage = getPathToSavedImage(imagePart, request);
 		}
 
@@ -50,7 +49,6 @@ public final class DoEditNews implements Command {
 	}
 
 	private String getPathToSavedImage(Part imagePart, HttpServletRequest request) throws IOException{
-		System.out.println("I`m here");
 		String fileName = imagePart.getSubmittedFileName();
 		String pathToImage = request.getServletContext().getRealPath("/images/") + fileName;
 		imagePart.write(pathToImage);

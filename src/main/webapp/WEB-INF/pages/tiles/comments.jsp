@@ -1,110 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 		 pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<style>
-	div.comments {
-		text-align: center;
-		margin-bottom: 20px;
-	}
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/comments.css">
 
-	div.comments h3 {
-		font-size: 24px;
-		margin-bottom: 20px;
-	}
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="localization.local" var="locale"/>
 
-	div.comments table {
-		width: 100%;
-		max-width: 670px;
-		border-collapse: collapse;
-		margin-bottom: 20px;
-	}
+<fmt:message bundle="${locale}" key="local.locbutton.comments.comments" var="comments_local"/>
+<fmt:message bundle="${locale}" key="local.locbutton.comments.no_comments" var="no_comments_local"/>
+<fmt:message bundle="${locale}" key="local.locbutton.comments.write_here" var="write_here_local"/>
+<fmt:message bundle="${locale}" key="local.locbutton.comments.length_string" var="length_string_local"/>
+<fmt:message bundle="${locale}" key="local.locbutton.comments.date" var="date_local"/>
+<fmt:message bundle="${locale}" key="local.locbutton.comments.username" var="username_local"/>
+<fmt:message bundle="${locale}" key="local.locbutton.comments.command" var="command_local"/>
+<fmt:message bundle="${locale}" key="local.locbutton.comments.delete" var="delete_local"/>
+<fmt:message bundle="${locale}" key="local.locbutton.comments.edit" var="edit_local"/>
+<fmt:message bundle="${locale}" key="local.locbutton.comments.send" var="send_local"/>
 
-	div.comments th,
-	div.comments td {
-		padding: 8px;
-	}
-
-	div.comments th {
-		text-align: left;
-	}
-
-	div.comments tr:nth-child(even) {
-		background-color: #f9f9f9;
-	}
-
-	div.comments form {
-		margin-bottom: 20px;
-	}
-
-	div.comments textarea {
-		width: 100%;
-		padding: 8px;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		box-sizing: border-box;
-		resize: vertical;
-	}
-
-	div.comments input[type="submit"],
-	div.comments button {
-		padding: 10px 20px;
-		background-color: #4CAF50;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-	}
-
-	div.comments button[type="submit"] {
-		background-color: #ccc;
-	}
-
-	div.comments button:hover,
-	div.comments input[type="submit"]:hover {
-		background-color: #45a049;
-	}
-
-	div.comments tr.line-separator td {
-		position: relative;
-	}
-
-	div.comments tr.line-separator td::before {
-		content: "";
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		border-bottom: 1px solid #000;
-	}
-</style>
-	
-	<c:set value="${requestScope.comments}" var="comments"/>
-	<c:set value="${requestScope.news}" var="news"/>
-	<c:set value="${sessionScope.userInfo}" var="user"/>
-	<c:set value="${sessionScope.role}" var="role"/>
-	<c:set value="${requestScope.comment_text}" var="text"/>
-	<c:set value="${sessionScope.error}" var="error"/>
-	<c:set value="${requestScope.comment_id}" var="comment_id"/>
+<c:set value="${requestScope.comments}" var="comments"/>
+<c:set value="${requestScope.news}" var="news"/>
+<c:set value="${sessionScope.userInfo}" var="user"/>
+<c:set value="${sessionScope.role}" var="role"/>
+<c:set value="${requestScope.comment_text}" var="text"/>
+<c:set value="${sessionScope.error}" var="error"/>
+<c:set value="${requestScope.comment_id}" var="comment_id"/>
 
 <div class="comments">
 	<div align="center">
-		<h3>Комментарии</h3> <br> <br>
+		<h3>${comments_local}</h3> <br> <br>
 	</div>
 	
 	<c:if test="${empty comments}">
-		<b>No comments, be first.</b>
+		<b>${no_comments_local}</b>
 	</c:if>
 	
 	<c:if test="${not empty comments}">
 		<table style="width: 100%; max-width: 670px;">
 			<thead>
 			<tr>
-				<th style="width: 30%; text-align: left;">Date</th>
-				<th style="width: 20%; text-align: left;">Username</th>
-				<th style="width: 100%; text-align: left;">Comment</th>
+				<th style="width: 30%; text-align: left;">${date_local}</th>
+				<th style="width: 20%; text-align: left;">${username_local}</th>
+				<th style="width: 100%; text-align: left;">${comments_local}</th>
 				<c:if test="${role eq 'admin'}">
-					<th style="width: 20%; text-align: right;">Command</th>
+					<th style="width: 20%; text-align: right;">${command_local}</th>
 				</c:if>
 			</tr>
 			</thead>
@@ -119,12 +59,12 @@
 						<td>
 							<form action="controller?command=do_delete_comment&comment_id=${comment.commentId}" method="post">
 								<input type="hidden" name="news_id" value="${news.idNews}"/>
-								<button type="submit">Delete</button>
+								<button type="submit">${delete_local}</button>
 							</form>
 
 							<form action="controller?command=go_to_edit_comment&comment_id=${comment.commentId}" method="post">
 								<input type="hidden" name="news_id" value="${news.idNews}"/>
-								<button type="submit">Edit</button>
+								<button type="submit">${edit_local}</button>
 							</form>
 						</td>
 					</c:if>
@@ -143,7 +83,7 @@
 			<input type="hidden" name="comment_id" value="${comment_id}"/>
 			<input type="hidden" name="news_id" value="${news.idNews}"/>
 
-			<label for="text">Write here:</label> <br>
+			<label for="text">${write_here_local}</label> <br>
 			<textarea id="text" name="text" rows="4" cols="120" required><c:out value="${text}"/></textarea><br>
 
 			<input type="submit" value="Send">
@@ -155,10 +95,10 @@
 			<input type="hidden" name="news_id" value="${news.idNews}"/>
 			<input type="hidden" name="user_id" value="${user.userId}"/>
 
-			<label for="text">Write here:</label> <br>
-			<textarea id="text" name="text" rows="4" cols="120" placeholder="Write comments here... Max count - 300 characters" required></textarea><br>
+			<label for="text">${write_here_local}</label> <br>
+			<textarea id="text" name="text" rows="4" cols="120" placeholder="${length_string_local}" required></textarea><br>
 
-			<input type="submit" value="Send">
+			<input type="submit" value="${send_local}">
 		</form>
 	</c:if>
 

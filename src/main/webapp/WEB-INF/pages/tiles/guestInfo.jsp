@@ -12,20 +12,20 @@
 		font-size: 18px;
 		font-weight: bold;
 		text-decoration: underline;
-		margin-bottom: 0; /* Удаляем нижний отступ */
+		margin-bottom: 0;
 	}
 
 	.news-date {
 		position: absolute;
 		top: 0;
-		right: 0; /* Изменяем значение свойства left на right */
+		right: 0;
 		font-style: italic;
 		background-color: #fff;
 		padding: 2px 5px;
 	}
 
 	.news-content {
-		margin-top: 5px; /* Изменяем значение на 5px */
+		margin-top: 5px;
 	}
 
 </style>

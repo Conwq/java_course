@@ -1,0 +1,52 @@
+.comments {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+.comments h3 {
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+}
+
+.comments table {
+    width: 100%;
+    max-width: 670px;
+    border-collapse: collapse;
+}
+
+.comments th,
+.comments td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+.comments th {
+    font-weight: bold;
+}
+
+.comments tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.comments textarea {
+    width: 100%;
+    padding: 5px;
+}
+
+.comments input[type="submit"],
+.comments button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.comments input[type="submit"]:hover,
+.comments button:hover {
+    background-color: #555;
+}

@@ -1,0 +1,39 @@
+.single-news-wrapper {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+.news-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 0;
+}
+
+.news-date {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-style: italic;
+    background-color: #fff;
+    padding: 2px 5px;
+}
+
+.news-content {
+    margin-top: 5px;
+}
+
+
+.form_news input[type="submit"] {
+    padding: 5px 10px;
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.form_news input[type="submit"]:hover {
+    background-color: #23527c;
+}

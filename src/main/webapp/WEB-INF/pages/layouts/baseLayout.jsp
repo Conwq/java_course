@@ -33,45 +33,45 @@
 				</c:if>
 
 				<c:if test="${user eq 'active'}">
-					<c:import url="/WEB-INF/pages/tiles/menu.jsp" />
+					<c:import url="/WEB-INF/pages/tiles/menu.jsp" charEncoding="UTF-8"/>
 				</c:if>
 			</div>
 
 			<div class="content">
 				<c:choose>
 					<c:when test="${action eq 'users_list' && user eq 'active' && role eq 'admin'}">
-						<c:import url="/WEB-INF/pages/tiles/users_list.jsp"/>
+						<c:import url="/WEB-INF/pages/tiles/users_list.jsp" charEncoding="UTF-8"/>
 					</c:when>
 				
 					<c:when test="${action eq 'add_news' && user eq 'active' && role eq 'admin'}">
-						<c:import url="/WEB-INF/pages/tiles/add_news.jsp"/>
+						<c:import url="/WEB-INF/pages/tiles/add_news.jsp" charEncoding="UTF-8"/>
 					</c:when>
 				
 					<c:when test="${action eq 'edit_news' && user eq 'active' && role eq 'admin'}">
-						<c:import url="/WEB-INF/pages/tiles/edit_news.jsp"/>	
+						<c:import url="/WEB-INF/pages/tiles/edit_news.jsp" charEncoding="UTF-8"/>
 					</c:when>
 					
 					<c:when test="${action eq 'registration'}">
-						<c:import url="/WEB-INF/pages/tiles/registration.jsp"/>
+						<c:import url="/WEB-INF/pages/tiles/registration.jsp" charEncoding="UTF-8"/>
 					</c:when>
 					
 					<c:when test="${action eq 'personal_cabinet' && user eq 'active'}">
-						<c:import url="/WEB-INF/pages/tiles/personal_cabinet.jsp"/>
+						<c:import url="/WEB-INF/pages/tiles/personal_cabinet.jsp" charEncoding="UTF-8"/>
 					</c:when>
 					
 					<c:when test="${user eq 'active'}">
-						<c:import url="/WEB-INF/pages/tiles/body.jsp"/>
+						<c:import url="/WEB-INF/pages/tiles/body.jsp" charEncoding="UTF-8"/>
 					</c:when>
 					
 					<c:otherwise>
-						<c:import url="/WEB-INF/pages/tiles/guestInfo.jsp" />
+						<c:import url="/WEB-INF/pages/tiles/guestInfo.jsp" charEncoding="UTF-8"/>
 					</c:otherwise>
 				</c:choose>
 			</div>
 		</div>
 
 		<div class="footer">
-			<c:import url="/WEB-INF/pages/tiles/footer.jsp" />
+			<c:import url="/WEB-INF/pages/tiles/footer.jsp" charEncoding="UTF-8"/>
 		</div>
 
 	</div>

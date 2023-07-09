@@ -19,7 +19,6 @@ public final class DoUnbanUser implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userId = request.getParameter(JSP_USER_ID_PARAM);
-		System.out.println(userId);
 
 		try{
 			int parseUserId = Integer.parseInt(userId);

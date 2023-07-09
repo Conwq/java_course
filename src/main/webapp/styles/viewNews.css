@@ -1,0 +1,33 @@
+.add-table-margin {
+    margin: 20px;
+}
+
+.news_text_format {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.news_text_format td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.space_around_title_text {
+    width: 25%;
+    font-weight: bold;
+}
+
+.space_around_view_text {
+    width: 75%;
+}
+
+.word-breaker {
+    word-break: break-all;
+}
+
+img {
+    display: block;
+    margin: 20px auto;
+    max-width: 100%;
+    height: auto;
+}

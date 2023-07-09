@@ -1,21 +1,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-	<fmt:setLocale value="${sessionScope.locale}"/>
-	<fmt:setBundle basename="localization.local" var="local"/>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="localization.local" var="local"/>
 
-	<fmt:message bundle="${local}" key="local.locbutton.name.ru" var="ru_button"/>
-	<fmt:message bundle="${local}" key="local.locbutton.name.en" var="en_button"/>
-	<fmt:message bundle="${local}" key="local.locbutton.header.login" var="login"/>
-	<fmt:message bundle="${local}" key="local.locbutton.header.password" var="password"/>
-	<fmt:message bundle="${local}" key="local.locbutton.header.registration" var="registartion_button"/>
-	<fmt:message bundle="${local}" key="local.locbutton.header.sign_in" var="sign_in_button"/>
-	<fmt:message bundle="${local}" key="local.locbutton.header.sign_out" var="sign_out_button"/>
+<fmt:message bundle="${local}" key="local.locbutton.name.ru" var="ru_button"/>
+<fmt:message bundle="${local}" key="local.locbutton.name.en" var="en_button"/>
+<fmt:message bundle="${local}" key="local.locbutton.header.login" var="login"/>
+<fmt:message bundle="${local}" key="local.locbutton.header.password" var="password"/>
+<fmt:message bundle="${local}" key="local.locbutton.header.registration" var="registartion_button"/>
+<fmt:message bundle="${local}" key="local.locbutton.header.sign_in" var="sign_in_button"/>
+<fmt:message bundle="${local}" key="local.locbutton.header.sign_out" var="sign_out_button"/>
+<fmt:message bundle="${local}" key="local.locbutton.header.personal_cabinet" var="personal_cabinet"/>
+<fmt:message bundle="${local}" key="local.locbutton.header.show_all_registered_users" var="show_all_users"/>
 
-	<c:set value="${sessionScope.user}" var="user"/>
-	<c:set value="${sessionScope.userInfo.userId}" var="id"/>
-	<c:set value="${sessionScope.role}" var="role"/>
-	<c:set value="${sessionScope.AuthenticationError}" var="error"/>
+<c:set value="${sessionScope.user}" var="user"/>
+<c:set value="${sessionScope.userInfo.userId}" var="id"/>
+<c:set value="${sessionScope.role}" var="role"/>
+<c:set value="${sessionScope.AuthenticationError}" var="error"/>
 
 <div class="wrapper">
 
@@ -68,16 +70,14 @@
 			</div>
 
 			<div align="right" class="personal_cabinet">
-				<a href="<c:url value="/controller?command=go_to_personal_cabinet&id=${id}"/> ">Personal cabinet</a>
+				<a href="<c:url value="/controller?command=go_to_personal_cabinet&id=${id}"/>">${personal_cabinet}</a>
 			</div>
 
 			<c:if test="${role eq 'admin'}">
 				<div align="right">
-					<a href="<c:out value="/controller?command=go_to_users_list"/>" >Show all registered user</a>
+					<a href="<c:out value="/controller?command=go_to_users_list"/>" >${show_all_users}</a>
 				</div>
 			</c:if>
-
 		</c:if>
-
 	</div>
 </div>

@@ -9,7 +9,7 @@ import by.htp.ex.service.exception.ServiceException;
 
 import java.util.List;
 
-public class CommentServiceImpl implements ICommentService{
+public final class CommentServiceImpl implements ICommentService{
 	private final static ICommentDAO commentDAO = DaoProvider.getInstance().getCommentDao();
 
 	@Override

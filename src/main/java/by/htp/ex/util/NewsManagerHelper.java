@@ -6,6 +6,8 @@ import by.htp.ex.bean.Role;
 import by.htp.ex.dao.exception.DaoException;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -68,14 +70,22 @@ public final class NewsManagerHelper {
 		LocalDate currentDate = LocalDate.now();
 		LocalDate datePublicationNews = dateTimeNews.toLocalDate();
 
-		String formatDateTime = dateTimeNews.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(locale));
-		String formatDate = dateTimeNews.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale));
+		String formatDateTime = dateTimeNews.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(locale));
+		String formatDate = dateTimeNews.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(locale));
 
 		if (datePublicationNews.equals(currentDate)) {
 			return formatDateTime;
 		}
-
 		return formatDate;
+	}
+
+	public String definingDateOutputFormatForComments(String date) {
+		Locale locale = Locale.getDefault();
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime dateTimeNews = LocalDateTime.parse(date, formatter);
+
+		return dateTimeNews.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(locale));
 	}
 
 	public String buildSQLQuery(int[] idNewses){
@@ -90,5 +100,20 @@ public final class NewsManagerHelper {
 		builderSqlQuery.append(")");
 
 		return builderSqlQuery.toString();
+	}
+
+	public String getRefererPath(String referer) throws URISyntaxException {
+		String path = "index.jsp";
+
+		if (referer != null){
+			URI uri = new URI(referer);
+			path = uri.getPath();
+			String query = uri.getQuery();
+
+			if (query != null){
+				path += "?" + query;
+			}
+		}
+		return path;
 	}
 }

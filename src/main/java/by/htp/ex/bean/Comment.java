@@ -9,7 +9,7 @@ public final class Comment implements Serializable {
 	private int commentId;
 	private NewUserInfo newUserInfo;
 	private News news;
-	private Date date;
+	private String date;
 	private String text;
 	
 	public Comment() {
@@ -46,11 +46,11 @@ public final class Comment implements Serializable {
 		this.news = news;
 	}
 	
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 	
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	

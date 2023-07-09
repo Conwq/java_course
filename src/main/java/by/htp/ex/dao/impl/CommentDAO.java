@@ -14,7 +14,7 @@ import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
 import by.htp.ex.util.NewsManagerHelper;
 
-public class CommentDAO implements ICommentDAO{
+public final class CommentDAO implements ICommentDAO{
 	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
@@ -67,7 +67,7 @@ public class CommentDAO implements ICommentDAO{
 				Comment comment = new Comment();
 				comment.setCommentId(resultSet.getInt("comment_id"));
 				comment.setText(resultSet.getString("text"));
-				comment.setDate(resultSet.getTimestamp("date_comment"));
+				comment.setDate(helper.definingDateOutputFormatForComments(resultSet.getString("date_comment")));
 				comment.setNewUserInfo(helper.parseUserInfo(resultSet));
 				comment.setNews(helper.parseNews(resultSet));
 				comments.add(comment);
