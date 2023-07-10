@@ -9,6 +9,7 @@ import by.htp.ex.service.exception.ServiceException;
 import by.htp.ex.util.ReentrantLockSingleton;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.locks.ReentrantLock;
 
 public final class UserServiceImpl implements IUserService {
@@ -47,6 +48,16 @@ public final class UserServiceImpl implements IUserService {
 		}
 		finally {
 			reentrantLock.unlock();
+		}
+	}
+
+	@Override
+	public void registration(NewUserInfo user, Locale locale) throws ServiceException {
+		try{
+			userDAO.registrationByLocale(user, locale.getLanguage());
+		}
+		catch (DaoException e){
+			throw new ServiceException(e);
 		}
 	}
 

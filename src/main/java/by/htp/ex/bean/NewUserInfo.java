@@ -8,12 +8,24 @@ public final class NewUserInfo implements Serializable {
 	private String login;
 	private String email;
 	private String password;
+	private String name;
+	private String surname;
+	private String cityOfResidence;
 	private Role role;
 	private boolean banned;
 
 	//TODO ДОБАВИТЬ ЛИСТ ВСЕХ НОВОСТЕЙ, КОТОРЫЕ ПРИНАДЛЕЖАТ ПОЛЬЗОВАТЕЛЮ
 
 	public NewUserInfo(){
+	}
+
+	public NewUserInfo(String login, String email, String password, String name, String surname, String cityOfResidence) {
+		this.login = login;
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.cityOfResidence = cityOfResidence;
 	}
 
 	public NewUserInfo(int id, String login, String email, String password){
@@ -68,6 +80,30 @@ public final class NewUserInfo implements Serializable {
 		this.password = password;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public String getCityOfResidence() {
+		return cityOfResidence;
+	}
+
+	public void setCityOfResidence(String cityOfResidence) {
+		this.cityOfResidence = cityOfResidence;
+	}
+
 	public Role getRole() {
 		return role;
 	}
@@ -83,6 +119,8 @@ public final class NewUserInfo implements Serializable {
 	public void setBanned(boolean banned) {
 		this.banned = banned;
 	}
+
+
 
 	@Override
 	public String toString() {

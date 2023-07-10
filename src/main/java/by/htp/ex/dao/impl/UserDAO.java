@@ -7,16 +7,14 @@ import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
 import by.htp.ex.util.NewsManagerHelper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class UserDAO implements IUserDAO {
 	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
+
 
 	private static final String SQL_TO_ADD_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
 	@Override
@@ -59,6 +57,54 @@ public final class UserDAO implements IUserDAO {
 			catch (ConnectionPoolException e) {
 				throw new DaoException(e);
 			}
+		}
+	}
+
+	private final static String SQL_ADD_LOCALE = "INSERT INTO locals (user_id, language, country) VALUES (?,?,?)";
+	private final static String SQL_ADD_USER_INFO_BY_LOCALE = "INSERT INTO ? (user_id, name, surname, city_of_residence) VALUES (?,?,?,?)";
+	@Override
+	public void registrationByLocale(NewUserInfo user, String locale) throws DaoException{
+		PreparedStatement preparedStatementAddUser;
+		PreparedStatement preparedStatementAddLocal;
+		PreparedStatement preparedStatementAddUserInfo;
+		ResultSet resultSet;
+
+		try (Connection connection = connectionPool.takeConnection()) {
+			connection.setAutoCommit(false);
+
+			String language = locale.equals("ru") ? "ru" : "en";
+			String country = locale.equals("ru") ? "RU" : "US";
+			String database = locale.equals("ru") ? "user_info_ru" : "user_info_en";
+
+			preparedStatementAddUser = connection.prepareStatement(SQL_TO_ADD_USER, Statement.RETURN_GENERATED_KEYS);
+			preparedStatementAddLocal = connection.prepareStatement(SQL_ADD_LOCALE);
+			preparedStatementAddUserInfo = connection.prepareStatement(SQL_ADD_USER_INFO_BY_LOCALE);
+
+			preparedStatementAddUser.setString(1, user.getLogin());
+			preparedStatementAddUser.setString(2, user.getPassword());
+			preparedStatementAddUser.setString(3, user.getEmail());
+			preparedStatementAddUser.executeUpdate();
+			resultSet = preparedStatementAddUser.getGeneratedKeys();
+			resultSet.next();
+			int userId = resultSet.getInt(1);
+
+			preparedStatementAddLocal.setInt(1, userId);
+			preparedStatementAddLocal.setString(2, language);
+			preparedStatementAddLocal.setString(3, country);
+			preparedStatementAddLocal.executeUpdate();
+
+			preparedStatementAddUserInfo.setString(1, database);
+			preparedStatementAddUserInfo.setInt(2, userId);
+			preparedStatementAddUserInfo.setString(3, user.getName());
+			preparedStatementAddUserInfo.setString(4, user.getSurname());
+			preparedStatementAddUserInfo.setString(5, user.getCityOfResidence());
+			preparedStatementAddUserInfo.executeUpdate();
+
+			connection.commit();
+			connection.setAutoCommit(true);
+		}
+		catch(ConnectionPoolException | SQLException e){
+			throw new DaoException(e);
 		}
 	}
 

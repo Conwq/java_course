@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IUserDAO {
 	void registration(NewUserInfo user) throws DaoException;
+	void registrationByLocale(NewUserInfo user, String locale) throws DaoException;
 	NewUserInfo authorization(String login, String password) throws DaoException;
 	List<NewUserInfo> getUsers() throws DaoException;
 	NewUserInfo getUser(int id) throws DaoException;
