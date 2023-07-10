@@ -7,10 +7,7 @@ import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
 import by.htp.ex.util.NewsManagerHelper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,33 +15,35 @@ public final class UserDAO implements IUserDAO {
 	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
-	private static final String SQL_TO_ADD_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
 	@Override
 	public void registration(NewUserInfo user) throws DaoException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		try {
 			connection = connectionPool.takeConnection();
-			connection.setAutoCommit(false);
-
-			if (!isExistUser(user, connection)) {
-				preparedStatement = connection.prepareStatement(SQL_TO_ADD_USER);
-				preparedStatement.setString(1, user.getLogin());
-				preparedStatement.setString(2, user.getPassword());
-				preparedStatement.setString(3, user.getEmail());
-
-				preparedStatement.executeUpdate();
-				connection.commit();
-				connection.setAutoCommit(true);
-			}
-			else {
+			
+			if (isExistUser(user, connection)) {
 				throw new DaoException("User with this email or login exists");
 			}
+			
+			connection.setAutoCommit(false);
+			
+			preparedStatement = connection.prepareStatement(SQL_TO_ADD_USER);
+			preparedStatement.setString(1, user.getLogin());
+			preparedStatement.setString(2, user.getPassword());
+			preparedStatement.setString(3, user.getEmail());
+
+			preparedStatement.executeUpdate();
+			connection.commit();
+			connection.setAutoCommit(true);
 		}
 		catch (SQLException | ConnectionPoolException e) {
 			if (connection != null) {
 				try {
 					connection.rollback();
+					if(!connection.getAutoCommit()) {
+						connection.setAutoCommit(true);
+					}
 				}
 				catch (SQLException ex) {
 					throw new DaoException(ex);
@@ -61,7 +60,84 @@ public final class UserDAO implements IUserDAO {
 			}
 		}
 	}
+	
+	private static final String SQL_TO_ADD_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
+	private final static String SQL_ADD_LOCALE = "INSERT INTO locales (users_id, language, country) VALUES (?,?,?)";
+	private final static String SQL_ADD_USER_INFO_BY_LOCALE = "INSERT INTO %s (users_id, name, surname, city_of_residence) VALUES (?,?,?,?)";
+	@Override
+	public void registrationByLocale(NewUserInfo user, String locale) throws DaoException{
+		
+		Connection connection = null;
+		PreparedStatement preparedStatementAddUser = null;
+		PreparedStatement preparedStatementAddLocal = null;
+		PreparedStatement preparedStatementAddUserInfo = null;
 
+		try {
+			connection = connectionPool.takeConnection();
+			
+			if(isExistUser(user, connection)) {
+				throw new DaoException("User with this email or login exists"); 
+			}
+			
+			String language = locale.equals("ru") ? "ru" : "en";;
+			String country = locale.equals("ru") ? "RU" : "US";
+			String table = locale.equals("ru") ? "user_info_ru" : "user_info_en";
+			
+			connection.setAutoCommit(false);
+				
+			preparedStatementAddUser = connection.prepareStatement(SQL_TO_ADD_USER, Statement.RETURN_GENERATED_KEYS);
+			preparedStatementAddLocal = connection.prepareStatement(SQL_ADD_LOCALE);
+			preparedStatementAddUserInfo = connection.prepareStatement(String.format(SQL_ADD_USER_INFO_BY_LOCALE, table));
+			
+			preparedStatementAddUser.setString(1, user.getLogin());
+			preparedStatementAddUser.setString(2, user.getPassword());
+			preparedStatementAddUser.setString(3, user.getEmail());
+			preparedStatementAddUser.executeUpdate();
+			ResultSet resultSet = preparedStatementAddUser.getGeneratedKeys();
+			resultSet.next();
+			int userId = resultSet.getInt(1);
+
+			preparedStatementAddLocal.setInt(1, userId);
+			preparedStatementAddLocal.setString(2, language);
+			preparedStatementAddLocal.setString(3, country);
+			preparedStatementAddLocal.executeUpdate();
+
+			preparedStatementAddUserInfo.setInt(1, userId);
+			preparedStatementAddUserInfo.setString(2, user.getName());
+			preparedStatementAddUserInfo.setString(3, user.getSurname());
+			preparedStatementAddUserInfo.setString(4, user.getCityOfResidence());
+			preparedStatementAddUserInfo.executeUpdate();
+
+			connection.commit();
+			connection.setAutoCommit(true);
+		}
+		catch(ConnectionPoolException | SQLException e){
+			if(connection != null) {
+				try {
+					connection.rollback();
+					if(!connection.getAutoCommit()) {
+						connection.setAutoCommit(true);
+					}
+				}
+				catch(SQLException ex) {
+					throw new DaoException(ex);
+				}
+			}
+			throw new DaoException(e);
+		}
+		finally {
+			try {
+				connectionPool.closeConnection(connection, preparedStatementAddUser);
+				connectionPool.closeConnection(preparedStatementAddLocal);
+				connectionPool.closeConnection(preparedStatementAddUserInfo);
+			}
+			catch(ConnectionPoolException e) {
+				throw new DaoException(e);
+			}
+		}
+	}
+
+	
 	private final static String SQL_TO_AUTH_USER = "SELECT * FROM users WHERE login = ?";
 	@Override
 	public NewUserInfo authorization(String login, String password) throws DaoException {
@@ -72,12 +148,11 @@ public final class UserDAO implements IUserDAO {
 			preparedStatement.setString(1, login);
 			ResultSet resultSet = preparedStatement.executeQuery();
 
-			if (resultSet.next()) {
-				return helper.parseUserInfo(resultSet, password);
-			}
-			else {
+			if (!resultSet.next()) {
 				throw new DaoException("User not found with this login");
 			}
+			
+			return helper.parseUserInfo(resultSet, password);
 		}
 		catch (SQLException e) {
 			throw new DaoException("Error with SQL", e);
@@ -87,6 +162,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	
 	private final static String SQL_TO_GET_ALL_USERS =  "SELECT * FROM users";
 	@Override
 	public List<NewUserInfo> getUsers() throws DaoException {
@@ -110,6 +186,7 @@ public final class UserDAO implements IUserDAO {
 		return usersInfo;
 	}
 
+	
 	private final static String SQL_TO_GET_USER = "SELECT * FROM users WHERE id = ?";
 	@Override
 	public NewUserInfo getUser(int id) throws DaoException {
@@ -121,12 +198,11 @@ public final class UserDAO implements IUserDAO {
 
 			ResultSet resultSet = preparedStatement.executeQuery();
 
-			if (resultSet.next()) {
-				return helper.parseUserInfo(resultSet);
-			}
-			else {
+			if (!resultSet.next()) {
 				throw new DaoException("User with current data not exist");
 			}
+			
+			return helper.parseUserInfo(resultSet);
 		}
 		catch (SQLException e) {
 			throw new DaoException("SQLException", e);
@@ -136,6 +212,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	
 	private final static String SQL_TO_UPDATE_USER = "UPDATE users SET login=?, password=?, email=? WHERE id=?";
 	@Override
 	public void updateUserInfo(NewUserInfo userInfo) throws DaoException {
@@ -161,6 +238,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	
 	private final static String SQL_UNBAN_USER = "UPDATE users SET banned = 0 WHERE id = ?";
 	@Override
 	public void unbanUser(int id) throws DaoException {
@@ -182,6 +260,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	
 	private final static String SQL_BAN_USER = "UPDATE users SET banned = 1 WHERE id = ?";
 	@Override
 	public void banUser(int id) throws DaoException{
@@ -199,6 +278,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	
 	private final static String SQL_DOWNGRADE_ROLE_USER = "UPDATE users SET role = 'user' WHERE id = ?";
 	@Override
 	public void downgradeRoleToUser(int id) throws DaoException {
@@ -215,6 +295,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	
 	private final static String SQL_TO_CHECK_USER_EXIST = "SELECT * FROM users WHERE email = ? OR login = ? AND id <> ?";
 	private boolean isExistUser(NewUserInfo user, Connection connection) throws SQLException {
 		PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_CHECK_USER_EXIST);

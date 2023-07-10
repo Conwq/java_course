@@ -116,4 +116,19 @@ public final class NewsManagerHelper {
 		}
 		return path;
 	}
+
+	public Locale getLocale (String localeParam){
+		Locale locale;
+
+		if (localeParam == null || localeParam.equals("en_US")){
+			locale = new Locale("en", "US");
+			return locale;
+		}
+
+		String[] resultLocale = localeParam.split("_");
+		String language = resultLocale[0];
+		String country = resultLocale[1];
+		locale = new Locale(language, country);
+		return locale;
+	}
 }

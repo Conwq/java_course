@@ -15,9 +15,9 @@
         <input type="hidden" name="command" value="do_registration"/>
 
 		<label for="country">Select your country of residence:</label>
-		<select id="country" multiple name="country">
-			<option value="ru" ${local.getLanguage() eq 'ru' ? 'selected' : ''}>Russia</option>
-			<option value="en" ${local.getLanguage() eq 'en' ? 'selected' : ''}>United States</option>
+		<select id="country" multiple name="selectedLocale">
+			<option value="ru_RU" ${local.getCountry() eq 'RU' ? 'selected' : ''}>Russia</option>
+			<option value="en_US" ${local.getCountry() eq 'US' ? 'selected' : ''}>United States</option>
 		</select>
 
         <label for="login">Enter login:</label>
@@ -38,8 +38,8 @@
         <label for="password">Enter password:</label>
         <input type="text" name="password" id="password"/>
         
-        <label for="repeat">Repeat password:</label>
-        <input type="text" name="repeat" id="password_repeat"/>
+        <label for="password_repeat">Repeat password:</label>
+        <input type="text" name="password_repeat" id="password_repeat"/>
 
         <c:if test="${not (error == null)}">
             <div style="color:red"><c:out value="${error}"/></div>

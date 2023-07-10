@@ -23,14 +23,13 @@ public final class NewsDAO implements INewsDAO {
 	private final static String SQL_TO_GET_LAST_NEWSES = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
 	@Override
 	public List<News> getLatestList(int count) throws DaoException {
-		List<News> news = null;
+		List<News> news = new ArrayList<>();
 
 		try (Connection connection = connectionPool.takeConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_GET_LAST_NEWSES)){
 
 			preparedStatement.setInt(1, count);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			news = new ArrayList<>();
 
 			while (resultSet.next()){
 				News findNews = helper.parseNews(resultSet);

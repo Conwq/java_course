@@ -76,6 +76,18 @@ public final class ConnectionPool {
 
 		return connection;
 	}
+	
+	public void closeConnection(Statement statement) throws ConnectionPoolException{
+
+		try {
+			if (statement != null) {
+				statement.close();
+			}
+		}
+		catch (SQLException e) {
+			throw new ConnectionPoolException("Exception with close Statement", e);
+		}
+	}
 
 	public void closeConnection(Connection connection, Statement statement) throws ConnectionPoolException{
 
