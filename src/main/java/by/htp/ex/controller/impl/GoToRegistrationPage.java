@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Locale;
 
 public final class GoToRegistrationPage implements Command {
 	private final static String JSP_REGISTRATION_PARAM = "registration";

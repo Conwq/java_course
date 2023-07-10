@@ -34,6 +34,8 @@ public final class DoSignIn implements Command {
 		String password = request.getParameter(JSP_PASSWORD_PARAM);
 
 		request.getSession().removeAttribute(JSP_AUTHENTICATION_ERROR_PARAM);
+		
+		//TODO тут нужно достать локаль из бд и добавить ее в сессию для конкретного пользователя, если он войдет в систему
 
 //		if (!validation.isValidData(login, password)) {
 //			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE_PARAM);

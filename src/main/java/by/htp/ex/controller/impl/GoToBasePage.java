@@ -1,6 +1,7 @@
 package by.htp.ex.controller.impl;
 
 import by.htp.ex.bean.News;
+import java.util.Locale;
 import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.INewsService;
 import by.htp.ex.service.ServiceProvider;

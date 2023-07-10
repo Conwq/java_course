@@ -1,0 +1,41 @@
+.registration_form {
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.registration_form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.registration_form input[type="text"],
+.registration_form input[type="password"] {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.registration_form input[type="submit"],
+.registration_form button {
+    background-color: #555;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.registration_form input[type="submit"]:hover,
+.registration_form button:hover {
+    background-color: #888;
+}
+
+.registration_form button {
+    margin-top: 10px;
+}
+
+.registration_form div {
+    margin-top: 10px;
+}
