@@ -1,13 +1,12 @@
 package by.htp.ex.dao.pool;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 
-public class DBResourceManager {
+public final class DBResourceManager {
 	private final static DBResourceManager instance = new DBResourceManager();
 	private static Properties properties;
 

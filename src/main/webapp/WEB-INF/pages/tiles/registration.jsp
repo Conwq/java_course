@@ -16,8 +16,8 @@
 
 		<label for="country">Select your country of residence:</label>
 		<select id="country" multiple name="selectedLocale">
-			<option value="ru_RU" ${local.getCountry() eq 'RU' ? 'selected' : ''}>Russia</option>
-			<option value="en_US" ${local.getCountry() eq 'US' ? 'selected' : ''}>United States</option>
+            <option value="en_US" ${local.getCountry() eq 'US' ? 'selected' : ''}>United States</option>
+            <option value="ru_RU" ${local.getCountry() eq 'RU' ? 'selected' : ''}>Russia</option>
 		</select>
 
         <label for="login">Enter login:</label>

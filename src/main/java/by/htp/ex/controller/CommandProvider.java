@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class CommandProvider {
-	private final Map<CommandName, Command> commands = new HashMap<>();
+	private final static Map<CommandName, Command> commands = new HashMap<>();
 	private final static CommandProvider instance = new CommandProvider();
 
 	private CommandProvider() {

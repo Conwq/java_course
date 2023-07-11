@@ -5,10 +5,10 @@ import by.htp.ex.service.impl.NewsServiceImpl;
 import by.htp.ex.service.impl.UserServiceImpl;
 
 public final class ServiceProvider {
-	private static final ServiceProvider instance = new ServiceProvider();
-	private final IUserService userService = new UserServiceImpl();
-	private final INewsService newsService = new NewsServiceImpl();
-	private final ICommentService commentService = new CommentServiceImpl();
+	private final static ServiceProvider instance = new ServiceProvider();
+	private final static IUserService userService = new UserServiceImpl();
+	private final static INewsService newsService = new NewsServiceImpl();
+	private final static ICommentService commentService = new CommentServiceImpl();
 	
 	public ICommentService getCommentService() {
 		return commentService;

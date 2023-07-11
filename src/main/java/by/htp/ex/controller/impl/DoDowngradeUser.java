@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public final class DoDowngradeUser implements Command {
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
-	
 	private final static String JSP_USER_ID_PARAM = "user_id";
 	
 	@Override

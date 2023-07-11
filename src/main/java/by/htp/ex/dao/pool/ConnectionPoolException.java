@@ -1,6 +1,6 @@
 package by.htp.ex.dao.pool;
 
-public class ConnectionPoolException extends Exception {
+public final class ConnectionPoolException extends Exception {
 	
 	public ConnectionPoolException() {
 		super();

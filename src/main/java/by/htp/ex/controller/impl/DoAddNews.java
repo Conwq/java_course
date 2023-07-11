@@ -18,7 +18,6 @@ public final class DoAddNews implements Command {
 
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
-
 	private final static String JSP_TITLE_PARAM = "title";
 	private final static String JSP_BRIEF_NEWS_PARAM = "brief_news";
 	private final static String JSP_CONTENT_PARAM = "content";

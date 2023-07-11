@@ -14,18 +14,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public final class DoSignIn implements Command {
-	private static final IUserService service = ServiceProvider.getInstance().getUserService();
-	private static final UserDataValidation validation = ValidationProvider.getInstance().getUserValidator();
-	private static final String JSP_LOGIN_PARAM = "login";
-	private static final String JSP_PASSWORD_PARAM = "password";
-	private static final String JSP_USER_PARAM = "user";
-	private static final String JSP_USER_INFO_PARAM = "userInfo";
-	private static final String JSP_USER_ACTIVE_PARAM = "active";
-	private static final String JSP_USER_NOT_ACTIVE_PARAM = "not active";
-	private static final String JSP_USER_ROLE_PARAM = "role";
-	private static final String JSP_LOCALIZATION_PARAM = "localization";
-	private static final String JSP_AUTHENTICATION_ERROR_PARAM = "AuthenticationError";
-	private static final String JSP_LOCALE_PARAM = "locale";
+	private final static IUserService service = ServiceProvider.getInstance().getUserService();
+	private final static UserDataValidation validation = ValidationProvider.getInstance().getUserValidator();
+	private final static String JSP_LOGIN_PARAM = "login";
+	private final static String JSP_PASSWORD_PARAM = "password";
+	private final static String JSP_USER_PARAM = "user";
+	private final static String JSP_USER_INFO_PARAM = "userInfo";
+	private final static String JSP_USER_ACTIVE_PARAM = "active";
+	private final static String JSP_USER_NOT_ACTIVE_PARAM = "not active";
+	private final static String JSP_USER_ROLE_PARAM = "role";
+	private final static String JSP_LOCALIZATION_PARAM = "localization";
+	private final static String JSP_AUTHENTICATION_ERROR_PARAM = "AuthenticationError";
+	private final static String JSP_LOCALE_PARAM = "locale";
 
 
 	@Override

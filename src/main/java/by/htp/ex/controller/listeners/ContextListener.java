@@ -8,7 +8,7 @@ import jakarta.servlet.ServletContextListener;
 import javax.management.RuntimeMBeanException;
 
 public final class ContextListener implements ServletContextListener {
-	private static final ConnectionPool connectionPool = ConnectionPool.getInstance();
+	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
