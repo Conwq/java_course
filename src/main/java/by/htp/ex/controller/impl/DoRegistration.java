@@ -58,6 +58,7 @@ public final class DoRegistration implements Command {
 			locale = helper.getLocale(request.getParameter(JSP_SELECTED_LOCALE_PARAM));
 
 			userService.registration(user, locale);
+
 			response.sendRedirect("controller?command=go_to_base_page");
 		}
 		catch (ServiceException e) {

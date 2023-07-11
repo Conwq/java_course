@@ -75,7 +75,7 @@
 
 			<c:if test="${role eq 'admin'}">
 				<div align="right">
-					<a href="<c:out value="/controller?command=go_to_users_list"/>" >${show_all_users}</a>
+					<a href="<c:url value="/controller?command=go_to_users_list"/>" >${show_all_users}</a>
 				</div>
 			</c:if>
 		</c:if>
