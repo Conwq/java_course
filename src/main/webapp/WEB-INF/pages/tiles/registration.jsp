@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 
 <c:set value="${sessionScope.RegistrationError}" var="error"/>
-<c:set value="${sessionScope.local}" var="local"/>
+<c:set value="${requestScope.local}" var="local"/>
 
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/registration.css">
 

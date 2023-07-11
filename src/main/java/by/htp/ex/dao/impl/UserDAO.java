@@ -66,7 +66,6 @@ public final class UserDAO implements IUserDAO {
 	private final static String SQL_ADD_USER_INFO_BY_LOCALE = "INSERT INTO %s (users_id, name, surname, city_of_residence) VALUES (?,?,?,?)";
 	@Override
 	public void registrationByLocale(NewUserInfo user, String locale) throws DaoException{
-		
 		Connection connection = null;
 		PreparedStatement preparedStatementAddUser = null;
 		PreparedStatement preparedStatementAddLocal = null;
@@ -136,7 +135,6 @@ public final class UserDAO implements IUserDAO {
 			}
 		}
 	}
-
 	
 	private final static String SQL_TO_AUTH_USER = "SELECT * FROM users WHERE login = ?";
 	@Override
