@@ -22,7 +22,7 @@ public final class GoToBasePage implements Command{
 
 		try {
 			//TODO ЧТОТО СДЕЛАТЬ С 5 ОНА НЕ ИСПОЛЬЗУЕТСЯ (ДОБАВИТЬ ВОЗМОЖНОСТЬ ВЫБОРА КОЛИЧЕСТВА ОТОБРАЖАЕМЫХ НОВОСТЕЙ?)
-			List<News> latestNews = newsService.latestList(5);
+			List<News> latestNews = newsService.latestList(5, Locale.getDefault());
 
 			request.setAttribute(JSP_NEWS_PARAM, latestNews);
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);

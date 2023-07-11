@@ -1,6 +1,7 @@
 package by.htp.ex.service.impl;
 
 import java.util.List;
+import java.util.Locale;
 
 import by.htp.ex.bean.News;
 import by.htp.ex.dao.DaoProvider;
@@ -37,9 +38,9 @@ public final class NewsServiceImpl implements INewsService{
 	//TODO ЧТО ТО СДЕЛАТЬ С COUNT
 
 	@Override
-	public List<News> latestList(int count) throws ServiceException {
+	public List<News> latestList(int count, Locale locale) throws ServiceException {
 		try {
-			return newsDAO.getLatestList(5);
+			return newsDAO.getLatestList(5, locale);
 		}
 		catch (DaoException e) {
 			throw new ServiceException(e);
@@ -47,9 +48,9 @@ public final class NewsServiceImpl implements INewsService{
 	}
 
 	@Override
-	public List<News> list() throws ServiceException {
+	public List<News> list(Locale locale) throws ServiceException {
 		try {
-			return newsDAO.getList();
+			return newsDAO.getList(locale);
 		}
 		catch (DaoException e) {
 			throw new ServiceException(e);
@@ -57,9 +58,9 @@ public final class NewsServiceImpl implements INewsService{
 	}
 
 	@Override
-	public News findById(int id) throws ServiceException {
+	public News findById(int id, Locale locale) throws ServiceException {
 		try {
-			return newsDAO.fetchById(id);
+			return newsDAO.fetchById(id, locale);
 		}
 		catch (DaoException e) {
 			throw new ServiceException(e);

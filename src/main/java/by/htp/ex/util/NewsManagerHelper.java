@@ -18,6 +18,9 @@ import java.util.Locale;
 
 public final class NewsManagerHelper {
 	private final static NewsManagerHelper instance = new NewsManagerHelper();
+	private final String RESULT_SET_NEWS_ID_PARAM = "news_id";
+
+
 	private NewsManagerHelper(){
 	}
 
@@ -25,20 +28,21 @@ public final class NewsManagerHelper {
 		return instance;
 	}
 
-	public News parseNews(ResultSet resultSet) throws SQLException{
+	public News parseNews(ResultSet resultSet, Locale locale) throws SQLException{
 		News findNews = new News();
 		findNews.setIdNews(resultSet.getInt("news_id"));
 		findNews.setTitle(resultSet.getString("title"));
 		findNews.setBriefNews(resultSet.getString("brief_news"));
 		findNews.setContent(resultSet.getString("content"));
 		findNews.setPhotoPath(resultSet.getString("photo_path"));
-		findNews.setNewsDate(definingDateOutputFormat(resultSet.getString("news_date")));
+		findNews.setNewsDate(definingDateOutputFormat(resultSet.getString("news_date"), locale));
 
 		return findNews;
 	}
 
 	public NewUserInfo parseUserInfo(ResultSet resultSet) throws SQLException{
 		NewUserInfo newUserInfo = new NewUserInfo();
+
 		newUserInfo.setUserId(resultSet.getInt("id"));
 		newUserInfo.setLogin(resultSet.getString("login"));
 		newUserInfo.setEmail(resultSet.getString("email"));
@@ -47,22 +51,27 @@ public final class NewsManagerHelper {
 
 		return newUserInfo;
 	}
-	
-	public NewUserInfo parseUserInfo(ResultSet resultSet, String password) throws SQLException, DaoException{
+
+	public NewUserInfo getUserForAuthorization(ResultSet resultSet, String password) throws SQLException, DaoException{
 
 		if(BCrypt.checkpw(password, resultSet.getString("password"))) {
 			if (resultSet.getBoolean("banned")) {
 				throw new DaoException("Current user was banned");
 			}
-			return parseUserInfo(resultSet);
+			NewUserInfo newUserInfo = parseUserInfo(resultSet);
+			newUserInfo.setLocale(getLocale(resultSet.getString("language"), resultSet.getString("country")));
+			return newUserInfo;
 		}
 		else {
 			throw new DaoException("Incorrect password");
 		}
 	}
 
-	private String definingDateOutputFormat(String date) {
-		Locale locale = Locale.getDefault();
+	private String definingDateOutputFormat(String date, Locale locale) {
+
+		if (locale == null){
+			locale = Locale.getDefault();
+		}
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime dateTimeNews = LocalDateTime.parse(date, formatter);
@@ -89,7 +98,7 @@ public final class NewsManagerHelper {
 	}
 
 	public String buildSQLQuery(int[] idNewses){
-		StringBuilder builderSqlQuery = new StringBuilder("DELETE FROM news WHERE news_id IN (");
+		StringBuilder builderSqlQuery = new StringBuilder();
 
 		for (int i = 0; i < idNewses.length; i++) {
 			builderSqlQuery.append("?");
@@ -97,8 +106,6 @@ public final class NewsManagerHelper {
 				builderSqlQuery.append(",");
 			}
 		}
-		builderSqlQuery.append(")");
-
 		return builderSqlQuery.toString();
 	}
 
@@ -130,5 +137,13 @@ public final class NewsManagerHelper {
 		String country = resultLocale[1];
 		locale = new Locale(language, country);
 		return locale;
+	}
+
+	public Locale getLocale (String language, String country){
+		if (language == null || country == null){
+			return Locale.getDefault();
+		}
+
+		return new Locale(language, country);
 	}
 }

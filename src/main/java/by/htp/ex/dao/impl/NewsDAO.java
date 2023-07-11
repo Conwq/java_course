@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public final class NewsDAO implements INewsDAO {
 	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
@@ -22,7 +23,7 @@ public final class NewsDAO implements INewsDAO {
 
 	private final static String SQL_TO_GET_LAST_NEWSES = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
 	@Override
-	public List<News> getLatestList(int count) throws DaoException {
+	public List<News> getLatestList(int count, Locale locale) throws DaoException {
 		List<News> news = new ArrayList<>();
 
 		try (Connection connection = connectionPool.takeConnection();
@@ -32,22 +33,20 @@ public final class NewsDAO implements INewsDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()){
-				News findNews = helper.parseNews(resultSet);
+				News findNews = helper.parseNews(resultSet, locale);
 				news.add(findNews);
 			}
 		}
-		catch (SQLException e){
+		catch (SQLException | ConnectionPoolException e){
 			throw new DaoException(e);
 		}
-		catch (ConnectionPoolException e){
-			throw new DaoException(e);
-		}
+
 		return news;
 	}
 
 	private final static String SQL_TO_GET_ALL_NEWSES = "SELECT * FROM news ORDER BY news_date DESC";
 	@Override
-	public List<News> getList() throws DaoException {
+	public List<News> getList(Locale locale) throws DaoException {
 		List<News> news = new ArrayList<>();
 
 		try(Connection connection = connectionPool.takeConnection();
@@ -55,7 +54,7 @@ public final class NewsDAO implements INewsDAO {
 			ResultSet resultSet = statement.executeQuery()){
 
 			while(resultSet.next()){
-				News findNews = helper.parseNews(resultSet);
+				News findNews = helper.parseNews(resultSet, locale);
 				news.add(findNews);
 			}
 		}
@@ -67,7 +66,7 @@ public final class NewsDAO implements INewsDAO {
 
 	private final static String SQL_TO_GET_NEWS = "SELECT * FROM news WHERE news_id = ?";
 	@Override
-	public News fetchById(int id) throws DaoException {
+	public News fetchById(int id, Locale locale) throws DaoException {
 		News findNews = null;
 
 		try(Connection connection = connectionPool.takeConnection();
@@ -76,7 +75,7 @@ public final class NewsDAO implements INewsDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			if (resultSet.next()) {
-				findNews = helper.parseNews(resultSet);
+				findNews = helper.parseNews(resultSet, locale);
 			}
 		}
 		catch (SQLException |ConnectionPoolException e){
@@ -97,7 +96,6 @@ public final class NewsDAO implements INewsDAO {
 			statement.setString(3, news.getContent());
 			statement.setString(4, news.getPhotoPath());
 			statement.setInt(5, news.getNewUserInfo().getUserId());
-
 			statement.executeUpdate();
 		}
 		catch(SQLException |ConnectionPoolException e){
@@ -117,7 +115,6 @@ public final class NewsDAO implements INewsDAO {
 			statement.setString(3, news.getContent());
 			statement.setString(4, news.getPhotoPath());
 			statement.setInt(5, news.getIdNews());
-
 			statement.executeUpdate();
 		}
 		catch (SQLException |ConnectionPoolException e){
@@ -126,13 +123,12 @@ public final class NewsDAO implements INewsDAO {
 	}
 
 	//TODO при удалении новостей, мы будем менять статус колонки в таблице, которая будет очищаться через месяц, и вот именно по этой колонке и будет проходить удаление
+	private final static String SQL_TO_DELETE_NEWSES = "DELETE FROM news WHERE news_id IN (%s)";
 	@Override
 	public void deleteNewses(int[] idNewses) throws DaoException {
 
-		String SQL_TO_DELETE_NEWSES = helper.buildSQLQuery(idNewses);
-
 		try(Connection connection = connectionPool.takeConnection();
-			PreparedStatement statement = connection.prepareStatement(SQL_TO_DELETE_NEWSES)){
+			PreparedStatement statement = connection.prepareStatement(String.format(SQL_TO_DELETE_NEWSES, helper.buildSQLQuery(idNewses)))){
 
 			for (int i = 0; i < idNewses.length; i++) {
 				statement.setInt(i + 1, idNewses[i]);

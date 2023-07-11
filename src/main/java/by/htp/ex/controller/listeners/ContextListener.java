@@ -22,6 +22,11 @@ public final class ContextListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		connectionPool.dispose();
+		try {
+			connectionPool.dispose();
+		}
+		catch (ConnectionPoolException e){
+			throw new RuntimeException(e);
+		}
 	}
 }

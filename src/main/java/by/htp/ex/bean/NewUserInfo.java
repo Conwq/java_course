@@ -1,6 +1,7 @@
 package by.htp.ex.bean;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Objects;
 
 public final class NewUserInfo implements Serializable {
@@ -12,6 +13,7 @@ public final class NewUserInfo implements Serializable {
 	private String surname;
 	private String cityOfResidence;
 	private Role role;
+	private Locale locale;
 	private boolean banned;
 
 	//TODO ДОБАВИТЬ ЛИСТ ВСЕХ НОВОСТЕЙ, КОТОРЫЕ ПРИНАДЛЕЖАТ ПОЛЬЗОВАТЕЛЮ
@@ -54,6 +56,14 @@ public final class NewUserInfo implements Serializable {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public Locale getLocale() {
+		return locale;
+	}
+
+	public void setLocale(Locale locale) {
+		this.locale = locale;
 	}
 
 	public String getLogin() {

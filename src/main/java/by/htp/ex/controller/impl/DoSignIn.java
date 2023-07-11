@@ -2,8 +2,6 @@ package by.htp.ex.controller.impl;
 
 import by.htp.ex.bean.NewUserInfo;
 import by.htp.ex.controller.command.Command;
-import by.htp.ex.dao.exception.DaoException;
-import by.htp.ex.dao.pool.ConnectionPoolException;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
@@ -25,7 +23,9 @@ public final class DoSignIn implements Command {
 	private static final String JSP_USER_ACTIVE_PARAM = "active";
 	private static final String JSP_USER_NOT_ACTIVE_PARAM = "not active";
 	private static final String JSP_USER_ROLE_PARAM = "role";
+	private static final String JSP_LOCALIZATION_PARAM = "localization";
 	private static final String JSP_AUTHENTICATION_ERROR_PARAM = "AuthenticationError";
+	private static final String JSP_LOCALE_PARAM = "locale";
 
 
 	@Override
@@ -51,6 +51,8 @@ public final class DoSignIn implements Command {
 			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_ACTIVE_PARAM);
 			request.getSession().setAttribute(JSP_USER_ROLE_PARAM, role);
 			request.getSession().setAttribute(JSP_USER_INFO_PARAM, newUserInfo);
+			request.getSession().setAttribute(JSP_LOCALIZATION_PARAM, newUserInfo.getLocale());
+			request.getSession().setAttribute(JSP_LOCALE_PARAM, newUserInfo.getLocale().getLanguage());
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch (ServiceException e) {

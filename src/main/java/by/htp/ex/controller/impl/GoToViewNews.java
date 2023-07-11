@@ -2,6 +2,7 @@ package by.htp.ex.controller.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import by.htp.ex.bean.Comment;
 import by.htp.ex.bean.News;
@@ -22,17 +23,19 @@ public final class GoToViewNews implements Command {
 	private final static String JSP_PRESENTATION_PARAM = "presentation";
 	private final static String JSP_VIEW_NEWS_PARAM = "viewNews";
 	private final static String JSP_COMMENTS_PARAM = "comments";
+	private final static String JSP_LOCALIZATION_PARAM = "localization";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter(JSP_ID_PARAM);
+		Locale locale = (Locale) request.getSession().getAttribute(JSP_LOCALIZATION_PARAM);
 		
 		try {
 			int parseId = Integer.parseInt(id);
-			News news  = newsService.findById(parseId);
+			News news  = newsService.findById(parseId, locale);
 
 			List<Comment> comments = commentService.findByIdNews(parseId);
-			
+
 			request.setAttribute(JSP_COMMENTS_PARAM, comments);
 			request.setAttribute(JSP_NEWS_PARAM, news);
 			request.setAttribute(JSP_PRESENTATION_PARAM, JSP_VIEW_NEWS_PARAM);

@@ -59,7 +59,7 @@ public final class ConnectionPool {
 		}
 	}
 
-	public void dispose() {
+	public void dispose() throws ConnectionPoolException{
 		clearConnectionQueue();
 	}
 
@@ -124,13 +124,13 @@ public final class ConnectionPool {
 		closeConnection(connection, statement);
 	}
 
-	private void clearConnectionQueue() {
+	private void clearConnectionQueue() throws ConnectionPoolException{
 		try {
 			closeConnectionQueue(queueAvailableConnection);
 			closeConnectionQueue(queueTakenConnection);
 		}
 		catch (SQLException e){
-			System.out.println("Error in clearConnectionQueue");
+			throw new ConnectionPoolException(e);
 		}
 	}
 
