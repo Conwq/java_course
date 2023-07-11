@@ -11,9 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public final class DoUnbanUser implements Command {
-
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
-	
 	private final static String JSP_USER_ID_PARAM = "user_id";
 
 	@Override

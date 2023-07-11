@@ -20,7 +20,6 @@ public final class NewsManagerHelper {
 	private final static NewsManagerHelper instance = new NewsManagerHelper();
 	private final String RESULT_SET_NEWS_ID_PARAM = "news_id";
 
-
 	private NewsManagerHelper(){
 	}
 

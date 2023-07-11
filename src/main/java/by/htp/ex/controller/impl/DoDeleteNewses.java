@@ -11,8 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-public class DoDeleteNewses implements Command {
-
+public final class DoDeleteNewses implements Command {
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
 
 	@Override

@@ -1,10 +1,9 @@
 package by.htp.ex.util.validation;
 
-public class ValidationProvider {
-
+public final class ValidationProvider {
 	private final static ValidationProvider instance = new ValidationProvider();
-	private final UserDataValidation userDataValidation = new UserDataValidationImpl();
-	private final CommentDataValidation commentDataValidation = new CommentDataValidationImpl();
+	private final static UserDataValidation userDataValidation = new UserDataValidationImpl();
+	private final static CommentDataValidation commentDataValidation = new CommentDataValidationImpl();
 
 	private ValidationProvider(){
 

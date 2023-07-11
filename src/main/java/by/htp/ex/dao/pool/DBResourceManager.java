@@ -1,13 +1,12 @@
 package by.htp.ex.dao.pool;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 
-public class DBResourceManager {
+public final class DBResourceManager {
 	private final static DBResourceManager instance = new DBResourceManager();
 	private static Properties properties;
 
@@ -15,8 +14,8 @@ public class DBResourceManager {
 		properties = new Properties();
 		try {
 			String filePath = getClass().getClassLoader().getResource("database.properties").getFile();
-			InputStream file = new FileInputStream(filePath);
-//			InputStream file = new FileInputStream("D:\\Работа\\IntUlt\\work place\\java_course\\src\\main\\resources\\database.properties");
+//			InputStream file = new FileInputStream(filePath);
+			InputStream file = new FileInputStream("D:\\Работа\\IntUlt\\work place\\java_course\\src\\main\\resources\\database.properties");
 			properties.load(file);
 		} catch (IOException e) {
 			throw new RuntimeException(e);

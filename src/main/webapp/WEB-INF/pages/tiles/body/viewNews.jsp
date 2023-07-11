@@ -57,12 +57,9 @@
 
 	<c:if test="${role eq 'admin'}">
 		<div class="first-view-button">
-			<form action="controller" method="post">
-				<input type="hidden" name="command" value="go_to_edit_news"/>
-				<input type="hidden" name="id" value="${news.idNews}"/>
-
-				<input type="submit" value="${edit}"/>
-			</form>
+			<a href="<c:url value="/controller?command=go_to_edit_news&id=${news.idNews}"/>">
+				<button>${edit}</button>
+			</a>
 		</div>
 
 		<div class="second-view-button">

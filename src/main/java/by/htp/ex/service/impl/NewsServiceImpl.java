@@ -11,9 +11,7 @@ import by.htp.ex.service.INewsService;
 import by.htp.ex.service.exception.ServiceException;
 
 public final class NewsServiceImpl implements INewsService{
-	private final INewsDAO newsDAO = DaoProvider.getInstance().getNewsDAO();
-
-	//TODO ADD ALL METHODS
+	private final static INewsDAO newsDAO = DaoProvider.getInstance().getNewsDAO();
 
 	@Override
 	public void save(News news) throws ServiceException{

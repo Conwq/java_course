@@ -45,7 +45,7 @@
 						      <a href="<c:url value="/controller?command=go_to_edit_news&id=${news.idNews}"/>">${editlink}</a>
 						</c:if>
 						&nbsp;&nbsp;&nbsp;
-						<a href="controller?command=go_to_view_news&id=${news.idNews}">${viewlink}</a>
+						<a href="<c:url value="controller?command=go_to_view_news&id=${news.idNews}"/>">${viewlink}</a>
 						&nbsp;&nbsp;&nbsp;
    					    <c:if test="${role eq 'admin'}">
    					         <input type="checkbox" name="select_newses" value="${news.idNews }"/>

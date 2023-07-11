@@ -9,9 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public final class FrontController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private static final CommandProvider provider = CommandProvider.getInstance();
-	private static final String COMMAND = "command";
+	private final static long serialVersionUID = 1L;
+	private final static CommandProvider provider = CommandProvider.getInstance();
+	private final static String COMMAND = "command";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (request.getSession().getServletContext().getAttribute("ConnectionPoolInitError") != null){
