@@ -42,7 +42,7 @@
 				<div class="news-link-to-wrapper">
 					<div class="link-position">
 						<c:if test="${role eq 'admin'}">
-						      <a href="<c:out value="/controller?command=go_to_edit_news&id=${news.idNews}"/>">${editlink}</a>
+						      <a href="<c:url value="/controller?command=go_to_edit_news&id=${news.idNews}"/>">${editlink}</a>
 						</c:if>
 						&nbsp;&nbsp;&nbsp;
 						<a href="controller?command=go_to_view_news&id=${news.idNews}">${viewlink}</a>
