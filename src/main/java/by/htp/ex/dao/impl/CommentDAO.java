@@ -21,7 +21,6 @@ public final class CommentDAO implements ICommentDAO{
 	private final static String DB_COMMENT_ID_COLUMN = "comment_id";
 	private final static String DB_DATE_COMMENT_COLUMN = "date_comment";
 
-
 	private final static String SQL_TO_DELETE_COMMENT = "DELETE FROM comments WHERE comment_id = ?";
 	@Override
 	public void deleteById(int id) throws DaoException {

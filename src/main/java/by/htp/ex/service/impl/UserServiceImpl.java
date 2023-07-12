@@ -25,6 +25,7 @@ public final class UserServiceImpl implements IUserService {
 			throw new ServiceException(e);
 		}
 	}
+
 	@Override
 	public NewUserInfo signIn(String login, String password) throws ServiceException {
 

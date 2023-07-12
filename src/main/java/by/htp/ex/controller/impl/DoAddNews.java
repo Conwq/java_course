@@ -15,7 +15,6 @@ import jakarta.servlet.http.Part;
 import java.io.IOException;
 
 public final class DoAddNews implements Command {
-
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
 	private final static String JSP_TITLE_PARAM = "title";
@@ -26,14 +25,10 @@ public final class DoAddNews implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		//TODO NEED VALIDATION AND ADD ERROR IN JSP PAGE
-
 		String title = request.getParameter(JSP_TITLE_PARAM);
 		String briefNews = request.getParameter(JSP_BRIEF_NEWS_PARAM);
 		String content = request.getParameter(JSP_CONTENT_PARAM);
 		String userId = request.getParameter(JSP_USER_ID_PARAM);
-
 		Part imagePart = request.getPart(JSP_PHOTO_PARAM);
 		String pathToImage = null;
 

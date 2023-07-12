@@ -4,7 +4,6 @@
 
 <c:set value="${requestScope.error}" var="error"/>
 
-
 <html>
 
 <head>

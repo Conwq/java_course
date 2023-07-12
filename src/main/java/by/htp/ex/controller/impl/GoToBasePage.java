@@ -21,7 +21,6 @@ public final class GoToBasePage implements Command{
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
-			//TODO ЧТОТО СДЕЛАТЬ С 5 ОНА НЕ ИСПОЛЬЗУЕТСЯ (ДОБАВИТЬ ВОЗМОЖНОСТЬ ВЫБОРА КОЛИЧЕСТВА ОТОБРАЖАЕМЫХ НОВОСТЕЙ?)
 			List<News> latestNews = newsService.latestList(5, Locale.getDefault());
 
 			request.setAttribute(JSP_NEWS_PARAM, latestNews);

@@ -1,7 +1,6 @@
 package by.htp.ex.dao.exception;
 
 public final class DaoException extends Exception {
-	private static final long serialVersionUID = 8814453066415187129L;
 
 	public DaoException() {
 		super();

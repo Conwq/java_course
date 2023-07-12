@@ -19,8 +19,6 @@ public final class NewsDAO implements INewsDAO {
 	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 	
-	//TODO Этот метод пересмотреть, он должен возвращать последние 5 новостей. Сделать что нибудь с count
-
 	private final static String SQL_TO_GET_LAST_NEWSES = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
 	@Override
 	public List<News> getLatestList(int count, Locale locale) throws DaoException {
@@ -40,7 +38,6 @@ public final class NewsDAO implements INewsDAO {
 		catch (SQLException | ConnectionPoolException e){
 			throw new DaoException(e);
 		}
-
 		return news;
 	}
 
