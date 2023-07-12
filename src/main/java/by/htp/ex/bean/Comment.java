@@ -1,7 +1,6 @@
 package by.htp.ex.bean;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 public final class Comment implements Serializable {
@@ -13,7 +12,6 @@ public final class Comment implements Serializable {
 	private String text;
 	
 	public Comment() {
-		
 	}
 
 	public Comment(NewUserInfo newUserInfo, News news, String text) {

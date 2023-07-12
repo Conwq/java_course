@@ -13,7 +13,7 @@ public final class DoSignOut implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE_PARAM);
-			response.sendRedirect("index.jsp");
+		request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE_PARAM);
+		response.sendRedirect("index.jsp");
 	}
 }

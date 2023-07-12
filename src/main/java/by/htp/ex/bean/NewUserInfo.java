@@ -16,8 +16,6 @@ public final class NewUserInfo implements Serializable {
 	private Locale locale;
 	private boolean banned;
 
-	//TODO ДОБАВИТЬ ЛИСТ ВСЕХ НОВОСТЕЙ, КОТОРЫЕ ПРИНАДЛЕЖАТ ПОЛЬЗОВАТЕЛЮ
-
 	public NewUserInfo(){
 	}
 
@@ -129,8 +127,6 @@ public final class NewUserInfo implements Serializable {
 	public void setBanned(boolean banned) {
 		this.banned = banned;
 	}
-
-
 
 	@Override
 	public String toString() {

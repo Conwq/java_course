@@ -33,8 +33,6 @@ public final class NewsServiceImpl implements INewsService{
 		}
 	}
 
-	//TODO ЧТО ТО СДЕЛАТЬ С COUNT
-
 	@Override
 	public List<News> latestList(int count, Locale locale) throws ServiceException {
 		try {

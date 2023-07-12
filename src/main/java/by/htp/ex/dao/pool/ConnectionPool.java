@@ -8,17 +8,14 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
 public final class ConnectionPool {
-
 	private final static ConnectionPool instance = new ConnectionPool();
 	private final String driver;
 	private final String url;
 	private final String user;
 	private final String password;
 	private int poolSize;
-
 	private BlockingQueue<Connection> queueAvailableConnection;
 	private BlockingQueue<Connection> queueTakenConnection;
-
 
 	private ConnectionPool() {
 		DBResourceManager resources = DBResourceManager.getInstance();

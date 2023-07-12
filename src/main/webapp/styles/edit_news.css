@@ -1,0 +1,36 @@
+.edit_newses {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .edit_newses label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .edit_newses input[type="text"],
+    .edit_newses input[type="file"] {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .edit_newses input[type="submit"],
+    .edit_newses button {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    .edit_newses button {
+        margin-top: 10px;
+    }

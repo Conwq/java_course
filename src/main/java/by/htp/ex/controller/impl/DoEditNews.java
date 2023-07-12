@@ -33,7 +33,6 @@ public final class DoEditNews implements Command {
 		String pathToImage = request.getParameter(JSP_PHOTO_PATH_PARAM);
 
 		if (imagePart.getSize() > 0){
-			File file = new File(pathToImage);
 			pathToImage = getPathToSavedImage(imagePart, request);
 		}
 

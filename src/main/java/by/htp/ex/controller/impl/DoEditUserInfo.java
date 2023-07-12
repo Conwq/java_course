@@ -25,7 +25,6 @@ public final class DoEditUserInfo implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		String idParam = request.getParameter(JSP_ID_PARAM);
 		String login = request.getParameter(JSP_LOGIN_PARAM);
 		String email = request.getParameter(JSP_EMAIL_PARAM);

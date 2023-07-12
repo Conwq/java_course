@@ -1,33 +1,85 @@
-.add-table-margin {
-    margin: 20px;
-}
+.news_info {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-.news_text_format {
-    width: 100%;
-    border-collapse: collapse;
-}
+    .body-title {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
 
-.news_text_format td {
-    padding: 10px;
-    border: 1px solid #ccc;
-}
+    .body-title a {
+        color: #333;
+        text-decoration: none;
+    }
 
-.space_around_title_text {
-    width: 25%;
-    font-weight: bold;
-}
+    .add-table-margin {
+        margin-top: 20px;
+    }
 
-.space_around_view_text {
-    width: 75%;
-}
+    .news_text_format {
+        width: 100%;
+    }
 
-.word-breaker {
-    word-break: break-all;
-}
+    .news_text_format tr {
+        margin-bottom: 10px;
+    }
 
-img {
-    display: block;
-    margin: 20px auto;
-    max-width: 100%;
-    height: auto;
-}
+    .space_around_title_text {
+        font-weight: bold;
+        width: 30%;
+        vertical-align: top;
+        padding-right: 10px;
+    }
+
+    .space_around_view_text {
+        width: 70%;
+    }
+
+    .word-breaker {
+        word-break: break-word;
+    }
+
+    .first-view-button,
+    .second-view-button {
+        margin-top: 20px;
+    }
+
+    .first-view-button a,
+    .second-view-button form {
+        display: inline-block;
+    }
+
+    .first-view-button button,
+    .second-view-button input[type="submit"] {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .button-wrapper {
+        display: block;
+        margin: 20px auto;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    .button-wrapper:hover {
+        background-color: #555;
+    }
+
+    img {
+        display: block;
+        margin: 0 auto;
+        max-width: 30%;
+        height: auto;
+        margin-bottom: 20px;
+    }
