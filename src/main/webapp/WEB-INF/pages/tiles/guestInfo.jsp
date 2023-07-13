@@ -55,7 +55,7 @@
 	</c:forEach>
 
 	<div class="no-news">
-		<c:if test="${requestScope.news eq null}">
+		<c:if test="${requestScope.news eq null || empty requestScope.news}">
         	No news.
 		</c:if>
 	</div>
