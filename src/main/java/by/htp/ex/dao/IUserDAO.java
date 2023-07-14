@@ -8,7 +8,7 @@ import by.htp.ex.dao.exception.DaoException;
 public interface IUserDAO {
 	void registration(NewUserInfo user) throws DaoException;
 	void registrationByLocale(NewUserInfo user, String locale) throws DaoException;
-	NewUserInfo authorization(String login, String password) throws DaoException;
+	NewUserInfo signInWithLoginAndPassword(String login, String password) throws DaoException;
 	List<NewUserInfo> getUsers() throws DaoException;
 	NewUserInfo getUser(int id) throws DaoException;
 	void updateUserInfo(NewUserInfo userInfo) throws DaoException;

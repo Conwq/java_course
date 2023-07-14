@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Locale;
 
 public interface IUserService {
-	NewUserInfo signIn(String login, String password) throws ServiceException;
+	NewUserInfo signInWithLoginAndPassword(String login, String password) throws ServiceException;
 	void registration(NewUserInfo user) throws ServiceException;
 	void registration(NewUserInfo user, Locale locale) throws ServiceException;
 	List<NewUserInfo> getUsers() throws ServiceException;

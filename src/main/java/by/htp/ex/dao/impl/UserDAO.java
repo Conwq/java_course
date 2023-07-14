@@ -102,7 +102,7 @@ public final class UserDAO implements IUserDAO {
 	
 	private final static String SQL_TO_AUTH_USER = "SELECT * FROM users LEFT JOIN locales ON users.id = locales.users_id WHERE login = ?";
 	@Override
-	public NewUserInfo authorization(String login, String password) throws DaoException {
+	public NewUserInfo signInWithLoginAndPassword(String login, String password) throws DaoException {
 
 		try (Connection connection = connectionPool.takeConnection();
 			 PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_AUTH_USER)) {
@@ -124,6 +124,29 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	private final static String SQL_TO_AUTH_USER_WITH_COOKIE = "SELECT * FROM users JOIN cookies ON users.id = cookies.users_id JOIN locales ON cookies.users_id = locales.users_id WHERE cookies.cookie = ?";
+	@Override
+	public NewUserInfo signInWithCookie(String cookieValue) throws DaoException {
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_AUTH_USER_WITH_COOKIE)){
+			preparedStatement.setString(1, cookieValue);
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if(!resultSet.next()) {
+				throw new DaoException("Current cookie not found");
+			}
+
+			return helper.getUserForCookies(resultSet);
+		}
+		catch(ConnectionPoolException e) {
+			throw new DaoException(e);
+		}
+		catch(SQLException e) {
+			throw new DaoException(e);
+		}
+	}
+
 	private final static String SQL_TO_GET_ALL_USERS =  "SELECT * FROM users";
 	@Override
 	public List<NewUserInfo> getUsers() throws DaoException {
@@ -134,7 +157,7 @@ public final class UserDAO implements IUserDAO {
 			 ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
-				usersInfo.add(helper.parseUserInfo(resultSet));
+				usersInfo.add(helper.getUserInfo(resultSet));
 			}
 		}
 		catch (SQLException e) {
@@ -161,7 +184,7 @@ public final class UserDAO implements IUserDAO {
 				throw new DaoException("User with current data not exist");
 			}
 
-			return helper.parseUserInfo(resultSet);
+			return helper.getUserInfo(resultSet);
 		}
 		catch (SQLException e) {
 			throw new DaoException("SQLException", e);
@@ -241,6 +264,44 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
+	private final static String SQL_ADD_COOKIE_FOR_USER = "INSERT INTO cookies (users_id, cookie) VALUES (?, ?)";
+	@Override
+	public void addCookieForUser(int userId, String cookieValue) throws DaoException {
+		try (Connection connection = connectionPool.takeConnection();
+			 PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_COOKIE_FOR_USER)){
+
+			preparedStatement.setInt(1, userId);
+			preparedStatement.setString(2, cookieValue);
+
+			preparedStatement.executeUpdate();
+
+		}
+		catch(ConnectionPoolException e) {
+			throw new DaoException(e);
+		}
+		catch(SQLException e) {
+			throw new DaoException(e);
+		}
+	}
+
+	private final static String SQL_DELETE_COOKIE = "DELETE FROM cookies WHERE cookie = ?";
+	@Override
+	public void deleteCookie(String cookieValue) throws DaoException{
+
+		try(Connection connection = connectionPool.takeConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_COOKIE)){
+			preparedStatement.setString(1, cookieValue);
+
+			preparedStatement.executeUpdate();
+		}
+		catch(ConnectionPoolException e) {
+			throw new DaoException(e);
+		}
+		catch(SQLException e) {
+			throw new DaoException(e);
+		}
+	}
+
 	private final static String SQL_TO_CHECK_USER_EXIST = "SELECT * FROM users WHERE email = ? OR login = ? AND id <> ?";
 	private boolean isExistUser(NewUserInfo user, Connection connection) throws SQLException {
 		PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_CHECK_USER_EXIST);
@@ -251,67 +312,5 @@ public final class UserDAO implements IUserDAO {
 		ResultSet resultSet = preparedStatement.executeQuery();
 
 		return resultSet.next();
-	}
-	
-	
-	private final static String SQL_ADD_COOKIE_FOR_USER = "INSERT INTO cookies (users_id, cookie) VALUES (?, ?)";
-	@Override
-	public void addCookieForUser(int userId, String cookieValue) throws DaoException {
-		try (Connection connection = connectionPool.takeConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_COOKIE_FOR_USER)){
-			
-			preparedStatement.setInt(1, userId);
-			preparedStatement.setString(2, cookieValue);
-			
-			preparedStatement.executeUpdate();
-			
-		}
-		catch(ConnectionPoolException e) {
-			throw new DaoException(e);
-		}
-		catch(SQLException e) {
-			throw new DaoException(e);
-		}
-	}
-	
-	private final static String SQL_SIGN_IN_WITH_COOKIE = "SELECT * FROM users JOIN cookies ON users.id = cookies.users_id WHERE cookies.cookie = ?";
-	@Override
-	public NewUserInfo signInWithCookie(String cookieValue) throws DaoException {
-		try(Connection connection = connectionPool.takeConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(SQL_SIGN_IN_WITH_COOKIE)){
-			preparedStatement.setString(1, cookieValue);
-			
-			ResultSet resultSet = preparedStatement.executeQuery();
-			
-			if(!resultSet.next()) {
-				throw new DaoException("Current cookie not found");
-			}
-			
-			return helper.parseUserInfo(resultSet);
-		}
-		catch(ConnectionPoolException e) {
-			throw new DaoException(e);
-		}
-		catch(SQLException e) {
-			throw new DaoException(e);
-		}
-	}
-	
-	private final static String SQL_DELETE_COOKIE = "DELETE FROM cookies WHERE cookie = ?";
-	@Override
-	public void deleteCookie(String cookieValue) throws DaoException{
-		
-		try(Connection connection = connectionPool.takeConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_COOKIE)){
-				preparedStatement.setString(1, cookieValue);
-				
-				preparedStatement.executeUpdate();
-			}
-			catch(ConnectionPoolException e) {
-				throw new DaoException(e);
-			}
-			catch(SQLException e) {
-				throw new DaoException(e);
-			}
 	}
 }

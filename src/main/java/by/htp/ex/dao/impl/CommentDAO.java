@@ -71,7 +71,7 @@ public final class CommentDAO implements ICommentDAO{
 				comment.setCommentId(resultSet.getInt(DB_COMMENT_ID_COLUMN));
 				comment.setText(resultSet.getString(DB_TEXT_COLUMN));
 				comment.setDate(helper.definingDateOutputFormatForComments(resultSet.getString(DB_DATE_COMMENT_COLUMN)));
-				comment.setNewUserInfo(helper.parseUserInfo(resultSet));
+				comment.setNewUserInfo(helper.getUserInfo(resultSet));
 				comments.add(comment);
 			}
 		}

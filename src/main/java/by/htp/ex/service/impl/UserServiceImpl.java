@@ -1,9 +1,5 @@
 package by.htp.ex.service.impl;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.locks.ReentrantLock;
-
 import by.htp.ex.bean.NewUserInfo;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.IUserDAO;
@@ -11,6 +7,10 @@ import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.exception.ServiceException;
 import by.htp.ex.util.ReentrantLockSingleton;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.locks.ReentrantLock;
 
 public final class UserServiceImpl implements IUserService {
 	private final static IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
@@ -27,10 +27,10 @@ public final class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public NewUserInfo signIn(String login, String password) throws ServiceException {
+	public NewUserInfo signInWithLoginAndPassword(String login, String password) throws ServiceException {
 
 		try {
-			return userDAO.authorization(login, password);
+			return userDAO.signInWithLoginAndPassword(login, password);
 		}
 		catch (DaoException e) {
 			throw new ServiceException(e);
@@ -39,7 +39,6 @@ public final class UserServiceImpl implements IUserService {
 
 	@Override
 	public void registration(NewUserInfo user) throws ServiceException {
-
 		try {
 			reentrantLock.lock();
 			userDAO.registration(user);
@@ -55,10 +54,14 @@ public final class UserServiceImpl implements IUserService {
 	@Override
 	public void registration(NewUserInfo user, Locale locale) throws ServiceException {
 		try{
+			reentrantLock.lock();
 			userDAO.registrationByLocale(user, locale.getLanguage());
 		}
 		catch (DaoException e){
 			throw new ServiceException(e);
+		}
+		finally {
+			reentrantLock.unlock();
 		}
 	}
 
