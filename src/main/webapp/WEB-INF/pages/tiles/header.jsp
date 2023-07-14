@@ -13,6 +13,7 @@
 <fmt:message bundle="${local}" key="local.locbutton.header.sign_out" var="sign_out_button"/>
 <fmt:message bundle="${local}" key="local.locbutton.header.personal_cabinet" var="personal_cabinet"/>
 <fmt:message bundle="${local}" key="local.locbutton.header.show_all_registered_users" var="show_all_users"/>
+<fmt:message bundle="${local}" key="local.locbutton.header.remember_me" var="remember"/>
 
 <c:set value="${sessionScope.user}" var="user"/>
 <c:set value="${sessionScope.userInfo.userId}" var="id"/>
@@ -55,7 +56,7 @@
 						</font> <br>
 					</c:if>
 					
-					<label for="remember">Remember me</label>
+					<label for="remember">${remember}</label>
 					<input type="checkbox" name="remember" value="true" id="remember"/> <br>
 					
 					<a href="controller?command=go_to_registration_page">${registartion_button}</a>
