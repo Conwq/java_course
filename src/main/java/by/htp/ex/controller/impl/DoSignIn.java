@@ -8,10 +8,12 @@ import by.htp.ex.service.exception.ServiceException;
 import by.htp.ex.util.validation.UserDataValidation;
 import by.htp.ex.util.validation.ValidationProvider;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public final class DoSignIn implements Command {
 	private final static IUserService service = ServiceProvider.getInstance().getUserService();
@@ -32,6 +34,8 @@ public final class DoSignIn implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String login = request.getParameter(JSP_LOGIN_PARAM);
 		String password = request.getParameter(JSP_PASSWORD_PARAM);
+		String remember = request.getParameter("remember");
+		String cookieValue = request.getParameter("cookie_value");
 
 		request.getSession().removeAttribute(JSP_AUTHENTICATION_ERROR_PARAM);
 		
@@ -41,11 +45,19 @@ public final class DoSignIn implements Command {
 //			response.sendRedirect("controller?command=go_to_base_page");
 //			return;
 //		}
-
+		
 		try {
-			NewUserInfo newUserInfo = service.signIn(login, password);
+			NewUserInfo newUserInfo = cookieValue == null ? service.signIn(login, password) : service.signInWithCookie(cookieValue);;
+			
+			if(remember != null && remember.equals("true")) {
+				Cookie cookie = new Cookie("my_cookie", UUID.randomUUID().toString());
+				cookie.setMaxAge(300);
+				service.addCookieForUser(newUserInfo.getUserId(), cookie.getValue());
+				response.addCookie(cookie);
+			}
+			
 			String role = newUserInfo.getRole().getRole();
-
+							
 			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_ACTIVE_PARAM);
 			request.getSession().setAttribute(JSP_USER_ROLE_PARAM, role);
 			request.getSession().setAttribute(JSP_USER_INFO_PARAM, newUserInfo);

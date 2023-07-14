@@ -54,7 +54,10 @@
 							<c:out value="${error}" />
 						</font> <br>
 					</c:if>
-
+					
+					<label for="remember">Remember me</label>
+					<input type="checkbox" name="remember" value="true" id="remember"/> <br>
+					
 					<a href="controller?command=go_to_registration_page">${registartion_button}</a>
 					<input type="submit" value="${sign_in_button}" /><br />
 				</form>

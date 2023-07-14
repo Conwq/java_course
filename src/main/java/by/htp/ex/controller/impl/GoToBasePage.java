@@ -7,6 +7,7 @@ import by.htp.ex.service.INewsService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -21,6 +22,16 @@ public final class GoToBasePage implements Command{
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
+			Cookie[] cookies = request.getCookies();
+			if(cookies != null) {
+				for(Cookie cookie:cookies) {
+					if(cookie.getName().equals("my_cookie")) {
+						response.sendRedirect("controller?command=do_sign_in&cookie_value=" + cookie.getValue());
+						return;
+					}
+				}
+			}
+			
 			List<News> latestNews = newsService.latestList(5, Locale.getDefault());
 
 			request.setAttribute(JSP_NEWS_PARAM, latestNews);

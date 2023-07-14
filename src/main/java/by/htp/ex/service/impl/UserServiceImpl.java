@@ -1,5 +1,9 @@
 package by.htp.ex.service.impl;
 
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.locks.ReentrantLock;
+
 import by.htp.ex.bean.NewUserInfo;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.IUserDAO;
@@ -7,10 +11,6 @@ import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.exception.ServiceException;
 import by.htp.ex.util.ReentrantLockSingleton;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.locks.ReentrantLock;
 
 public final class UserServiceImpl implements IUserService {
 	private final static IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
@@ -106,6 +106,36 @@ public final class UserServiceImpl implements IUserService {
 	public void downgradeRoleToUser(int id) throws ServiceException {
 		try {
 			userDAO.downgradeRoleToUser(id);
+		}
+		catch(DaoException e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public void addCookieForUser(int userId, String cookieValue) throws ServiceException {
+		try {
+			userDAO.addCookieForUser(userId, cookieValue);
+		}
+		catch(DaoException e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public NewUserInfo signInWithCookie(String cookieValue) throws ServiceException {
+		try {
+			return userDAO.signInWithCookie(cookieValue);
+		}
+		catch(DaoException e) {
+			throw new ServiceException(e);
+		}
+	}
+	
+	@Override
+	public void deleteCookie(String cookieValue) throws ServiceException{
+		try {
+			userDAO.deleteCookie(cookieValue);
 		}
 		catch(DaoException e) {
 			throw new ServiceException(e);
