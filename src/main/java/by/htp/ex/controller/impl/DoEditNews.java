@@ -43,7 +43,7 @@ public final class DoEditNews implements Command {
 			response.sendRedirect("controller?command=go_to_view_news&id=" + id);
 		}
 		catch (NumberFormatException | ServiceException e) {
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 

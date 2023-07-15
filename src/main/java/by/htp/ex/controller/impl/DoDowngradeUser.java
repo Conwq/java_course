@@ -24,10 +24,10 @@ public final class DoDowngradeUser implements Command {
 			response.sendRedirect("controller?command=go_to_users_list");
 		}
 		catch(NumberFormatException e) {
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 		catch(ServiceException e) {
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 }

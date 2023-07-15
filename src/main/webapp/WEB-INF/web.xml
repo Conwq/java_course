@@ -51,4 +51,22 @@
 		<servlet-name>Controller</servlet-name>
 	</filter-mapping>
 
+	<filter>
+		<filter-name>Error</filter-name>
+		<filter-class>by.htp.ex.controller.filters.ErrorFilter</filter-class>
+		<init-param>
+			<param-name>commandPattern</param-name>
+			<param-value>.+_e.*</param-value>
+		</init-param>
+		<init-param>
+			<param-name>errorPattern</param-name>
+			<param-value>error_.*</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>Error</filter-name>
+		<servlet-name>Controller</servlet-name>
+	</filter-mapping>
+
 </web-app>

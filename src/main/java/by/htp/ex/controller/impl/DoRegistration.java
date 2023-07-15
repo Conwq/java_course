@@ -28,7 +28,7 @@ public final class DoRegistration implements Command {
 	private final static String JSP_PASSWORD_PARAM = "password";
 	private final static String JSP_PASSWORD_REPEAT_PARAM = "password_repeat";
 	private final static String JSP_SELECTED_LOCALE_PARAM = "selectedLocale";
-	private static final String JSP_REGISTRATION_ERROR_PARAM = "RegistrationError";
+	private static final String JSP_ERROR_PARAM = "error_registration";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,14 +42,12 @@ public final class DoRegistration implements Command {
 		String password = request.getParameter(JSP_PASSWORD_PARAM);
 		String repeatPassword = request.getParameter(JSP_PASSWORD_REPEAT_PARAM);
 
-		request.getSession().removeAttribute(JSP_REGISTRATION_ERROR_PARAM);
+		if (!validation.isValidData(login, email, name, surname, city, password, repeatPassword)){
 
-//		if (!validation.isValidData(login, email, name, surname, city, password, repeatPassword)){
-//
-//			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, "Not valid data. The number of characters must not be less than 1");
-//			response.sendRedirect("controller?command=go_to_registration_page");
-//			return;
-//		}
+			request.getSession(true).setAttribute(JSP_ERROR_PARAM, "Not valid data. The number of characters must not be less than 1.");
+			response.sendRedirect("controller?command=go_to_registration_page");
+			return;
+		}
 		
 		try {
 			String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
@@ -62,8 +60,9 @@ public final class DoRegistration implements Command {
 			response.sendRedirect("controller?command=go_to_base_page");
 		}
 		catch (ServiceException e) {
-			request.getSession(true).setAttribute(JSP_REGISTRATION_ERROR_PARAM, e.getCause().getMessage());
-			response.sendRedirect("controller?command=go_to_registration_page");
+			String errorMessage = e.getCause().getMessage() != null ? e.getCause().getMessage() : "Error with registration, repeat later";
+			request.getSession(true).setAttribute(JSP_ERROR_PARAM, errorMessage);
+			response.sendRedirect("controller?command=go_to_registration_page_e");
 		}
 	}
 }

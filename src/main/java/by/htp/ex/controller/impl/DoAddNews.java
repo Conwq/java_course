@@ -45,7 +45,7 @@ public final class DoAddNews implements Command {
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch (NumberFormatException | ServiceException | IOException e){
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 

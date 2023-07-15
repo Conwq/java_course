@@ -23,10 +23,10 @@ public final class DoDeleteNewses implements Command {
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch(NullPointerException e){
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 		catch(ServiceException e){
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 }

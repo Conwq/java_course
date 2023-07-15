@@ -27,7 +27,7 @@ public final class DoSignIn implements Command {
 	private final static String JSP_USER_NOT_ACTIVE_PARAM = "not active";
 	private final static String JSP_USER_ROLE_PARAM = "role";
 	private final static String JSP_LOCALIZATION_PARAM = "localization";
-	private final static String JSP_AUTHENTICATION_ERROR_PARAM = "AuthenticationError";
+	private final static String JSP_ERROR_PARAM = "error_auth";
 	private final static String JSP_LOCALE_PARAM = "locale";
 	private final static String JSP_COOKIE_VALUE = "cookie_value";
 	private final static String JSP_REMEMBER_PARAM = "remember";
@@ -37,14 +37,13 @@ public final class DoSignIn implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getSession().removeAttribute(JSP_AUTHENTICATION_ERROR_PARAM);
-		
-//		if (!validation.isValidData(login, password)) {
-//			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE_PARAM);
-//			request.getSession().setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, "Wrong Login/Password");
-//			response.sendRedirect("controller?command=go_to_base_page");
-//			return;
-//		}
+
+		if (!validation.isValidData(request.getParameter(JSP_LOGIN_PARAM), request.getParameter(JSP_PASSWORD_PARAM))) {
+			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE_PARAM);
+			request.getSession().setAttribute(JSP_ERROR_PARAM, "Wrong Login/Password");
+			response.sendRedirect("controller?command=go_to_base_page_e");
+			return;
+		}
 		
 		try {
 			NewUserInfo newUserInfo = signIn(request);
@@ -59,12 +58,9 @@ public final class DoSignIn implements Command {
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch (ServiceException e) {
-			if (e.getCause() == null){
-				response.sendRedirect("error/error.jsp");
-				return;
-			}
-			request.getSession(true).setAttribute(JSP_AUTHENTICATION_ERROR_PARAM, e.getCause().getMessage());
-			response.sendRedirect("controller?command=go_to_base_page");
+			String errorMessage = e.getCause().getMessage() == null ? "Error with authorization, repeat later." : e.getCause().getMessage();
+			request.getSession(true).setAttribute(JSP_ERROR_PARAM, errorMessage);
+			response.sendRedirect("controller?command=go_to_base_page_e");
 		}
 	}
 
