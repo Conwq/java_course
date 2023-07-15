@@ -33,10 +33,10 @@ public final class GoToEditNews implements Command {
 			request.getRequestDispatcher("/WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		}
 		catch (NumberFormatException e) {
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 		catch (ServiceException e){
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 }

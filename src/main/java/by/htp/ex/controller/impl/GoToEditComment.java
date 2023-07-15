@@ -31,10 +31,10 @@ public final class GoToEditComment implements Command {
 			request.getRequestDispatcher("controller?command=go_to_view_news&id=" + parseNewsId).forward(request, response);
 		}
 		catch (NumberFormatException e){
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 		catch(ServiceException e){
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 }

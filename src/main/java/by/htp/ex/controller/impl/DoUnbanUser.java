@@ -21,13 +21,13 @@ public final class DoUnbanUser implements Command {
 		try{
 			int parseUserId = Integer.parseInt(userId);
 			userService.unbanUser(parseUserId);
-			response.sendRedirect("/controller?command=go_to_users_list");
+			response.sendRedirect("controller?command=go_to_users_list");
 		}
 		catch (NumberFormatException e){
 			response.sendRedirect("error/error.jsp");
 		}
 		catch (ServiceException e){
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 }

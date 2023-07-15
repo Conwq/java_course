@@ -51,7 +51,7 @@ public final class DoEditUserInfo implements Command {
 		}
 		catch (NumberFormatException e){
 			request.setAttribute(JSP_ERROR_PARAM, "This user does not exist");
-			request.getRequestDispatcher("/error/error.jsp").forward(request, response);
+			request.getRequestDispatcher("error/error.jsp").forward(request, response);
 		}
 	}
 }

@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<c:set value="${sessionScope.RegistrationError}" var="error"/>
+<c:set value="${sessionScope.error_registration}" var="error"/>
 <c:set value="${requestScope.local}" var="local"/>
 
 <fmt:setLocale value="${sessionScope.locale}"/>

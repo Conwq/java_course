@@ -26,7 +26,7 @@ public final class DoDeleteComment implements Command {
 			response.sendRedirect("controller?command=go_to_view_news&id=" + parseNewsId);
 		}
 		catch (NumberFormatException | ServiceException e){
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 }

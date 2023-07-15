@@ -18,7 +18,7 @@
 <c:set value="${sessionScope.user}" var="user"/>
 <c:set value="${sessionScope.userInfo.userId}" var="id"/>
 <c:set value="${sessionScope.role}" var="role"/>
-<c:set value="${sessionScope.AuthenticationError}" var="error"/>
+<c:set value="${sessionScope.error_auth}" var="error"/>
 
 <div class="wrapper">
 

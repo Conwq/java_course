@@ -41,11 +41,11 @@ public final class DoEditComment implements Command {
 			response.sendRedirect("controller?command=go_to_view_news&id=" + parseNewsId);
 		}
 		catch (ServiceException e){
-			response.sendRedirect("/error/error.jsp");
+			response.sendRedirect("error/error.jsp");
 		}
 		catch (NumberFormatException e){
 			request.setAttribute(JSP_ERROR_PARAM, "Current comment not exist");
-			request.getRequestDispatcher("/error/error.jsp").forward(request, response);
+			request.getRequestDispatcher("error/error.jsp").forward(request, response);
 		}
 	}
 }

@@ -11,6 +11,6 @@ public final class NoCommand implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("/error/error.jsp");
+		response.sendRedirect("error/error.jsp");
 	}
 }
