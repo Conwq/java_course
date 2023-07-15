@@ -11,6 +11,7 @@ import by.htp.ex.util.validation.ValidationProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.HEAD;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public final class DoRegistration implements Command {
 			response.sendRedirect("controller?command=go_to_registration_page");
 			return;
 		}
-		
+
 		try {
 			String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 			password = null;
