@@ -119,7 +119,6 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
-	//TODO при удалении новостей, мы будем менять статус колонки в таблице, которая будет очищаться через месяц, и вот именно по этой колонке и будет проходить удаление
 	private final static String SQL_TO_DELETE_NEWSES = "DELETE FROM news WHERE news_id IN (%s)";
 	@Override
 	public void deleteNewses(int[] idNewses) throws DaoException {
@@ -137,7 +136,6 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
-	//TODO при удалении новостей, мы будем менять статус колонки в таблице, которая будет очищаться через месяц, и вот именно по этой колонке и будет проходить удаление
 	private final static String SQL_TO_DELETE_NEWS = "DELETE FROM news WHERE news_id = ?";
 	@Override
 	public void deleteNews(int id) throws DaoException {

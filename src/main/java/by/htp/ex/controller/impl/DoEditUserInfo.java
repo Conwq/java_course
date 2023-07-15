@@ -21,7 +21,7 @@ public final class DoEditUserInfo implements Command {
 	private final static String JSP_LOGIN_PARAM = "login";
 	private final static String JSP_EMAIL_PARAM = "email";
 	private final static String JSP_PASSWORD_PARAM = "password";
-	private final static String JSP_ERROR_PARAM = "error";
+	private final static String JSP_ERROR_PARAM = "error_edit_user";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,12 +46,12 @@ public final class DoEditUserInfo implements Command {
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch (ServiceException e){
-			request.getSession(true).setAttribute(JSP_ERROR_PARAM, e.getCause().getMessage());
-			response.sendRedirect("controller?command=go_to_personal_cabinet&id=" + idParam);
+			String errorMessage = e.getCause().getMessage() != null ? e.getCause().getMessage() : "Error with registration, repeat later";
+			request.getSession(true).setAttribute(JSP_ERROR_PARAM, errorMessage);
+			response.sendRedirect("controller?command=go_to_personal_cabinet_e&id=" + idParam);
 		}
 		catch (NumberFormatException e){
-			request.setAttribute(JSP_ERROR_PARAM, "This user does not exist");
-			request.getRequestDispatcher("error/error.jsp").forward(request, response);
+			response.sendRedirect("error/error.jsp");
 		}
 	}
 }

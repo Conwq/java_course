@@ -14,10 +14,10 @@ import java.util.List;
 public final class UserDAO implements IUserDAO {
 	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
-	private final static String ru_PARAM = "ru";
-	private final static String RU_PARAM = "RU";
-	private final static String en_PARAM = "en";
-	private final static String US_PARAM = "US";
+	private final static String LANGUAGE_RU_PARAM = "ru";
+	private final static String COUNTRY_RU_PARAM = "RU";
+	private final static String LANGUAGE_EN_PARAM = "en";
+	private final static String COUNTRY_US_PARAM = "US";
 	private final static String USER_INFO_RU_PARAM = "user_info_ru";
 	private final static String USER_INFO_EN_PARAM = "user_info_en";
 
@@ -42,9 +42,9 @@ public final class UserDAO implements IUserDAO {
 				throw new DaoException("User with this email or login exists"); 
 			}
 			
-			String language = locale.equals(ru_PARAM) ? ru_PARAM : en_PARAM;
-			String country = locale.equals(ru_PARAM) ? RU_PARAM : US_PARAM;
-			String table = locale.equals(ru_PARAM) ? USER_INFO_RU_PARAM : USER_INFO_EN_PARAM;
+			String language = locale.equals(LANGUAGE_RU_PARAM) ? LANGUAGE_RU_PARAM : LANGUAGE_EN_PARAM;
+			String country = locale.equals(LANGUAGE_RU_PARAM) ? COUNTRY_RU_PARAM : COUNTRY_US_PARAM;
+			String table = locale.equals(LANGUAGE_RU_PARAM) ? USER_INFO_RU_PARAM : USER_INFO_EN_PARAM;
 			
 			connection.setAutoCommit(false);
 				

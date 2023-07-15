@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <c:set value="${sessionScope.userInfo}" var="user"/>
-<c:set value="${sessionScope.error}" var="error"/>
+<c:set value="${sessionScope.error_edit_user}" var="error"/>
 <c:set value="${sessionScope.role}" var="role"/>
 
 <fmt:setLocale value= "${sessionScope.locale}"/>

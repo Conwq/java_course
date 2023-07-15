@@ -21,8 +21,6 @@ public final class GoToAddNews implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		//TODO ДОБАВИТЬ REDIRECT? ПОТОМУ ЧТО В НАШЕЙ БАЗЕ МОЖЕТ БЫТЬ МНОГО ПОЛЬЗОВАТЕЛЕЙ И ПРИ F5 БУДЕТ ПРОИСХОДИТЬ ПОСТОЯННОЕ ОБРАЩЕНИЕ К БД. ХОТЯ ДАННАЯ ВОЗМОЖНОСТЬ ПРИСУТСТВУЕТ ЛИШЬ У АДМИНА
-
 		try {
 			List<NewUserInfo> users = userService.getUsers();
 			request.setAttribute(JSP_USERS_PARAM, users);

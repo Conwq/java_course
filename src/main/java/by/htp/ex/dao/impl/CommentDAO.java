@@ -50,10 +50,8 @@ public final class CommentDAO implements ICommentDAO{
 		}
 	}
 
-	private final static String SQL_GET_ALL_COMMENTS_FROM_NEWS = "SELECT * FROM news "
-																+ "JOIN comments ON news.news_id = comments.news_id "
-																+ "JOIN users ON comments.users_id = users.id "
-																+ "WHERE news.news_id = ?";
+	private final static String SQL_GET_ALL_COMMENTS_FROM_NEWS = "SELECT * FROM news JOIN comments ON news.news_id = comments.news_id "
+			+ "JOIN users ON comments.users_id = users.id WHERE news.news_id = ?";
 	@Override
 	public List<Comment> findByIdNews(int id) throws DaoException {
 		List<Comment> comments = null;

@@ -15,7 +15,6 @@ public final class DBResourceManager {
 		try {
 			String filePath = getClass().getClassLoader().getResource("database.properties").getFile();
 			InputStream file = new FileInputStream(filePath);
-//			InputStream file = new FileInputStream("D:\\Работа\\IntUlt\\work place\\java_course\\src\\main\\resources\\database.properties");
 			properties.load(file);
 		} catch (IOException e) {
 			throw new RuntimeException(e);

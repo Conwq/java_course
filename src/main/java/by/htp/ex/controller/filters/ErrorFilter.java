@@ -29,14 +29,12 @@ public final class ErrorFilter extends HttpFilter {
 		String command = req.getParameter(COMMAND_PARAM);
 		if (command != null && command.matches(commandPattern)){
 			Enumeration<String> attributes = req.getSession().getAttributeNames();
-			String error = null;
 			while(attributes.hasMoreElements()){
 				String attribute = attributes.nextElement();
 				if (attribute.matches(errorPattern)){
-					error = attribute;
+					req.getSession().removeAttribute(attribute);
 				}
 			}
-			req.getSession().removeAttribute(error);
 		}
 	}
 }

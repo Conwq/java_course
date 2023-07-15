@@ -1,5 +1,7 @@
 package by.htp.ex.controller.impl;
 
+import java.io.IOException;
+
 import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
@@ -9,8 +11,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
 
 public final class DoSignOut implements Command {
 	private final static IUserService service = ServiceProvider.getInstance().getUserService();
@@ -23,16 +23,15 @@ public final class DoSignOut implements Command {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE_PARAM);
 		Cookie cookie = cookies.getCookie(request, COOKIE_NAME);
-
-		if (cookie == null) {
-			response.sendRedirect("index.jsp");
-			return;
-		}
-
-		cookie.setMaxAge(0);
-		response.addCookie(cookie);
+		
 		try {
-			service.deleteCookie(cookie.getValue());
+			if (cookie != null) {
+				cookie.setMaxAge(0);
+				response.addCookie(cookie);
+				service.deleteCookie(cookie.getValue());
+			}
+			
+			response.sendRedirect("index.jsp");
 		}
 		catch (ServiceException e) {
 			response.sendRedirect("error/error.jsp");

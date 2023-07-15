@@ -14,10 +14,6 @@ public final class FrontController extends HttpServlet {
 	private final static String COMMAND = "command";
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getSession().getServletContext().getAttribute("ConnectionPoolInitError") != null){
-			response.sendRedirect("/error/error.jsp");
-			return;
-		}
 		execute(request, response);
 	}
 

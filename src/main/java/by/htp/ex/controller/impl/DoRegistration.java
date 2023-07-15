@@ -1,5 +1,10 @@
 package by.htp.ex.controller.impl;
 
+import java.io.IOException;
+import java.util.Locale;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 import by.htp.ex.bean.NewUserInfo;
 import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.IUserService;
@@ -11,10 +16,6 @@ import by.htp.ex.util.validation.ValidationProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.mindrot.jbcrypt.BCrypt;
-
-import java.io.IOException;
-import java.util.Locale;
 
 public final class DoRegistration implements Command {
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
@@ -48,7 +49,7 @@ public final class DoRegistration implements Command {
 			response.sendRedirect("controller?command=go_to_registration_page");
 			return;
 		}
-		
+
 		try {
 			String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 			password = null;
