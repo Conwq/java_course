@@ -38,12 +38,12 @@ public final class DoSignIn implements Command {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if (!validation.isValidData(request.getParameter(JSP_LOGIN_PARAM), request.getParameter(JSP_PASSWORD_PARAM))) {
-			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE_PARAM);
-			request.getSession().setAttribute(JSP_ERROR_PARAM, "Wrong Login/Password");
-			response.sendRedirect("controller?command=go_to_base_page_e");
-			return;
-		}
+//		if (!validation.isValidData(request.getParameter(JSP_LOGIN_PARAM), request.getParameter(JSP_PASSWORD_PARAM))) {
+//			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_NOT_ACTIVE_PARAM);
+//			request.getSession().setAttribute(JSP_ERROR_PARAM, "Wrong Login/Password");
+//			response.sendRedirect("controller?command=go_to_base_page_e");
+//			return;
+//		}
 		
 		try {
 			NewUserInfo newUserInfo = signIn(request);

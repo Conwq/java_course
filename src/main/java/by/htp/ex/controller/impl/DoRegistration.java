@@ -42,7 +42,7 @@ public final class DoRegistration implements Command {
 		String password = request.getParameter(JSP_PASSWORD_PARAM);
 		String repeatPassword = request.getParameter(JSP_PASSWORD_REPEAT_PARAM);
 
-		if (!validation.isValidData(login, email, name, surname, city, password, repeatPassword)){
+		if (!validation.isValidData(login, email, name, surname, city, password, repeatPassword)) {
 
 			request.getSession(true).setAttribute(JSP_ERROR_PARAM, "Not valid data. The number of characters must not be less than 1.");
 			response.sendRedirect("controller?command=go_to_registration_page");
@@ -58,8 +58,7 @@ public final class DoRegistration implements Command {
 			userService.registration(user, locale);
 
 			response.sendRedirect("controller?command=go_to_base_page");
-		}
-		catch (ServiceException e) {
+		} catch (ServiceException e) {
 			String errorMessage = e.getCause().getMessage() != null ? e.getCause().getMessage() : "Error with registration, repeat later";
 			request.getSession(true).setAttribute(JSP_ERROR_PARAM, errorMessage);
 			response.sendRedirect("controller?command=go_to_registration_page_e");
