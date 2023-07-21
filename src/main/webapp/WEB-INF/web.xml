@@ -30,11 +30,11 @@
 	</error-page>
 	
 	<listener>
-		<listener-class>by.htp.ex.controller.listeners.SessionListener</listener-class>
+		<listener-class>by.htp.ex.controller.listeners.AddingInactiveUserToTheSession</listener-class>
 	</listener>
 
 	<listener>
-		<listener-class>by.htp.ex.controller.listeners.ContextListener</listener-class>
+		<listener-class>by.htp.ex.controller.listeners.ConnectionPoolInitializer</listener-class>
 	</listener>
 
 	<filter>
@@ -53,7 +53,7 @@
 
 	<filter>
 		<filter-name>Error</filter-name>
-		<filter-class>by.htp.ex.controller.filters.ErrorFilter</filter-class>
+		<filter-class>by.htp.ex.controller.filters.SessionErrorRemover</filter-class>
 		<init-param>
 			<param-name>commandPattern</param-name>
 			<param-value>.+_e.*</param-value>

@@ -16,11 +16,10 @@ public final class DoUnbanUser implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userId = request.getParameter(JSP_USER_ID_PARAM);
+		String id = request.getParameter(JSP_USER_ID_PARAM);
 
 		try{
-			int parseUserId = Integer.parseInt(userId);
-			userService.unbanUser(parseUserId);
+			userService.unbanUser(id);
 			response.sendRedirect("controller?command=go_to_users_list");
 		}
 		catch (NumberFormatException e){

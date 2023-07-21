@@ -31,10 +31,9 @@ public final class GoToViewNews implements Command {
 		Locale locale = (Locale) request.getSession().getAttribute(JSP_LOCALIZATION_PARAM);
 		
 		try {
-			int parseId = Integer.parseInt(id);
-			News news  = newsService.findById(parseId, locale);
+			News news  = newsService.findById(id, locale);
 
-			List<Comment> comments = commentService.findByIdNews(parseId);
+			List<Comment> comments = commentService.findByIdNews(id);
 
 			request.setAttribute(JSP_COMMENTS_PARAM, comments);
 			request.setAttribute(JSP_NEWS_PARAM, news);

@@ -8,7 +8,7 @@ import by.htp.ex.dao.exception.DaoException;
 public interface IUserDAO {
 	void registration(NewUserInfo user) throws DaoException;
 	void registrationByLocale(NewUserInfo user, String locale) throws DaoException;
-	NewUserInfo signInWithLoginAndPassword(String login, String password) throws DaoException;
+	NewUserInfo signIn(String login, String password) throws DaoException;
 	List<NewUserInfo> getUsers() throws DaoException;
 	NewUserInfo getUser(int id) throws DaoException;
 	void updateUserInfo(NewUserInfo userInfo) throws DaoException;
@@ -16,6 +16,6 @@ public interface IUserDAO {
 	void banUser(int id) throws DaoException;
 	void downgradeRoleToUser(int id) throws DaoException;
 	void addCookieForUser(int userId, String cookieValue) throws DaoException;
-	NewUserInfo signInWithCookie (String cookieValue) throws DaoException;
+	NewUserInfo signInByToken(String cookieValue) throws DaoException;
 	void deleteCookie(String cookieValue) throws DaoException;
 }

@@ -3,6 +3,7 @@ package by.htp.ex.controller.impl;
 import java.io.IOException;
 import java.util.Locale;
 
+import by.htp.ex.util.Converter;
 import org.mindrot.jbcrypt.BCrypt;
 
 import by.htp.ex.bean.NewUserInfo;
@@ -10,7 +11,6 @@ import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
-import by.htp.ex.util.NewsManagerHelper;
 import by.htp.ex.util.validation.UserDataValidation;
 import by.htp.ex.util.validation.ValidationProvider;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public final class DoRegistration implements Command {
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
 	private final static UserDataValidation validation = ValidationProvider.getInstance().getUserValidator();
-	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
+	private final static Converter converter = Converter.getInstance();
 	private final static String JSP_LOGIN_PARAM = "login";
 	private final static String JSP_EMAIL_PARAM = "email";
 	private final static String JSP_NAME_PARAM = "name";
@@ -54,7 +54,7 @@ public final class DoRegistration implements Command {
 			String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 			password = null;
 			user = new NewUserInfo(login, email, hashedPassword, name, surname, city);
-			locale = helper.getLocale(request.getParameter(JSP_SELECTED_LOCALE_PARAM));
+			locale = converter.getLocale(request.getParameter(JSP_SELECTED_LOCALE_PARAM));
 
 			userService.registration(user, locale);
 

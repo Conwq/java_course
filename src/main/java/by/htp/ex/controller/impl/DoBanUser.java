@@ -19,8 +19,7 @@ public final class DoBanUser implements Command{
 		String userId = request.getParameter(JSP_USER_ID_PARAM);
 		
 		try {
-			int parseUserId = Integer.parseInt(userId);
-			userService.banUser(parseUserId);
+			userService.banUser(userId);
 			response.sendRedirect("controller?command=go_to_users_list");
 		}
 		catch(NumberFormatException e) {

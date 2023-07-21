@@ -12,10 +12,10 @@ import by.htp.ex.dao.ICommentDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
-import by.htp.ex.util.NewsManagerHelper;
+import by.htp.ex.util.Converter;
 
 public final class CommentDAO implements ICommentDAO{
-	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
+	private final static Converter converter = Converter.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 	private final static String DB_TEXT_COLUMN = "text";
 	private final static String DB_COMMENT_ID_COLUMN = "comment_id";
@@ -68,8 +68,8 @@ public final class CommentDAO implements ICommentDAO{
 				Comment comment = new Comment();
 				comment.setCommentId(resultSet.getInt(DB_COMMENT_ID_COLUMN));
 				comment.setText(resultSet.getString(DB_TEXT_COLUMN));
-				comment.setDate(helper.definingDateOutputFormatForComments(resultSet.getString(DB_DATE_COMMENT_COLUMN)));
-				comment.setNewUserInfo(helper.getUserInfo(resultSet));
+				comment.setDate(converter.convertDate(resultSet.getString(DB_DATE_COMMENT_COLUMN)));
+				comment.setNewUserInfo(converter.convertNewUserInfo(resultSet));
 				comments.add(comment);
 			}
 		}

@@ -26,8 +26,7 @@ public final class GoToEditNews implements Command {
 		Locale locale = (Locale) request.getSession().getAttribute(JSP_LOCALIZATION_PARAM);
 
 		try {
-			int id = Integer.parseInt(newsId);
-			News news = newsService.findById(id, locale);
+			News news = newsService.findById(newsId, locale);
 			request.setAttribute(JSP_NEWS_PARAM, news);
 			request.setAttribute(JSP_ACTION_PARAM, JSP_EDIT_NEWS_PARAM);
 			request.getRequestDispatcher("/WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);

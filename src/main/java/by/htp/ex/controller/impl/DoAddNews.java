@@ -28,7 +28,7 @@ public final class DoAddNews implements Command {
 		String title = request.getParameter(JSP_TITLE_PARAM);
 		String briefNews = request.getParameter(JSP_BRIEF_NEWS_PARAM);
 		String content = request.getParameter(JSP_CONTENT_PARAM);
-		String userId = request.getParameter(JSP_USER_ID_PARAM);
+		String id = request.getParameter(JSP_USER_ID_PARAM);
 		Part imagePart = request.getPart(JSP_PHOTO_PARAM);
 		String pathToImage = null;
 
@@ -37,8 +37,6 @@ public final class DoAddNews implements Command {
 		}
 
 		try {
-			int id = Integer.parseInt(userId);
-
 			NewUserInfo newUserInfo = userService.getUser(id);
 			News news = new News(title, briefNews, content, pathToImage, newUserInfo);
 			newsService.save(news);

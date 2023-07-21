@@ -11,7 +11,7 @@ public interface INewsService {
   void update(News news) throws ServiceException;
   List<News> latestList(int count, Locale locale)  throws ServiceException;
   List<News> list(Locale locale)  throws ServiceException;
-  News findById(int id, Locale locale) throws ServiceException;
-  void delete(int id) throws ServiceException;
+  News findById(String id, Locale locale) throws ServiceException;
+  void delete(String newsId) throws ServiceException;
   void deleteNewses(String[] newses) throws ServiceException;
 }

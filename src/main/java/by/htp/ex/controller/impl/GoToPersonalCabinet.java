@@ -20,10 +20,9 @@ public final class GoToPersonalCabinet implements Command {
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String idParam = request.getParameter(JSP_ID_PARAM);
+		String id = request.getParameter(JSP_ID_PARAM);
 
 		try{
-			int id = Integer.parseInt(idParam);
 			NewUserInfo userInfo = userService.getUser(id);
 			request.getSession(true).setAttribute(JSP_USER_INFO_PARAM, userInfo);
 			request.setAttribute(JSP_ACTION_PARAM, JSP_PERSONAL_CABINET_PARAM);
