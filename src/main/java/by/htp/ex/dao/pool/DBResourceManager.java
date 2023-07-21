@@ -4,21 +4,15 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 
 public final class DBResourceManager {
 	private final static DBResourceManager instance = new DBResourceManager();
-	private static Properties properties;
+	private final ResourceBundle resourceBundle;
 
 	private DBResourceManager() {
-		properties = new Properties();
-		try {
-			String filePath = getClass().getClassLoader().getResource("database.properties").getFile();
-			InputStream file = new FileInputStream(filePath);
-			properties.load(file);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		resourceBundle = ResourceBundle.getBundle("database");
 	}
 
 	public static DBResourceManager getInstance() {
@@ -26,6 +20,6 @@ public final class DBResourceManager {
 	}
 
 	public String getValue(String key) {
-		return properties.getProperty(key);
+		return resourceBundle.getString(key);
 	}
 }

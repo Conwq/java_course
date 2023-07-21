@@ -4,8 +4,6 @@ import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.ICommentService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
-import by.htp.ex.util.validation.CommentDataValidation;
-import by.htp.ex.util.validation.ValidationProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

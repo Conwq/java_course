@@ -1,23 +1,23 @@
 package by.htp.ex.controller.impl;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 import by.htp.ex.bean.News;
 import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.INewsService;
-import by.htp.ex.service.exception.ServiceException;
 import by.htp.ex.service.ServiceProvider;
+import by.htp.ex.service.exception.ServiceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public final class GoToNewsList implements Command {
-	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
-	private static final String JSP_NEWS_PARAM = "news";
-	private static final String JSP_PRESENTATION_PARAM = "presentation";
-	private static final String JSP_NEWS_LIST_PARAM = "newsList";
+	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private final static String JSP_NEWS_PARAM = "news";
+	private final static String JSP_PRESENTATION_PARAM = "presentation";
+	private final static String JSP_NEWS_LIST_PARAM = "newsList";
 	private final static String JSP_LOCALIZATION_PARAM = "localization";
 
 	@Override

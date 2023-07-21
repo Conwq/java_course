@@ -1,19 +1,19 @@
 package by.htp.ex.controller.impl;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 import by.htp.ex.bean.Comment;
 import by.htp.ex.bean.News;
 import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.ICommentService;
 import by.htp.ex.service.INewsService;
-import by.htp.ex.service.exception.ServiceException;
 import by.htp.ex.service.ServiceProvider;
+import by.htp.ex.service.exception.ServiceException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public final class GoToViewNews implements Command {
 	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
@@ -31,10 +31,9 @@ public final class GoToViewNews implements Command {
 		Locale locale = (Locale) request.getSession().getAttribute(JSP_LOCALIZATION_PARAM);
 		
 		try {
-			int parseId = Integer.parseInt(id);
-			News news  = newsService.findById(parseId, locale);
+			News news  = newsService.findById(id, locale);
 
-			List<Comment> comments = commentService.findByIdNews(parseId);
+			List<Comment> comments = commentService.findByIdNews(id);
 
 			request.setAttribute(JSP_COMMENTS_PARAM, comments);
 			request.setAttribute(JSP_NEWS_PARAM, news);

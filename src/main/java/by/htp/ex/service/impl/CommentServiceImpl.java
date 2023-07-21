@@ -13,11 +13,12 @@ public final class CommentServiceImpl implements ICommentService{
 	private final static ICommentDAO commentDAO = DaoProvider.getInstance().getCommentDao();
 
 	@Override
-	public List<Comment> findByIdNews(int id) throws ServiceException{
+	public List<Comment> findByIdNews(String id) throws ServiceException{
 		try {
-			return commentDAO.findByIdNews(id);
+			int newsId = Integer.parseInt(id);
+			return commentDAO.findByIdNews(newsId);
 		}
-		catch(DaoException e) {
+		catch(DaoException | NumberFormatException e) {
 			throw new ServiceException(e);
 		}
 	}

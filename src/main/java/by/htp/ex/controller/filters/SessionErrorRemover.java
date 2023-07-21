@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.util.Enumeration;
 
 
-public final class ErrorFilter extends HttpFilter {
+public final class SessionErrorRemover extends HttpFilter {
 	private static final String COMMAND_PARAM = "command";
-	private static String errorPattern;
-	private static String commandPattern;
+	private String errorPattern;
+	private String commandPattern;
 
 	@Override
 	public void init(FilterConfig config) throws ServletException {

@@ -1,14 +1,14 @@
 package by.htp.ex.service.impl;
 
-import java.util.List;
-import java.util.Locale;
-
 import by.htp.ex.bean.News;
 import by.htp.ex.dao.DaoProvider;
 import by.htp.ex.dao.INewsDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.service.INewsService;
 import by.htp.ex.service.exception.ServiceException;
+
+import java.util.List;
+import java.util.Locale;
 
 public final class NewsServiceImpl implements INewsService{
 	private final static INewsDAO newsDAO = DaoProvider.getInstance().getNewsDAO();
@@ -54,34 +54,37 @@ public final class NewsServiceImpl implements INewsService{
 	}
 
 	@Override
-	public News findById(int id, Locale locale) throws ServiceException {
+	public News findById(String newsId, Locale locale) throws ServiceException {
 		try {
+			int id = Integer.parseInt(newsId);
 			return newsDAO.fetchById(id, locale);
 		}
-		catch (DaoException e) {
+		catch (DaoException | NumberFormatException e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public void delete(int id) throws ServiceException {
+	public void delete(String newsId) throws ServiceException {
 		try {
+			int id = Integer.parseInt(newsId);
 			newsDAO.deleteNews(id);
 		}
-		catch (DaoException e){
+		catch (DaoException | NumberFormatException e){
 			throw new ServiceException(e);
 		}
 	}
 
 	public void deleteNewses(String[] newses) throws ServiceException{
-		int[] newsesId = new int[newses.length];
-		for (int i = 0; i < newses.length; i++){
-			newsesId[i] = Integer.parseInt(newses[i]);
-		}
+
 		try {
+			int[] newsesId = new int[newses.length];
+			for (int i = 0; i < newses.length; i++){
+				newsesId[i] = Integer.parseInt(newses[i]);
+			}
 			newsDAO.deleteNewses(newsesId);
 		}
-		catch(DaoException e){
+		catch(DaoException | NumberFormatException e){
 			throw new ServiceException(e);
 		}
 	}

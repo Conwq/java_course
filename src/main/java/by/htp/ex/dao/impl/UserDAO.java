@@ -5,14 +5,14 @@ import by.htp.ex.dao.IUserDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
-import by.htp.ex.util.NewsManagerHelper;
+import by.htp.ex.util.Converter;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class UserDAO implements IUserDAO {
-	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
+	private final static Converter converter = Converter.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 	private final static String LANGUAGE_RU_PARAM = "ru";
 	private final static String COUNTRY_RU_PARAM = "RU";
@@ -102,7 +102,7 @@ public final class UserDAO implements IUserDAO {
 	
 	private final static String SQL_TO_AUTH_USER = "SELECT * FROM users LEFT JOIN locales ON users.id = locales.users_id WHERE login = ?";
 	@Override
-	public NewUserInfo signInWithLoginAndPassword(String login, String password) throws DaoException {
+	public NewUserInfo signIn(String login, String password) throws DaoException {
 
 		try (Connection connection = connectionPool.takeConnection();
 			 PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_AUTH_USER)) {
@@ -114,7 +114,7 @@ public final class UserDAO implements IUserDAO {
 				throw new DaoException("User not found with this login");
 			}
 			
-			return helper.getUserForAuthorization(resultSet, password);
+			return converter.getUserForAuthorization(resultSet, password);
 		}
 		catch (SQLException e) {
 			throw new DaoException("Error with SQL", e);
@@ -126,7 +126,7 @@ public final class UserDAO implements IUserDAO {
 
 	private final static String SQL_TO_AUTH_USER_WITH_COOKIE = "SELECT * FROM users JOIN cookies ON users.id = cookies.users_id JOIN locales ON cookies.users_id = locales.users_id WHERE cookies.cookie = ?";
 	@Override
-	public NewUserInfo signInWithCookie(String cookieValue) throws DaoException {
+	public NewUserInfo signInByToken(String cookieValue) throws DaoException {
 		try(Connection connection = connectionPool.takeConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_AUTH_USER_WITH_COOKIE)){
 			preparedStatement.setString(1, cookieValue);
@@ -137,7 +137,7 @@ public final class UserDAO implements IUserDAO {
 				throw new DaoException("Current cookie not found");
 			}
 
-			return helper.getUserForCookies(resultSet);
+			return converter.getNewUserInfoByToken(resultSet);
 		}
 		catch(ConnectionPoolException e) {
 			throw new DaoException(e);
@@ -157,7 +157,7 @@ public final class UserDAO implements IUserDAO {
 			 ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
-				usersInfo.add(helper.getUserInfo(resultSet));
+				usersInfo.add(converter.convertNewUserInfo(resultSet));
 			}
 		}
 		catch (SQLException e) {
@@ -184,7 +184,7 @@ public final class UserDAO implements IUserDAO {
 				throw new DaoException("User with current data not exist");
 			}
 
-			return helper.getUserInfo(resultSet);
+			return converter.convertNewUserInfo(resultSet);
 		}
 		catch (SQLException e) {
 			throw new DaoException("SQLException", e);

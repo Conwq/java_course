@@ -5,9 +5,7 @@ import by.htp.ex.dao.pool.ConnectionPoolException;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 
-import javax.management.RuntimeMBeanException;
-
-public final class ContextListener implements ServletContextListener {
+public final class ConnectionPoolInitializer implements ServletContextListener {
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 
 	@Override

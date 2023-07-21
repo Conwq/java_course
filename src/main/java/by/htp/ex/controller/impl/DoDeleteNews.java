@@ -16,11 +16,10 @@ public final class DoDeleteNews implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String idParam = request.getParameter(JSP_ID_PARAM);
+		String newsId = request.getParameter(JSP_ID_PARAM);
 
 		try {
-			int id = Integer.parseInt(idParam);
-			newsService.delete(id);
+			newsService.delete(newsId);
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
 		catch (NumberFormatException | ServiceException e){

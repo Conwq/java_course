@@ -17,22 +17,33 @@ public final class UserServiceImpl implements IUserService {
 	private final static ReentrantLock reentrantLock = ReentrantLockSingleton.getInstance().getReentrantLock();
 
 	@Override
-	public void unbanUser(int id) throws ServiceException {
+	public NewUserInfo signIn(String login, String password) throws ServiceException {
+
 		try {
-			userDAO.unbanUser(id);
+			return userDAO.signIn(login, password);
 		}
-		catch (DaoException e){
+		catch (DaoException e) {
 			throw new ServiceException(e);
 		}
 	}
 
 	@Override
-	public NewUserInfo signInWithLoginAndPassword(String login, String password) throws ServiceException {
-
+	public NewUserInfo signInByToken(String token) throws ServiceException {
 		try {
-			return userDAO.signInWithLoginAndPassword(login, password);
+			return userDAO.signInByToken(token);
 		}
-		catch (DaoException e) {
+		catch(DaoException e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public void unbanUser(String id) throws ServiceException {
+		try {
+			int convertUserId = Integer.parseInt(id);
+			userDAO.unbanUser(convertUserId);
+		}
+		catch (DaoException |NumberFormatException e){
 			throw new ServiceException(e);
 		}
 	}
@@ -76,11 +87,12 @@ public final class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public NewUserInfo getUser(int id) throws ServiceException {
+	public NewUserInfo getUser(String id) throws ServiceException {
 		try {
-			return userDAO.getUser(id);
+			int convertUserId = Integer.parseInt(id);
+			return userDAO.getUser(convertUserId);
 		}
-		catch (DaoException e){
+		catch (DaoException | NumberFormatException e){
 			throw new ServiceException(e);
 		}
 	}
@@ -94,21 +106,12 @@ public final class UserServiceImpl implements IUserService {
 			throw new ServiceException(e);
 		}
 	}
-	
+
 	@Override
-	public void banUser(int id) throws ServiceException{
+	public void banUser(String id) throws ServiceException{
 		try {
-			userDAO.banUser(id);
-		}
-		catch(DaoException e) {
-			throw new ServiceException(e);
-		}
-	}
-	
-	@Override
-	public void downgradeRoleToUser(int id) throws ServiceException {
-		try {
-			userDAO.downgradeRoleToUser(id);
+			int convertUserId = Integer.parseInt(id);
+			userDAO.banUser(convertUserId);
 		}
 		catch(DaoException e) {
 			throw new ServiceException(e);
@@ -116,7 +119,18 @@ public final class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public void addCookieForUser(int userId, String cookieValue) throws ServiceException {
+	public void downgradeRoleToUser(String id) throws ServiceException {
+		try {
+			int convertUserId = Integer.parseInt(id);
+			userDAO.downgradeRoleToUser(convertUserId);
+		}
+		catch(DaoException | NumberFormatException e) {
+			throw new ServiceException(e);
+		}
+	}
+
+	@Override
+	public void addTokenToSaveData(int userId, String cookieValue) throws ServiceException {
 		try {
 			userDAO.addCookieForUser(userId, cookieValue);
 		}
@@ -125,16 +139,6 @@ public final class UserServiceImpl implements IUserService {
 		}
 	}
 
-	@Override
-	public NewUserInfo signInWithCookie(String cookieValue) throws ServiceException {
-		try {
-			return userDAO.signInWithCookie(cookieValue);
-		}
-		catch(DaoException e) {
-			throw new ServiceException(e);
-		}
-	}
-	
 	@Override
 	public void deleteCookie(String cookieValue) throws ServiceException{
 		try {

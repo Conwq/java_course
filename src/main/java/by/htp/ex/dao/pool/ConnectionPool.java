@@ -117,8 +117,9 @@ public final class ConnectionPool {
 		catch (SQLException e) {
 			throw new ConnectionPoolException("Exception with close ResultSet", e);
 		}
-
-		closeConnection(connection, statement);
+		finally {
+			closeConnection(connection, statement);
+		}
 	}
 
 	private void clearConnectionQueue() throws ConnectionPoolException{

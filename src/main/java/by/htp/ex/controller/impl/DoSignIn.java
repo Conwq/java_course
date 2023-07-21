@@ -47,7 +47,7 @@ public final class DoSignIn implements Command {
 		
 		try {
 			NewUserInfo newUserInfo = signIn(request);
-			createCookie(request, response, newUserInfo);
+			createToken(request, response, newUserInfo);
 
 			request.getSession(true).setAttribute(JSP_USER_PARAM, JSP_USER_ACTIVE_PARAM);
 			request.getSession().setAttribute(JSP_USER_ROLE_PARAM, newUserInfo.getRole().getRole());
@@ -64,21 +64,21 @@ public final class DoSignIn implements Command {
 		}
 	}
 
-	private void createCookie(HttpServletRequest request, HttpServletResponse response, NewUserInfo newUserInfo)throws ServiceException{
+	private void createToken(HttpServletRequest request, HttpServletResponse response, NewUserInfo newUserInfo)throws ServiceException{
 		String remember = request.getParameter(JSP_REMEMBER_PARAM);
 		if(remember != null && remember.equals(JSP_TRUE_PARAM)) {
 			Cookie cookie = new Cookie(COOKIE_NAME, UUID.randomUUID().toString());
 			cookie.setMaxAge(300);
-			service.addCookieForUser(newUserInfo.getUserId(), cookie.getValue());
+			service.addTokenToSaveData(newUserInfo.getUserId(), cookie.getValue());
 			response.addCookie(cookie);
 		}
 	}
 
 	private NewUserInfo signIn(HttpServletRequest request) throws ServiceException{
-		String cookieValue = request.getParameter(JSP_COOKIE_VALUE);
+		String token = request.getParameter(JSP_COOKIE_VALUE);
 		String login = request.getParameter(JSP_LOGIN_PARAM);
 		String password = request.getParameter(JSP_PASSWORD_PARAM);
 
-		return cookieValue == null ? service.signInWithLoginAndPassword(login, password) : service.signInWithCookie(cookieValue);
+		return token == null ? service.signIn(login, password) : service.signInByToken(token);
 	}
 }

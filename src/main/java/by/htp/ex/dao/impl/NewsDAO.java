@@ -5,7 +5,7 @@ import by.htp.ex.dao.INewsDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
 import by.htp.ex.dao.pool.ConnectionPoolException;
-import by.htp.ex.util.NewsManagerHelper;
+import by.htp.ex.util.Converter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 public final class NewsDAO implements INewsDAO {
-	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
+	private final static Converter converter = Converter.getInstance();
 	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
 	
 	private final static String SQL_TO_GET_LAST_NEWSES = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
@@ -31,7 +31,7 @@ public final class NewsDAO implements INewsDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()){
-				News findNews = helper.parseNews(resultSet, locale);
+				News findNews = converter.convertNews(resultSet, locale);
 				news.add(findNews);
 			}
 		}
@@ -51,7 +51,7 @@ public final class NewsDAO implements INewsDAO {
 			ResultSet resultSet = statement.executeQuery()){
 
 			while(resultSet.next()){
-				News findNews = helper.parseNews(resultSet, locale);
+				News findNews = converter.convertNews(resultSet, locale);
 				news.add(findNews);
 			}
 		}
@@ -72,7 +72,7 @@ public final class NewsDAO implements INewsDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			if (resultSet.next()) {
-				findNews = helper.parseNews(resultSet, locale);
+				findNews = converter.convertNews(resultSet, locale);
 			}
 		}
 		catch (SQLException |ConnectionPoolException e){
@@ -124,7 +124,7 @@ public final class NewsDAO implements INewsDAO {
 	public void deleteNewses(int[] idNewses) throws DaoException {
 
 		try(Connection connection = connectionPool.takeConnection();
-			PreparedStatement statement = connection.prepareStatement(String.format(SQL_TO_DELETE_NEWSES, helper.buildSQLQuery(idNewses)))){
+			PreparedStatement statement = connection.prepareStatement(String.format(SQL_TO_DELETE_NEWSES, buildSQLQuery(idNewses)))){
 
 			for (int i = 0; i < idNewses.length; i++) {
 				statement.setInt(i + 1, idNewses[i]);
@@ -134,6 +134,18 @@ public final class NewsDAO implements INewsDAO {
 		catch (SQLException |ConnectionPoolException e){
 			throw new DaoException(e);
 		}
+	}
+
+	private String buildSQLQuery(int[] idNewses){
+		StringBuilder builderSqlQuery = new StringBuilder();
+
+		for (int i = 0; i < idNewses.length; i++) {
+			builderSqlQuery.append("?");
+			if (i < idNewses.length -1){
+				builderSqlQuery.append(",");
+			}
+		}
+		return builderSqlQuery.toString();
 	}
 
 	private final static String SQL_TO_DELETE_NEWS = "DELETE FROM news WHERE news_id = ?";

@@ -1,26 +1,25 @@
 package by.htp.ex.controller.impl;
 
-import java.io.IOException;
-import java.util.Locale;
-
-import org.mindrot.jbcrypt.BCrypt;
-
 import by.htp.ex.bean.NewUserInfo;
 import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
 import by.htp.ex.service.exception.ServiceException;
-import by.htp.ex.util.NewsManagerHelper;
+import by.htp.ex.util.Converter;
 import by.htp.ex.util.validation.UserDataValidation;
 import by.htp.ex.util.validation.ValidationProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.mindrot.jbcrypt.BCrypt;
+
+import java.io.IOException;
+import java.util.Locale;
 
 public final class DoRegistration implements Command {
 	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
 	private final static UserDataValidation validation = ValidationProvider.getInstance().getUserValidator();
-	private final static NewsManagerHelper helper = NewsManagerHelper.getInstance();
+	private final static Converter converter = Converter.getInstance();
 	private final static String JSP_LOGIN_PARAM = "login";
 	private final static String JSP_EMAIL_PARAM = "email";
 	private final static String JSP_NAME_PARAM = "name";
@@ -29,7 +28,7 @@ public final class DoRegistration implements Command {
 	private final static String JSP_PASSWORD_PARAM = "password";
 	private final static String JSP_PASSWORD_REPEAT_PARAM = "password_repeat";
 	private final static String JSP_SELECTED_LOCALE_PARAM = "selectedLocale";
-	private static final String JSP_ERROR_PARAM = "error_registration";
+	private final static String JSP_ERROR_PARAM = "error_registration";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -54,7 +53,7 @@ public final class DoRegistration implements Command {
 			String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 			password = null;
 			user = new NewUserInfo(login, email, hashedPassword, name, surname, city);
-			locale = helper.getLocale(request.getParameter(JSP_SELECTED_LOCALE_PARAM));
+			locale = converter.getLocale(request.getParameter(JSP_SELECTED_LOCALE_PARAM));
 
 			userService.registration(user, locale);
 

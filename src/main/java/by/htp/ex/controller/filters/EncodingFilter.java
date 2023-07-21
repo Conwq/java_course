@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpFilter;
 import java.io.IOException;
 
 public final class EncodingFilter extends HttpFilter {
-	private static String encoding;
+	private String encoding;
 
 	@Override
 	public void init(FilterConfig config) throws ServletException {

@@ -1,7 +1,5 @@
 package by.htp.ex.controller.impl;
 
-import java.io.IOException;
-
 import by.htp.ex.controller.command.Command;
 import by.htp.ex.service.IUserService;
 import by.htp.ex.service.ServiceProvider;
@@ -11,6 +9,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 public final class DoSignOut implements Command {
 	private final static IUserService service = ServiceProvider.getInstance().getUserService();
