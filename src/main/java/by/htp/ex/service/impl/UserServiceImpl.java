@@ -28,9 +28,9 @@ public final class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public NewUserInfo signInByToken(String token) throws ServiceException {
+	public NewUserInfo signInByToken(String authorizationToken) throws ServiceException {
 		try {
-			return userDAO.signInByToken(token);
+			return userDAO.signInByToken(authorizationToken);
 		}
 		catch(DaoException e) {
 			throw new ServiceException(e);
@@ -43,8 +43,11 @@ public final class UserServiceImpl implements IUserService {
 			int convertUserId = Integer.parseInt(id);
 			userDAO.unbanUser(convertUserId);
 		}
-		catch (DaoException |NumberFormatException e){
+		catch(DaoException e) {
 			throw new ServiceException(e);
+		}
+		catch (NumberFormatException e){
+			throw new ServiceException("User with this id not found", e);
 		}
 	}
 
@@ -92,8 +95,11 @@ public final class UserServiceImpl implements IUserService {
 			int convertUserId = Integer.parseInt(id);
 			return userDAO.getUser(convertUserId);
 		}
-		catch (DaoException | NumberFormatException e){
+		catch(DaoException e) {
 			throw new ServiceException(e);
+		}
+		catch (NumberFormatException e){
+			throw new ServiceException("User with this id not found", e);
 		}
 	}
 
@@ -124,15 +130,18 @@ public final class UserServiceImpl implements IUserService {
 			int convertUserId = Integer.parseInt(id);
 			userDAO.downgradeRoleToUser(convertUserId);
 		}
-		catch(DaoException | NumberFormatException e) {
+		catch(DaoException e) {
 			throw new ServiceException(e);
+		}
+		catch (NumberFormatException e){
+			throw new ServiceException("User with this id not found", e);
 		}
 	}
 
 	@Override
-	public void addTokenToSaveData(int userId, String cookieValue) throws ServiceException {
+	public void addTokenToSaveData(int userId, String authorizationToken) throws ServiceException {
 		try {
-			userDAO.addCookieForUser(userId, cookieValue);
+			userDAO.addCookieForUser(userId, authorizationToken);
 		}
 		catch(DaoException e) {
 			throw new ServiceException(e);
@@ -140,9 +149,9 @@ public final class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public void deleteCookie(String cookieValue) throws ServiceException{
+	public void deleteCookie(String authorizationToken) throws ServiceException{
 		try {
-			userDAO.deleteCookie(cookieValue);
+			userDAO.deleteCookie(authorizationToken);
 		}
 		catch(DaoException e) {
 			throw new ServiceException(e);

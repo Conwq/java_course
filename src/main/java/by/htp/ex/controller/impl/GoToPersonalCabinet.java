@@ -20,15 +20,15 @@ public final class GoToPersonalCabinet implements Command {
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter(JSP_ID_PARAM);
 
 		try{
+			String id = request.getParameter(JSP_ID_PARAM);
 			NewUserInfo userInfo = userService.getUser(id);
 			request.getSession(true).setAttribute(JSP_USER_INFO_PARAM, userInfo);
 			request.setAttribute(JSP_ACTION_PARAM, JSP_PERSONAL_CABINET_PARAM);
 			request.getRequestDispatcher("/WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		}
-		catch (NumberFormatException | ServiceException e){
+		catch (ServiceException e){
 			response.sendRedirect("error/error.jsp");
 		}
 	}

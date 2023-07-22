@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public final class CommentDAO implements ICommentDAO{
 	private final static Converter converter = Converter.getInstance();
@@ -53,7 +54,7 @@ public final class CommentDAO implements ICommentDAO{
 	private final static String SQL_GET_ALL_COMMENTS_FROM_NEWS = "SELECT * FROM news JOIN comments ON news.news_id = comments.news_id "
 			+ "JOIN users ON comments.users_id = users.id WHERE news.news_id = ?";
 	@Override
-	public List<Comment> findByIdNews(int id) throws DaoException {
+	public List<Comment> findByIdNews(int id, Locale locale) throws DaoException {
 		List<Comment> comments = null;
 		
 		try (Connection connection = connectionPool.takeConnection();
@@ -68,7 +69,7 @@ public final class CommentDAO implements ICommentDAO{
 				Comment comment = new Comment();
 				comment.setCommentId(resultSet.getInt(DB_COMMENT_ID_COLUMN));
 				comment.setText(resultSet.getString(DB_TEXT_COLUMN));
-				comment.setDate(converter.convertDate(resultSet.getString(DB_DATE_COMMENT_COLUMN)));
+				comment.setDate(converter.convertDateTime(resultSet.getString(DB_DATE_COMMENT_COLUMN), locale));
 				comment.setNewUserInfo(converter.convertNewUserInfo(resultSet));
 				comments.add(comment);
 			}

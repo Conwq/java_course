@@ -20,16 +20,13 @@ public final class DoAddComment implements Command{
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
-			int userId = Integer.parseInt(request.getParameter(JSP_USER_ID_PARAM));
-			int newsId = Integer.parseInt(request.getParameter(JSP_NEWS_ID_PARAM));
+			String userId = request.getParameter(JSP_USER_ID_PARAM);
+			String newsId = request.getParameter(JSP_NEWS_ID_PARAM);
 			String text = request.getParameter(JSP_TEXT_PARAM);
 
 			commentService.addComment(text, userId, newsId);
 
 			response.sendRedirect("controller?command=go_to_view_news&id=" + newsId);
-		}
-		catch (NumberFormatException e){
-			response.sendRedirect("error/error.jsp");
 		}
 		catch (ServiceException e){
 			response.sendRedirect("error/error.jsp");

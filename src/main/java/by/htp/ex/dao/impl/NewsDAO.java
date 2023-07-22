@@ -31,7 +31,7 @@ public final class NewsDAO implements INewsDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()){
-				News findNews = converter.convertNews(resultSet, locale);
+				News findNews = converter.convertNewsDependingOnDate(resultSet, locale);
 				news.add(findNews);
 			}
 		}
@@ -51,7 +51,7 @@ public final class NewsDAO implements INewsDAO {
 			ResultSet resultSet = statement.executeQuery()){
 
 			while(resultSet.next()){
-				News findNews = converter.convertNews(resultSet, locale);
+				News findNews = converter.convertNewsDependingOnDate(resultSet, locale);
 				news.add(findNews);
 			}
 		}

@@ -17,15 +17,15 @@ public final class DoDeleteComment implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String commentId = request.getParameter(JSP_COMMENT_ID_PARAM);
-		String newsId = request.getParameter(JSP_NEWS_ID_PARAM);
+
 		try{
-			int parseCommentId = Integer.parseInt(commentId);
-			int parseNewsId = Integer.parseInt(newsId);
-			commentService.deleteById(parseCommentId);
-			response.sendRedirect("controller?command=go_to_view_news&id=" + parseNewsId);
+			String commentId = request.getParameter(JSP_COMMENT_ID_PARAM);
+			String newsId = request.getParameter(JSP_NEWS_ID_PARAM);
+			commentService.deleteById(commentId);
+
+			response.sendRedirect("controller?command=go_to_view_news&id=" + newsId);
 		}
-		catch (NumberFormatException | ServiceException e){
+		catch (ServiceException e){
 			response.sendRedirect("error/error.jsp");
 		}
 	}

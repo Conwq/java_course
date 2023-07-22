@@ -16,14 +16,11 @@ public final class DoDowngradeUser implements Command {
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter(JSP_USER_ID_PARAM);
-		
+
 		try {
+			String id = request.getParameter(JSP_USER_ID_PARAM);
 			userService.downgradeRoleToUser(id);
 			response.sendRedirect("controller?command=go_to_users_list");
-		}
-		catch(NumberFormatException e) {
-			response.sendRedirect("error/error.jsp");
 		}
 		catch(ServiceException e) {
 			response.sendRedirect("error/error.jsp");

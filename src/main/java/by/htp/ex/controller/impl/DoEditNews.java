@@ -23,19 +23,20 @@ public final class DoEditNews implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter(JSP_ID_PARAM);
-		String title = request.getParameter(JSP_TITLE_PARAM);
-		String briefNews = request.getParameter(JSP_BRIEF_NEWS_PARAM);
-		String content = request.getParameter(JSP_CONTENT_PARAM);
-
-		Part imagePart = request.getPart(JSP_PHOTO_PARAM);
-		String pathToImage = request.getParameter(JSP_PHOTO_PATH_PARAM);
-
-		if (imagePart.getSize() > 0){
-			pathToImage = getPathToSavedImage(imagePart, request);
-		}
 
 		try {
+			String id = request.getParameter(JSP_ID_PARAM);
+			String title = request.getParameter(JSP_TITLE_PARAM);
+			String briefNews = request.getParameter(JSP_BRIEF_NEWS_PARAM);
+			String content = request.getParameter(JSP_CONTENT_PARAM);
+
+			Part imagePart = request.getPart(JSP_PHOTO_PARAM);
+			String pathToImage = request.getParameter(JSP_PHOTO_PATH_PARAM);
+
+			if (imagePart.getSize() > 0){
+				pathToImage = getPathToSavedImage(imagePart, request);
+			}
+
 			int parseId = Integer.parseInt(id);
 			News news = new News(parseId, title, briefNews, content, pathToImage);
 			newsService.update(news);

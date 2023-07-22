@@ -59,8 +59,11 @@ public final class NewsServiceImpl implements INewsService{
 			int id = Integer.parseInt(newsId);
 			return newsDAO.fetchById(id, locale);
 		}
-		catch (DaoException | NumberFormatException e) {
+		catch(DaoException e) {
 			throw new ServiceException(e);
+		}
+		catch (NumberFormatException e){
+			throw new ServiceException("News with this id not found", e);
 		}
 	}
 
@@ -70,8 +73,11 @@ public final class NewsServiceImpl implements INewsService{
 			int id = Integer.parseInt(newsId);
 			newsDAO.deleteNews(id);
 		}
-		catch (DaoException | NumberFormatException e){
+		catch(DaoException e) {
 			throw new ServiceException(e);
+		}
+		catch (NumberFormatException e){
+			throw new ServiceException("News with this id not found", e);
 		}
 	}
 
@@ -84,8 +90,11 @@ public final class NewsServiceImpl implements INewsService{
 			}
 			newsDAO.deleteNewses(newsesId);
 		}
-		catch(DaoException | NumberFormatException e){
+		catch(DaoException e) {
 			throw new ServiceException(e);
+		}
+		catch (NumberFormatException e){
+			throw new ServiceException("News with this id not found", e);
 		}
 	}
 }

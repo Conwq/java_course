@@ -8,6 +8,7 @@
 <fmt:message bundle="${local}" key="local.locbutton.content.viewlink" var="viewlink"/>
 <fmt:message bundle="${local}" key="local.locbutton.content.delete_selected_newses" var="delete_newses"/>
 
+<c:set value="${sessionScope.error_delete_newses}" var="errorDeleteNewses"/>
 <c:set value="${requestScope.news}" var="news"/>
 <c:set value="${sessionScope.role}" var="role"/>
 
@@ -55,6 +56,12 @@
 			</div>
 		</div>
 	</c:forEach>
+
+	<c:if test="${not (errorDeleteNewses eq null)}">
+		<div style="color:red">
+			<h2><c:out value="${errorDeleteNewses}"/></h2>
+		</div>
+	</c:if>
 
 	<c:if test="${role eq 'admin'}">
 		<input type="submit" value="${delete_newses}"/>

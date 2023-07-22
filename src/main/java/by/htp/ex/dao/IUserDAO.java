@@ -15,7 +15,7 @@ public interface IUserDAO {
 	void unbanUser(int id) throws DaoException;
 	void banUser(int id) throws DaoException;
 	void downgradeRoleToUser(int id) throws DaoException;
-	void addCookieForUser(int userId, String cookieValue) throws DaoException;
-	NewUserInfo signInByToken(String cookieValue) throws DaoException;
-	void deleteCookie(String cookieValue) throws DaoException;
+	void addCookieForUser(int userId, String authorizationToken) throws DaoException;
+	NewUserInfo signInByToken(String authorizationToken) throws DaoException;
+	void deleteCookie(String authorizationToken) throws DaoException;
 }

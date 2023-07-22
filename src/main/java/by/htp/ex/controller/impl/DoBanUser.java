@@ -16,14 +16,11 @@ public final class DoBanUser implements Command{
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userId = request.getParameter(JSP_USER_ID_PARAM);
-		
+
 		try {
+			String userId = request.getParameter(JSP_USER_ID_PARAM);
 			userService.banUser(userId);
 			response.sendRedirect("controller?command=go_to_users_list");
-		}
-		catch(NumberFormatException e) {
-			response.sendRedirect("error/error.jsp");
 		}
 		catch(ServiceException e) {
 			response.sendRedirect("error/error.jsp");

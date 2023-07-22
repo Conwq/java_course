@@ -39,29 +39,25 @@ public class Converter {
 		return instance;
 	}
 
-	public String convertDate(String date){
-		Locale locale = Locale.getDefault();
-
+	public String convertDateTime(String date, Locale locale){
+		if (locale == null){
+			locale = Locale.getDefault();
+		}
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
-		LocalDateTime dateTimeNews = LocalDateTime.parse(date, formatter);
-
-		return dateTimeNews.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(locale));
+		LocalDateTime datePublication = LocalDateTime.parse(date, formatter);
+		return datePublication.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(locale));
 	}
 
 	public String convertDate(String date, Locale locale){
 		if (locale == null){
 			locale = Locale.getDefault();
 		}
-
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
-		LocalDateTime dateTimeNews = LocalDateTime.parse(date, formatter);
-
+		LocalDateTime datePublication = LocalDateTime.parse(date, formatter);
 		LocalDate currentDate = LocalDate.now();
-		LocalDate datePublicationNews = dateTimeNews.toLocalDate();
-
-		String formatDateTime = dateTimeNews.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(locale));
-		String formatDate = dateTimeNews.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(locale));
-
+		LocalDate datePublicationNews = datePublication.toLocalDate();
+		String formatDateTime = datePublication.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(locale));
+		String formatDate = datePublication.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(locale));
 		if (datePublicationNews.equals(currentDate)) {
 			return formatDateTime;
 		}
@@ -70,17 +66,15 @@ public class Converter {
 
 	public NewUserInfo convertNewUserInfo(ResultSet resultSet) throws SQLException {
 		NewUserInfo newUserInfo = new NewUserInfo();
-
 		newUserInfo.setUserId(resultSet.getInt(ID_PARAM));
 		newUserInfo.setLogin(resultSet.getString(LOGIN_PARAM));
 		newUserInfo.setEmail(resultSet.getString(EMAIL_PARAM));
 		newUserInfo.setRole(Role.valueOf(resultSet.getString(ROLE_PARAM).toUpperCase()));
 		newUserInfo.setBanned(resultSet.getBoolean(BANNED_PARAM));
-
 		return newUserInfo;
 	}
 
-	public NewUserInfo getNewUserInfoByToken(ResultSet resultSet) throws SQLException, DaoException {
+	public NewUserInfo getUser(ResultSet resultSet) throws SQLException, DaoException {
 		if (resultSet.getBoolean(BANNED_PARAM)) {
 			throw new DaoException("Current user was banned");
 		}
@@ -89,14 +83,9 @@ public class Converter {
 		return newUserInfo;
 	}
 
-	public NewUserInfo getUserForAuthorization(ResultSet resultSet, String password) throws SQLException, DaoException {
+	public NewUserInfo getUser(ResultSet resultSet, String password) throws SQLException, DaoException {
 		if(BCrypt.checkpw(password, resultSet.getString(PASSWORD_PARAM))) {
-			if (resultSet.getBoolean(BANNED_PARAM)) {
-				throw new DaoException("Current user was banned");
-			}
-			NewUserInfo newUserInfo = convertNewUserInfo(resultSet);
-			newUserInfo.setLocale(getLocale(resultSet.getString(LANGUAGE_PARAM), resultSet.getString(COUNTRY_PARAM)));
-			return newUserInfo;
+			return getUser(resultSet);
 		}
 		else {
 			throw new DaoException("Incorrect password");
@@ -104,25 +93,33 @@ public class Converter {
 	}
 
 	public News convertNews(ResultSet resultSet, Locale locale) throws SQLException{
+		News findNews = getNews(resultSet);;
+		findNews.setNewsDate(convertDateTime(resultSet.getString(NEWS_DATE_PARAM), locale));
+		return findNews;
+	}
+
+	public News convertNewsDependingOnDate(ResultSet resultSet, Locale locale) throws SQLException{
+		News findNews = getNews(resultSet);
+		findNews.setNewsDate(convertDate(resultSet.getString(NEWS_DATE_PARAM), locale));
+		return findNews;
+	}
+
+	private News getNews(ResultSet resultSet) throws SQLException {
 		News findNews = new News();
 		findNews.setIdNews(resultSet.getInt(NEWS_ID_PARAM));
 		findNews.setTitle(resultSet.getString(TITLE_PARAM));
 		findNews.setBriefNews(resultSet.getString(BRIEF_NEWS_PARAM));
 		findNews.setContent(resultSet.getString(CONTENT_PARAM));
 		findNews.setPhotoPath(resultSet.getString(PHOTO_PATH_PARAM));
-		findNews.setNewsDate(convertDate(resultSet.getString(NEWS_DATE_PARAM), locale));
-
 		return findNews;
 	}
 
 	public Locale getLocale (String localeParam){
 		Locale locale;
-
 		if (localeParam == null || localeParam.equals("en_US")){
 			locale = new Locale("en", "US");
 			return locale;
 		}
-
 		String[] resultLocale = localeParam.split("_");
 		String language = resultLocale[0];
 		String country = resultLocale[1];
@@ -134,7 +131,6 @@ public class Converter {
 		if (language == null || country == null){
 			return Locale.getDefault();
 		}
-
 		return new Locale(language, country);
 	}
 }

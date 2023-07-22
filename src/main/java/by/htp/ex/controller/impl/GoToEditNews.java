@@ -31,9 +31,6 @@ public final class GoToEditNews implements Command {
 			request.setAttribute(JSP_ACTION_PARAM, JSP_EDIT_NEWS_PARAM);
 			request.getRequestDispatcher("/WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		}
-		catch (NumberFormatException e) {
-			response.sendRedirect("error/error.jsp");
-		}
 		catch (ServiceException e){
 			response.sendRedirect("error/error.jsp");
 		}

@@ -18,20 +18,16 @@ public final class DoEditComment implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String text = request.getParameter(JSP_TEXT_PARAM);
-		String commentId = request.getParameter(JSP_COMMENT_ID_PARAM);
-		String newsId = request.getParameter(JSP_NEWS_ID_PARAM);
 
 		try {
-			int parseCommentId = Integer.parseInt(commentId);
-			int parseNewsId = Integer.parseInt(newsId);
-			commentService.editCommentTextById(parseCommentId, text);
-			response.sendRedirect("controller?command=go_to_view_news&id=" + parseNewsId);
+			String text = request.getParameter(JSP_TEXT_PARAM);
+			String commentId = request.getParameter(JSP_COMMENT_ID_PARAM);
+			String newsId = request.getParameter(JSP_NEWS_ID_PARAM);
+			commentService.editCommentTextById(commentId, text);
+
+			response.sendRedirect("controller?command=go_to_view_news&id=" + newsId);
 		}
 		catch (ServiceException e){
-			response.sendRedirect("error/error.jsp");
-		}
-		catch (NumberFormatException e){
 			response.sendRedirect("error/error.jsp");
 		}
 	}

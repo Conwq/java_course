@@ -25,24 +25,25 @@ public final class DoAddNews implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String title = request.getParameter(JSP_TITLE_PARAM);
-		String briefNews = request.getParameter(JSP_BRIEF_NEWS_PARAM);
-		String content = request.getParameter(JSP_CONTENT_PARAM);
-		String id = request.getParameter(JSP_USER_ID_PARAM);
-		Part imagePart = request.getPart(JSP_PHOTO_PARAM);
-		String pathToImage = null;
-
-		if (imagePart.getSize() > 0){
-			pathToImage = getPathToSavedImage(imagePart, request);
-		}
 
 		try {
+			String title = request.getParameter(JSP_TITLE_PARAM);
+			String briefNews = request.getParameter(JSP_BRIEF_NEWS_PARAM);
+			String content = request.getParameter(JSP_CONTENT_PARAM);
+			String id = request.getParameter(JSP_USER_ID_PARAM);
+			Part imagePart = request.getPart(JSP_PHOTO_PARAM);
+			String pathToImage = null;
+
+			if (imagePart.getSize() > 0){
+				pathToImage = getPathToSavedImage(imagePart, request);
+			}
+
 			NewUserInfo newUserInfo = userService.getUser(id);
 			News news = new News(title, briefNews, content, pathToImage, newUserInfo);
 			newsService.save(news);
 			response.sendRedirect("controller?command=go_to_news_list");
 		}
-		catch (NumberFormatException | ServiceException | IOException e){
+		catch (ServiceException | IOException e){
 			response.sendRedirect("error/error.jsp");
 		}
 	}

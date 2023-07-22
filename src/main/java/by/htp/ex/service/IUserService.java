@@ -17,6 +17,6 @@ public interface IUserService {
 	void unbanUser(String id) throws ServiceException;
 	void banUser (String id) throws ServiceException;
 	void downgradeRoleToUser(String id) throws ServiceException;
-	void addTokenToSaveData(int userId, String cookieValue) throws ServiceException;
-	void deleteCookie(String cookieValue) throws ServiceException;
+	void addTokenToSaveData(int userId, String authorizationToken) throws ServiceException;
+	void deleteCookie(String authorizationToken) throws ServiceException;
 }

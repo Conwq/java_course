@@ -27,20 +27,19 @@ public final class GoToViewNews implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter(JSP_ID_PARAM);
-		Locale locale = (Locale) request.getSession().getAttribute(JSP_LOCALIZATION_PARAM);
-		
-		try {
-			News news  = newsService.findById(id, locale);
 
-			List<Comment> comments = commentService.findByIdNews(id);
+		try {
+			String id = request.getParameter(JSP_ID_PARAM);
+			Locale locale = (Locale) request.getSession().getAttribute(JSP_LOCALIZATION_PARAM);
+			News news  = newsService.findById(id, locale);
+			List<Comment> comments = commentService.findByIdNews(id, locale);
 
 			request.setAttribute(JSP_COMMENTS_PARAM, comments);
 			request.setAttribute(JSP_NEWS_PARAM, news);
 			request.setAttribute(JSP_PRESENTATION_PARAM, JSP_VIEW_NEWS_PARAM);
 			request.getRequestDispatcher("WEB-INF/pages/layouts/baseLayout.jsp").forward(request, response);
 		}
-		catch (NumberFormatException | ServiceException e){
+		catch (ServiceException e){
 			response.sendRedirect("error/error.jsp");
 		}
 	}
