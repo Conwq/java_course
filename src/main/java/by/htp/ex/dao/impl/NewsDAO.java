@@ -22,23 +22,32 @@ public final class NewsDAO implements INewsDAO {
 	private final static String SQL_TO_GET_LAST_NEWSES = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
 	@Override
 	public List<News> getLatestList(int count, Locale locale) throws DaoException {
-		List<News> news = new ArrayList<>();
-
-		try (Connection connection = connectionPool.takeConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_GET_LAST_NEWSES)){
-
+		List<News> newses = new ArrayList<>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			connection = connectionPool.takeConnection();
+			preparedStatement = connection.prepareStatement(SQL_TO_GET_LAST_NEWSES);
 			preparedStatement.setInt(1, count);
-			ResultSet resultSet = preparedStatement.executeQuery();
-
+			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()){
-				News findNews = converter.convertNewsDependingOnDate(resultSet, locale);
-				news.add(findNews);
+				News news = converter.convertNewsDependingOnDate(resultSet, locale);
+				newses.add(news);
 			}
 		}
 		catch (SQLException | ConnectionPoolException e){
 			throw new DaoException(e);
 		}
-		return news;
+		finally {
+			try {
+				connectionPool.closeConnection(connection, preparedStatement, resultSet);
+			}
+			catch (ConnectionPoolException e){
+				throw new DaoException(e);
+			}
+		}
+		return newses;
 	}
 
 	private final static String SQL_TO_GET_ALL_NEWSES = "SELECT * FROM news ORDER BY news_date DESC";
@@ -65,11 +74,15 @@ public final class NewsDAO implements INewsDAO {
 	@Override
 	public News fetchById(int id, Locale locale) throws DaoException {
 		News findNews = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
 
-		try(Connection connection = connectionPool.takeConnection();
-			PreparedStatement statement = connection.prepareStatement(SQL_TO_GET_NEWS)){
-			statement.setInt(1, id);
-			ResultSet resultSet = statement.executeQuery();
+		try{
+			connection = connectionPool.takeConnection();
+			preparedStatement = connection.prepareStatement(SQL_TO_GET_NEWS);
+			preparedStatement.setInt(1, id);
+			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
 				findNews = converter.convertNews(resultSet, locale);
@@ -77,6 +90,14 @@ public final class NewsDAO implements INewsDAO {
 		}
 		catch (SQLException |ConnectionPoolException e){
 			throw new DaoException(e);
+		}
+		finally {
+			try{
+				connectionPool.closeConnection(connection, preparedStatement, resultSet);
+			}
+			catch(ConnectionPoolException e){
+				throw new DaoException(e);
+			}
 		}
 		return findNews;
 	}

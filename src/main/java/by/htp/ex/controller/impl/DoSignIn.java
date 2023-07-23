@@ -76,9 +76,11 @@ public final class DoSignIn implements Command {
 
 	private NewUserInfo signIn(HttpServletRequest request) throws ServiceException{
 		String token = request.getParameter(JSP_COOKIE_VALUE);
-		String login = request.getParameter(JSP_LOGIN_PARAM);
-		String password = request.getParameter(JSP_PASSWORD_PARAM);
-
-		return token == null ? service.signIn(login, password) : service.signInByToken(token);
+		if (token == null){
+			String login = request.getParameter(JSP_LOGIN_PARAM);
+			String password = request.getParameter(JSP_PASSWORD_PARAM);
+			return service.signIn(login, password);
+		}
+		return service.signInByToken(token);
 	}
 }

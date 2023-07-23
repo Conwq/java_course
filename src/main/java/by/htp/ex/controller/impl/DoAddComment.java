@@ -23,9 +23,7 @@ public final class DoAddComment implements Command{
 			String userId = request.getParameter(JSP_USER_ID_PARAM);
 			String newsId = request.getParameter(JSP_NEWS_ID_PARAM);
 			String text = request.getParameter(JSP_TEXT_PARAM);
-
 			commentService.addComment(text, userId, newsId);
-
 			response.sendRedirect("controller?command=go_to_view_news&id=" + newsId);
 		}
 		catch (ServiceException e){

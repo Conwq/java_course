@@ -69,7 +69,7 @@ public final class UserServiceImpl implements IUserService {
 	public void registration(NewUserInfo user, Locale locale) throws ServiceException {
 		try{
 			reentrantLock.lock();
-			userDAO.registrationByLocale(user, locale.getLanguage());
+			userDAO.registration(user, locale.getLanguage());
 		}
 		catch (DaoException e){
 			throw new ServiceException(e);
