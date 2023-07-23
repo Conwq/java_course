@@ -58,7 +58,8 @@ public final class DoRegistration implements Command {
 			userService.registration(user, locale);
 
 			response.sendRedirect("controller?command=go_to_base_page");
-		} catch (ServiceException e) {
+		}
+		catch (ServiceException e) {
 			String errorMessage = e.getCause().getMessage() != null ? e.getCause().getMessage() : "Error with registration, repeat later";
 			request.getSession(true).setAttribute(JSP_ERROR_PARAM, errorMessage);
 			response.sendRedirect("controller?command=go_to_registration_page_e");

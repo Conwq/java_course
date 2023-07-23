@@ -25,7 +25,7 @@ public final class GoToBasePage implements Command{
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
-			Cookie cookie;
+			Cookie cookie = null;
 			if ((cookie = cookies.getCookie(request, COOKIE_NAME)) != null){
 				response.sendRedirect("controller?command=do_sign_in&cookie_value=" + cookie.getValue());
 				return;
