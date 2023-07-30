@@ -12,11 +12,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public final class GoToPersonalCabinet implements Command {
-	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
-	private final static String JSP_ID_PARAM = "id";
-	private final static String JSP_USER_INFO_PARAM = "userInfo";
-	private final static String JSP_PERSONAL_CABINET_PARAM = "personal_cabinet";
-	private final static String JSP_ACTION_PARAM = "action";
+	private static final IUserService userService = ServiceProvider.getInstance().getUserService();
+	private static final String JSP_ID_PARAM = "id";
+	private static final String JSP_USER_INFO_PARAM = "userInfo";
+	private static final String JSP_PERSONAL_CABINET_PARAM = "personal_cabinet";
+	private static final String JSP_ACTION_PARAM = "action";
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

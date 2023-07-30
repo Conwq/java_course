@@ -12,8 +12,8 @@ import java.io.IOException;
 
 
 public final class DoDeleteNewses implements Command {
-	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
-	private final static String JSP_ERROR_PARAM = "error_delete_newses";
+	private static final INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private static final String JSP_ERROR_PARAM = "error_delete_newses";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

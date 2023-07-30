@@ -17,18 +17,18 @@ import java.io.IOException;
 import java.util.Locale;
 
 public final class DoRegistration implements Command {
-	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
-	private final static UserDataValidation validation = ValidationProvider.getInstance().getUserValidator();
-	private final static Converter converter = Converter.getInstance();
-	private final static String JSP_LOGIN_PARAM = "login";
-	private final static String JSP_EMAIL_PARAM = "email";
-	private final static String JSP_NAME_PARAM = "name";
-	private final static String JSP_SURNAME_PARAM = "surname";
-	private final static String JSP_CITY_PARAM = "city";
-	private final static String JSP_PASSWORD_PARAM = "password";
-	private final static String JSP_PASSWORD_REPEAT_PARAM = "password_repeat";
-	private final static String JSP_SELECTED_LOCALE_PARAM = "selectedLocale";
-	private final static String JSP_ERROR_PARAM = "error_registration";
+	private static final IUserService userService = ServiceProvider.getInstance().getUserService();
+	private static final UserDataValidation validation = ValidationProvider.getInstance().getUserValidator();
+	private static final Converter converter = Converter.getInstance();
+	private static final String JSP_LOGIN_PARAM = "login";
+	private static final String JSP_EMAIL_PARAM = "email";
+	private static final String JSP_NAME_PARAM = "name";
+	private static final String JSP_SURNAME_PARAM = "surname";
+	private static final String JSP_CITY_PARAM = "city";
+	private static final String JSP_PASSWORD_PARAM = "password";
+	private static final String JSP_PASSWORD_REPEAT_PARAM = "password_repeat";
+	private static final String JSP_SELECTED_LOCALE_PARAM = "selectedLocale";
+	private static final String JSP_ERROR_PARAM = "error_registration";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

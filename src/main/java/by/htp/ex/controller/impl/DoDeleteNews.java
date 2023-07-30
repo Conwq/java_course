@@ -11,8 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public final class DoDeleteNews implements Command {
-	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
-	private final static String JSP_ID_PARAM = "id";
+	private static final INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private static final String JSP_ID_PARAM = "id";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

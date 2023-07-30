@@ -11,8 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public final class DoDowngradeUser implements Command {
-	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
-	private final static String JSP_USER_ID_PARAM = "user_id";
+	private static final IUserService userService = ServiceProvider.getInstance().getUserService();
+	private static final String JSP_USER_ID_PARAM = "user_id";
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -112,19 +112,6 @@ public final class News implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return getClass().getName() +
-				" {idNews=" + idNews +
-				", title='" + title + '\'' +
-				", briefNews='" + briefNews + '\'' +
-				", content='" + content + '\'' +
-				", newsDate='" + newsDate + '\'' +
-				", photoPath='" + photoPath + '\'' +
-				", newUserInfo=" + newUserInfo +
-				'}';
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
@@ -135,5 +122,18 @@ public final class News implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(title, briefNews, content, newsDate, photoPath, newUserInfo);
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getName() +
+				" {idNews=" + idNews +
+				", title='" + title + '\'' +
+				", briefNews='" + briefNews + '\'' +
+				", content='" + content + '\'' +
+				", newsDate='" + newsDate + '\'' +
+				", photoPath='" + photoPath + '\'' +
+				", newUserInfo=" + newUserInfo +
+				'}';
 	}
 }

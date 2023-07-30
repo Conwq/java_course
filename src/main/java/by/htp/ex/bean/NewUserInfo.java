@@ -129,16 +129,6 @@ public final class NewUserInfo implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return  getClass().getName() +
-				" {login='" + login + '\'' +
-				", email='" + email + '\'' +
-				", password='" + password + '\'' +
-				", role=" + role +
-				'}';
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
@@ -149,6 +139,16 @@ public final class NewUserInfo implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(login, email, password, role, banned);
+	}
+
+	@Override
+	public String toString() {
+		return  getClass().getName() +
+				" {login='" + login + '\'' +
+				", email='" + email + '\'' +
+				", password='" + password + '\'' +
+				", role=" + role +
+				'}';
 	}
 }
 

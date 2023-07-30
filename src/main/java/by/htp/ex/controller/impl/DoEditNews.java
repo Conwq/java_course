@@ -13,13 +13,13 @@ import jakarta.servlet.http.Part;
 import java.io.IOException;
 
 public final class DoEditNews implements Command {
-	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
-	private final static String JSP_ID_PARAM = "id";
-	private final static String JSP_TITLE_PARAM = "title";
-	private final static String JSP_BRIEF_NEWS_PARAM = "brief_news";
-	private final static String JSP_CONTENT_PARAM = "content";
-	private final static String JSP_PHOTO_PARAM = "photo";
-	private final static String JSP_PHOTO_PATH_PARAM = "photo_path";
+	private static final INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private static final String JSP_ID_PARAM = "id";
+	private static final String JSP_TITLE_PARAM = "title";
+	private static final String JSP_BRIEF_NEWS_PARAM = "brief_news";
+	private static final String JSP_CONTENT_PARAM = "content";
+	private static final String JSP_PHOTO_PARAM = "photo";
+	private static final String JSP_PHOTO_PATH_PARAM = "photo_path";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

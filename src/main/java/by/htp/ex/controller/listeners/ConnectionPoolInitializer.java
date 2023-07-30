@@ -1,12 +1,12 @@
 package by.htp.ex.controller.listeners;
 
 import by.htp.ex.dao.pool.ConnectionPool;
-import by.htp.ex.dao.pool.ConnectionPoolException;
+import by.htp.ex.dao.pool.exception.ConnectionPoolException;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 
 public final class ConnectionPoolInitializer implements ServletContextListener {
-	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
+	private static final ConnectionPool connectionPool = ConnectionPool.getInstance();
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {

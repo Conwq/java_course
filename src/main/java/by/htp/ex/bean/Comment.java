@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public final class Comment implements Serializable {
-	private final static long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	private int commentId;
 	private NewUserInfo newUserInfo;
 	private News news;
@@ -61,17 +61,6 @@ public final class Comment implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return getClass().getName() +"{" +
-				"commentId=" + commentId +
-				", user=" + newUserInfo +
-				", news=" + news +
-				", date=" + date +
-				", text='" + text + '\'' +
-				'}';
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
@@ -82,5 +71,16 @@ public final class Comment implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(newUserInfo, news, date, text);
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getName() +"{" +
+				"commentId=" + commentId +
+				", user=" + newUserInfo +
+				", news=" + news +
+				", date=" + date +
+				", text='" + text + '\'' +
+				'}';
 	}
 }

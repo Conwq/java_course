@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Locale;
 
 public final class GoToBasePage implements Command{
-	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
-	private final static CookiesHelper cookies = CookiesHelper.getInstance();
-	private final static String JSP_NEWS_PARAM = "news";
-	private final static String COOKIE_NAME = "my_cookie";
+	private static final INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private static final CookiesHelper cookies = CookiesHelper.getInstance();
+	private static final String JSP_NEWS_PARAM = "news";
+	private static final String COOKIE_NAME = "my_cookie";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

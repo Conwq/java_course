@@ -15,13 +15,13 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.io.IOException;
 
 public final class DoEditUserInfo implements Command {
-	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
-	private final static UserDataValidation validation = ValidationProvider.getInstance().getUserValidator();
-	private final static String JSP_ID_PARAM = "id";
-	private final static String JSP_LOGIN_PARAM = "login";
-	private final static String JSP_EMAIL_PARAM = "email";
-	private final static String JSP_PASSWORD_PARAM = "password";
-	private final static String JSP_ERROR_PARAM = "error_edit_user";
+	private static final IUserService userService = ServiceProvider.getInstance().getUserService();
+	private static final UserDataValidation validation = ValidationProvider.getInstance().getUserValidator();
+	private static final String JSP_ID_PARAM = "id";
+	private static final String JSP_LOGIN_PARAM = "login";
+	private static final String JSP_EMAIL_PARAM = "email";
+	private static final String JSP_PASSWORD_PARAM = "password";
+	private static final String JSP_ERROR_PARAM = "error_edit_user";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

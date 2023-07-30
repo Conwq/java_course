@@ -13,8 +13,8 @@ import java.util.Locale;
 import java.util.concurrent.locks.ReentrantLock;
 
 public final class UserServiceImpl implements IUserService {
-	private final static IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
-	private final static ReentrantLock reentrantLock = ReentrantLockSingleton.getInstance().getReentrantLock();
+	private static final IUserDAO userDAO = DaoProvider.getInstance().getUserDao();
+	private static final ReentrantLock reentrantLock = ReentrantLockSingleton.getInstance().getReentrantLock();
 
 	@Override
 	public NewUserInfo signIn(String login, String password) throws ServiceException {
@@ -121,6 +121,9 @@ public final class UserServiceImpl implements IUserService {
 		}
 		catch(DaoException e) {
 			throw new ServiceException(e);
+		}
+		catch(NumberFormatException e){
+			throw new ServiceException("User with this id not found", e);
 		}
 	}
 

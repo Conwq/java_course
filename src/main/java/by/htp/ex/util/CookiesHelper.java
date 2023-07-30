@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public final class CookiesHelper {
 
-	private final static CookiesHelper instance = new CookiesHelper();
+	private static final CookiesHelper instance = new CookiesHelper();
 
 	private CookiesHelper(){
 	}

@@ -13,11 +13,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public final class DoSignOut implements Command {
-	private final static IUserService service = ServiceProvider.getInstance().getUserService();
-	private final static CookiesHelper cookies = CookiesHelper.getInstance();
-	private final static String JSP_USER_PARAM = "user";
-	private final static String JSP_USER_NOT_ACTIVE_PARAM = "not active";
-	private final static String COOKIE_NAME = "my_cookie";
+	private static final IUserService service = ServiceProvider.getInstance().getUserService();
+	private static final CookiesHelper cookies = CookiesHelper.getInstance();
+	private static final String JSP_USER_PARAM = "user";
+	private static final String JSP_USER_NOT_ACTIVE_PARAM = "not active";
+	private static final String COOKIE_NAME = "my_cookie";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

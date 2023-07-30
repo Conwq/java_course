@@ -13,10 +13,10 @@ import java.io.IOException;
 import java.util.List;
 
 public final class GoToUsersList implements Command {
-	private final static IUserService userService = ServiceProvider.getInstance().getUserService();
-	private final static String JSP_USERS_PARAM = "users";
-	private final static String JSP_ACTION_PARAM = "action";
-	private final static String JSP_USERS_LIST_PARAM = "users_list";
+	private static final IUserService userService = ServiceProvider.getInstance().getUserService();
+	private static final String JSP_USERS_PARAM = "users";
+	private static final String JSP_ACTION_PARAM = "action";
+	private static final String JSP_USERS_LIST_PARAM = "users_list";
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

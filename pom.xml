@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.training.webapp10</groupId>
-	<artifactId>web-project-14</artifactId>
+	<groupId>by.htp.ex</groupId>
+	<artifactId>web-project</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1</version>
-	<name>web-project-14 Maven Webapp</name>
+	<name>web-project Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -61,7 +61,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>web-project-14</finalName>
+		<finalName>web-project</finalName>
 
 		<plugins>
 			<plugin>

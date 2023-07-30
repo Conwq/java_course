@@ -1,18 +1,15 @@
 package by.htp.ex.dao.pool;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 
 public final class DBResourceManager {
-	private final static DBResourceManager instance = new DBResourceManager();
+	private static final DBResourceManager instance = new DBResourceManager();
+	private static final String DATABASE_CONFIG = "database";
 	private final ResourceBundle resourceBundle;
 
 	private DBResourceManager() {
-		resourceBundle = ResourceBundle.getBundle("database");
+		resourceBundle = ResourceBundle.getBundle(DATABASE_CONFIG);
 	}
 
 	public static DBResourceManager getInstance() {

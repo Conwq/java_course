@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class CommandProvider {
-	private final static Map<CommandName, Command> commands = new HashMap<>();
-	private final static CommandProvider instance = new CommandProvider();
+	private static final Map<CommandName, Command> commands = new HashMap<>();
+	private static final CommandProvider instance = new CommandProvider();
 
 	private CommandProvider() {
 		commands.put(CommandName.GO_TO_BASE_PAGE, new GoToBasePage());

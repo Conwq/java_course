@@ -1,5 +1,7 @@
 package by.htp.ex.dao.pool;
 
+import by.htp.ex.dao.pool.exception.ConnectionPoolException;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
@@ -8,7 +10,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
 public final class ConnectionPool {
-	private final static ConnectionPool instance = new ConnectionPool();
+	private static final ConnectionPool instance = new ConnectionPool();
 	private final String driver;
 	private final String url;
 	private final String user;

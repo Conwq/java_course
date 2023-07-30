@@ -11,9 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public final class DoDeleteComment implements Command {
-	private final static ICommentService commentService = ServiceProvider.getInstance().getCommentService();
-	private final static String JSP_COMMENT_ID_PARAM = "comment_id";
-	private final static String JSP_NEWS_ID_PARAM = "news_id";
+	private static final ICommentService commentService = ServiceProvider.getInstance().getCommentService();
+	private static final String JSP_COMMENT_ID_PARAM = "comment_id";
+	private static final String JSP_NEWS_ID_PARAM = "news_id";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

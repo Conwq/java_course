@@ -4,7 +4,7 @@ import by.htp.ex.bean.Comment;
 import by.htp.ex.dao.ICommentDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
-import by.htp.ex.dao.pool.ConnectionPoolException;
+import by.htp.ex.dao.pool.exception.ConnectionPoolException;
 import by.htp.ex.util.Converter;
 
 import java.sql.Connection;
@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.Locale;
 
 public final class CommentDAO implements ICommentDAO{
-	private final static Converter converter = Converter.getInstance();
-	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
-	private final static String DB_TEXT_COLUMN = "text";
-	private final static String DB_COMMENT_ID_COLUMN = "comment_id";
-	private final static String DB_DATE_COMMENT_COLUMN = "date_comment";
+	private static final Converter converter = Converter.getInstance();
+	private static final ConnectionPool connectionPool = ConnectionPool.getInstance();
+	private static final String DB_TEXT_COLUMN = "text";
+	private static final String DB_COMMENT_ID_COLUMN = "comment_id";
+	private static final String DB_DATE_COMMENT_COLUMN = "date_comment";
 
-	private final static String SQL_TO_DELETE_COMMENT = "DELETE FROM comments WHERE comment_id = ?";
+	private static final String SQL_TO_DELETE_COMMENT = "DELETE FROM comments WHERE comment_id = ?";
 	@Override
 	public void deleteById(int id) throws DaoException {
 		try (Connection connection = connectionPool.takeConnection();
@@ -35,7 +35,7 @@ public final class CommentDAO implements ICommentDAO{
 		}
 	}
 
-	private final static String SQL_TO_GET_COMMENT = "SELECT text FROM comments WHERE comment_id = ?";
+	private static final String SQL_TO_GET_COMMENT = "SELECT text FROM comments WHERE comment_id = ?";
 	@Override
 	public String getTextByIdComment(int id) throws DaoException {
 		Connection connection = null;
@@ -63,7 +63,7 @@ public final class CommentDAO implements ICommentDAO{
 		}
 	}
 
-	private final static String SQL_GET_ALL_COMMENTS_FROM_NEWS = "SELECT * FROM news JOIN comments ON news.news_id = comments.news_id "
+	private static final String SQL_GET_ALL_COMMENTS_FROM_NEWS = "SELECT * FROM news JOIN comments ON news.news_id = comments.news_id "
 			+ "JOIN users ON comments.users_id = users.id WHERE news.news_id = ?";
 	@Override
 	public List<Comment> findByIdNews(int id, Locale locale) throws DaoException {
@@ -100,7 +100,7 @@ public final class CommentDAO implements ICommentDAO{
 		return comments;
 	}
 
-	private final static String SQL_ADD_COMMENT = "INSERT INTO comments (text, news_id, users_id) VALUES (?,?,?)";
+	private static final String SQL_ADD_COMMENT = "INSERT INTO comments (text, news_id, users_id) VALUES (?,?,?)";
 	@Override
 	public void addComment(String text, int userId, int newsId) throws DaoException {
 
@@ -116,7 +116,7 @@ public final class CommentDAO implements ICommentDAO{
 		}
 	}
 
-	private final static String SQL_EDIT_COMMENT = "UPDATE comments SET text = ? WHERE comment_id = ?";
+	private static final String SQL_EDIT_COMMENT = "UPDATE comments SET text = ? WHERE comment_id = ?";
 	@Override
 	public void editCommentTextById(int id, String text) throws DaoException{
 		try(Connection connection = connectionPool.takeConnection();

@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.Locale;
 
 public final class GoToRegistrationPage implements Command {
-	private final static String JSP_REGISTRATION_PARAM = "registration";
-	private final static String JSP_ACTION_PARAM = "action";
-	private final static String JSP_LOCAL_PARAM = "local";
+	private static final String JSP_REGISTRATION_PARAM = "registration";
+	private static final String JSP_ACTION_PARAM = "action";
+	private static final String JSP_LOCAL_PARAM = "local";
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

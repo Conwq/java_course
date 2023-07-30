@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.Locale;
 
 public final class GoToNewsList implements Command {
-	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
-	private final static String JSP_NEWS_PARAM = "news";
-	private final static String JSP_PRESENTATION_PARAM = "presentation";
-	private final static String JSP_NEWS_LIST_PARAM = "newsList";
-	private final static String JSP_LOCALIZATION_PARAM = "localization";
+	private static final INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private static final String JSP_NEWS_PARAM = "news";
+	private static final String JSP_PRESENTATION_PARAM = "presentation";
+	private static final String JSP_NEWS_LIST_PARAM = "newsList";
+	private static final String JSP_LOCALIZATION_PARAM = "localization";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

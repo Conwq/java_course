@@ -15,22 +15,22 @@ import java.time.format.FormatStyle;
 import java.util.Locale;
 
 public class Converter {
-	private final static Converter instance = new Converter();
-	private final static String NEWS_ID_PARAM = "news_id";
-	private final static String TITLE_PARAM = "title";
-	private final static String BRIEF_NEWS_PARAM = "brief_news";
-	private final static String CONTENT_PARAM = "content";
-	private final static String PHOTO_PATH_PARAM = "photo_path";
-	private final static String NEWS_DATE_PARAM = "news_date";
-	private final static String ID_PARAM = "id";
-	private final static String LOGIN_PARAM = "login";
-	private final static String EMAIL_PARAM = "email";
-	private final static String ROLE_PARAM = "role";
-	private final static String BANNED_PARAM = "banned";
-	private final static String PASSWORD_PARAM = "password";
-	private final static String LANGUAGE_PARAM = "language";
-	private final static String COUNTRY_PARAM = "country";
-	private final static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	private static final Converter instance = new Converter();
+	private static final String NEWS_ID_PARAM = "news_id";
+	private static final String TITLE_PARAM = "title";
+	private static final String BRIEF_NEWS_PARAM = "brief_news";
+	private static final String CONTENT_PARAM = "content";
+	private static final String PHOTO_PATH_PARAM = "photo_path";
+	private static final String NEWS_DATE_PARAM = "news_date";
+	private static final String ID_PARAM = "id";
+	private static final String LOGIN_PARAM = "login";
+	private static final String EMAIL_PARAM = "email";
+	private static final String ROLE_PARAM = "role";
+	private static final String BANNED_PARAM = "banned";
+	private static final String PASSWORD_PARAM = "password";
+	private static final String LANGUAGE_PARAM = "language";
+	private static final String COUNTRY_PARAM = "country";
+	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
 	private Converter(){
 	}

@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.Locale;
 
 public final class GoToEditNews implements Command {
-	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
-	private final static String JSP_ID_PARAM = "id";
-	private final static String JSP_NEWS_PARAM = "news";
-	private final static String JSP_ACTION_PARAM = "action";
-	private final static String JSP_EDIT_NEWS_PARAM = "edit_news";
-	private final static String JSP_LOCALIZATION_PARAM = "localization";
+	private static final INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private static final String JSP_ID_PARAM = "id";
+	private static final String JSP_NEWS_PARAM = "news";
+	private static final String JSP_ACTION_PARAM = "action";
+	private static final String JSP_EDIT_NEWS_PARAM = "edit_news";
+	private static final String JSP_LOCALIZATION_PARAM = "localization";
 	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -16,14 +16,14 @@ import java.util.List;
 import java.util.Locale;
 
 public final class GoToViewNews implements Command {
-	private final static INewsService newsService = ServiceProvider.getInstance().getNewsService();
-	private final static ICommentService commentService = ServiceProvider.getInstance().getCommentService();
-	private final static String JSP_ID_PARAM = "id";
-	private final static String JSP_NEWS_PARAM = "news";
-	private final static String JSP_PRESENTATION_PARAM = "presentation";
-	private final static String JSP_VIEW_NEWS_PARAM = "viewNews";
-	private final static String JSP_COMMENTS_PARAM = "comments";
-	private final static String JSP_LOCALIZATION_PARAM = "localization";
+	private static final INewsService newsService = ServiceProvider.getInstance().getNewsService();
+	private static final ICommentService commentService = ServiceProvider.getInstance().getCommentService();
+	private static final String JSP_ID_PARAM = "id";
+	private static final String JSP_NEWS_PARAM = "news";
+	private static final String JSP_PRESENTATION_PARAM = "presentation";
+	private static final String JSP_VIEW_NEWS_PARAM = "viewNews";
+	private static final String JSP_COMMENTS_PARAM = "comments";
+	private static final String JSP_LOCALIZATION_PARAM = "localization";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

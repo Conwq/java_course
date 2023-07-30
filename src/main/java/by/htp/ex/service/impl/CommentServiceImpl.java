@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Locale;
 
 public final class CommentServiceImpl implements ICommentService{
-	private final static ICommentDAO commentDAO = DaoProvider.getInstance().getCommentDao();
+	private static final ICommentDAO commentDAO = DaoProvider.getInstance().getCommentDao();
 
 	@Override
 	public List<Comment> findByIdNews(String id, Locale locale) throws ServiceException{

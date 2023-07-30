@@ -4,7 +4,7 @@ import by.htp.ex.bean.News;
 import by.htp.ex.dao.INewsDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
-import by.htp.ex.dao.pool.ConnectionPoolException;
+import by.htp.ex.dao.pool.exception.ConnectionPoolException;
 import by.htp.ex.util.Converter;
 
 import java.sql.Connection;
@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Locale;
 
 public final class NewsDAO implements INewsDAO {
-	private final static Converter converter = Converter.getInstance();
-	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
+	private static final Converter converter = Converter.getInstance();
+	private static final ConnectionPool connectionPool = ConnectionPool.getInstance();
 	
-	private final static String SQL_TO_GET_LAST_NEWSES = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
+	private static final String SQL_TO_GET_LAST_NEWSES = "SELECT * FROM news ORDER BY news_date DESC LIMIT ?";
 	@Override
 	public List<News> getLatestList(int count, Locale locale) throws DaoException {
 		List<News> newses = new ArrayList<>();
@@ -50,7 +50,7 @@ public final class NewsDAO implements INewsDAO {
 		return newses;
 	}
 
-	private final static String SQL_TO_GET_ALL_NEWSES = "SELECT * FROM news ORDER BY news_date DESC";
+	private static final String SQL_TO_GET_ALL_NEWSES = "SELECT * FROM news ORDER BY news_date DESC";
 	@Override
 	public List<News> getList(Locale locale) throws DaoException {
 		List<News> news = new ArrayList<>();
@@ -70,7 +70,7 @@ public final class NewsDAO implements INewsDAO {
 		return news;
 	}
 
-	private final static String SQL_TO_GET_NEWS = "SELECT * FROM news WHERE news_id = ?";
+	private static final String SQL_TO_GET_NEWS = "SELECT * FROM news WHERE news_id = ?";
 	@Override
 	public News fetchById(int id, Locale locale) throws DaoException {
 		News findNews = null;
@@ -102,7 +102,7 @@ public final class NewsDAO implements INewsDAO {
 		return findNews;
 	}
 
-	private final static String SQL_TO_ADD_NEWS = "INSERT INTO news (title, brief_news, content, photo_path, users_id, news_date) VALUES (?,?,?,?,?, NOW())";
+	private static final String SQL_TO_ADD_NEWS = "INSERT INTO news (title, brief_news, content, photo_path, users_id, news_date) VALUES (?,?,?,?,?, NOW())";
 	@Override
 	public void addNews(News news) throws DaoException {
 
@@ -121,7 +121,7 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
-	private final static String SQL_TO_UPDATE_NEWS = "UPDATE news SET title=?, brief_news=?, content=?, photo_path=? WHERE news_id=?";
+	private static final String SQL_TO_UPDATE_NEWS = "UPDATE news SET title=?, brief_news=?, content=?, photo_path=? WHERE news_id=?";
 	@Override
 	public void updateNews(News news) throws DaoException {
 
@@ -140,7 +140,7 @@ public final class NewsDAO implements INewsDAO {
 		}
 	}
 
-	private final static String SQL_TO_DELETE_NEWSES = "DELETE FROM news WHERE news_id IN (%s)";
+	private static final String SQL_TO_DELETE_NEWSES = "DELETE FROM news WHERE news_id IN (%s)";
 	@Override
 	public void deleteNewses(int[] idNewses) throws DaoException {
 
@@ -169,7 +169,7 @@ public final class NewsDAO implements INewsDAO {
 		return builderSqlQuery.toString();
 	}
 
-	private final static String SQL_TO_DELETE_NEWS = "DELETE FROM news WHERE news_id = ?";
+	private static final String SQL_TO_DELETE_NEWS = "DELETE FROM news WHERE news_id = ?";
 	@Override
 	public void deleteNews(int id) throws DaoException {
 

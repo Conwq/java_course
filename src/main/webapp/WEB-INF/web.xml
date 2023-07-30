@@ -30,7 +30,7 @@
 	</error-page>
 	
 	<listener>
-		<listener-class>by.htp.ex.controller.listeners.AddingInactiveUserToTheSession</listener-class>
+		<listener-class>by.htp.ex.controller.listeners.CreatingInactiveUserToTheSession</listener-class>
 	</listener>
 
 	<listener>

@@ -4,7 +4,7 @@ import by.htp.ex.bean.NewUserInfo;
 import by.htp.ex.dao.IUserDAO;
 import by.htp.ex.dao.exception.DaoException;
 import by.htp.ex.dao.pool.ConnectionPool;
-import by.htp.ex.dao.pool.ConnectionPoolException;
+import by.htp.ex.dao.pool.exception.ConnectionPoolException;
 import by.htp.ex.util.Converter;
 
 import java.sql.*;
@@ -12,22 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class UserDAO implements IUserDAO {
-	private final static Converter converter = Converter.getInstance();
-	private final static ConnectionPool connectionPool = ConnectionPool.getInstance();
-	private final static String LANGUAGE_RU_PARAM = "ru";
-	private final static String COUNTRY_RU_PARAM = "RU";
-	private final static String LANGUAGE_EN_PARAM = "en";
-	private final static String COUNTRY_US_PARAM = "US";
-	private final static String USER_INFO_RU_PARAM = "user_info_ru";
-	private final static String USER_INFO_EN_PARAM = "user_info_en";
+	private static final Converter converter = Converter.getInstance();
+	private static final ConnectionPool connectionPool = ConnectionPool.getInstance();
+	private static final String LANGUAGE_RU_PARAM = "ru";
+	private static final String COUNTRY_RU_PARAM = "RU";
+	private static final String LANGUAGE_EN_PARAM = "en";
+	private static final String COUNTRY_US_PARAM = "US";
+	private static final String USER_INFO_RU_PARAM = "user_info_ru";
+	private static final String USER_INFO_EN_PARAM = "user_info_en";
 
 	@Override
 	public void registration(NewUserInfo user) throws DaoException {
 	}
 	
-	private final static String SQL_TO_ADD_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
-	private final static String SQL_ADD_LOCALE = "INSERT INTO locales (users_id, language, country) VALUES (?,?,?)";
-	private final static String SQL_ADD_USER_INFO_BY_LOCALE = "INSERT INTO %s (users_id, name, surname, city_of_residence) VALUES (?,?,?,?)";
+	private static final String SQL_TO_ADD_USER = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
+	private static final String SQL_ADD_LOCALE = "INSERT INTO locales (users_id, language, country) VALUES (?,?,?)";
+	private static final String SQL_ADD_USER_INFO_BY_LOCALE = "INSERT INTO %s (users_id, name, surname, city_of_residence) VALUES (?,?,?,?)";
 	@Override
 	public void registration(NewUserInfo user, String locale) throws DaoException{
 		Connection connection = null;
@@ -100,7 +100,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 	
-	private final static String SQL_TO_AUTH_USER = "SELECT * FROM users LEFT JOIN locales ON users.id = locales.users_id WHERE login = ?";
+	private static final String SQL_TO_AUTH_USER = "SELECT * FROM users LEFT JOIN locales ON users.id = locales.users_id WHERE login = ?";
 	@Override
 	public NewUserInfo signIn(String login, String password) throws DaoException {
 		Connection connection = null;
@@ -132,7 +132,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_TO_AUTH_USER_WITH_COOKIE = "SELECT * FROM users JOIN cookies ON users.id = cookies.users_id JOIN locales ON cookies.users_id = locales.users_id WHERE cookies.cookie = ?";
+	private static final String SQL_TO_AUTH_USER_WITH_COOKIE = "SELECT * FROM users JOIN cookies ON users.id = cookies.users_id JOIN locales ON cookies.users_id = locales.users_id WHERE cookies.cookie = ?";
 	@Override
 	public NewUserInfo signInByToken(String authorizationToken) throws DaoException {
 		Connection connection = null;
@@ -164,7 +164,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_TO_GET_ALL_USERS =  "SELECT * FROM users";
+	private static final String SQL_TO_GET_ALL_USERS =  "SELECT * FROM users";
 	@Override
 	public List<NewUserInfo> getUsers() throws DaoException {
 		List<NewUserInfo> usersInfo = new ArrayList<>();
@@ -184,7 +184,7 @@ public final class UserDAO implements IUserDAO {
 		return usersInfo;
 	}
 
-	private final static String SQL_TO_GET_USER = "SELECT * FROM users WHERE id = ?";
+	private static final String SQL_TO_GET_USER = "SELECT * FROM users WHERE id = ?";
 	@Override
 	public NewUserInfo getUser(int id) throws DaoException {
 		Connection connection = null;
@@ -216,7 +216,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_TO_UPDATE_USER = "UPDATE users SET login=?, password=?, email=? WHERE id=?";
+	private static final String SQL_TO_UPDATE_USER = "UPDATE users SET login=?, password=?, email=? WHERE id=?";
 	@Override
 	public void updateUserInfo(NewUserInfo userInfo) throws DaoException {
 
@@ -238,7 +238,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_UNBAN_USER = "UPDATE users SET banned = 0 WHERE id = ?";
+	private static final String SQL_UNBAN_USER = "UPDATE users SET banned = 0 WHERE id = ?";
 	@Override
 	public void unbanUser(int id) throws DaoException {
 		try (Connection connection = connectionPool.takeConnection();
@@ -256,7 +256,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_BAN_USER = "UPDATE users SET banned = 1 WHERE id = ?";
+	private static final String SQL_BAN_USER = "UPDATE users SET banned = 1 WHERE id = ?";
 	@Override
 	public void banUser(int id) throws DaoException{
 		
@@ -270,7 +270,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_DOWNGRADE_ROLE_USER = "UPDATE users SET role = 'user' WHERE id = ?";
+	private static final String SQL_DOWNGRADE_ROLE_USER = "UPDATE users SET role = 'user' WHERE id = ?";
 	@Override
 	public void downgradeRoleToUser(int id) throws DaoException {
 		try(Connection connection = connectionPool.takeConnection();
@@ -283,7 +283,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_ADD_COOKIE_FOR_USER = "INSERT INTO cookies (users_id, cookie) VALUES (?, ?)";
+	private static final String SQL_ADD_COOKIE_FOR_USER = "INSERT INTO cookies (users_id, cookie) VALUES (?, ?)";
 	@Override
 	public void addCookieForUser(int userId, String authorizationToken) throws DaoException {
 		try (Connection connection = connectionPool.takeConnection();
@@ -297,7 +297,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_DELETE_COOKIE = "DELETE FROM cookies WHERE cookie = ?";
+	private static final String SQL_DELETE_COOKIE = "DELETE FROM cookies WHERE cookie = ?";
 	@Override
 	public void deleteCookie(String authorizationToken) throws DaoException{
 		try(Connection connection = connectionPool.takeConnection();
@@ -310,7 +310,7 @@ public final class UserDAO implements IUserDAO {
 		}
 	}
 
-	private final static String SQL_TO_CHECK_USER_EXIST = "SELECT * FROM users WHERE email = ? OR login = ? AND id <> ?";
+	private static final String SQL_TO_CHECK_USER_EXIST = "SELECT * FROM users WHERE email = ? OR login = ? AND id <> ?";
 	private boolean isExistUser(NewUserInfo user, Connection connection) throws SQLException, ConnectionPoolException {
 		PreparedStatement preparedStatement = connection.prepareStatement(SQL_TO_CHECK_USER_EXIST);
 		preparedStatement.setString(1, user.getEmail());

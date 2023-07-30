@@ -5,7 +5,7 @@ public enum Role {
 	USER,
 	GUEST;
 
-	public String getRole(){
+	public String getRoleName(){
 		return name().toLowerCase();
 	}
 }

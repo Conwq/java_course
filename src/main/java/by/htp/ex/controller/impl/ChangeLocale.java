@@ -10,7 +10,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public final class ChangeLocale implements Command {
-	private final static String JSP_LOCALE_PARAM = "locale";
+	private static final String JSP_LOCALE_PARAM = "locale";
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
